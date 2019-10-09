@@ -16,34 +16,19 @@ export class Author
   @Column({
     nullable: false,
     type: "varchar",
-    name: "nameOne",
-    length: 75
+    name: "name",
+    length: 120
   })
-  nameOne : string;
-
-  @Column({
-    nullable: true,
-    type: "varchar",
-    name: "nameTwo",
-    length: 80
-  })
-  nameTwo : string;
+  name : string;
 
   @Column({
     nullable: false,
     type: "varchar",
-    name: "lastNameOne",
-    length: 80
+    name: "lastName",
+    length: 120
   })
-  lastNameOne : string;
+  lastName : string;
 
-  @Column({
-    nullable: true,
-    type: "varchar",
-    name: "lastNameTwo",
-    length: 80
-  })
-  lastNameTwo : string;
 
   @Column({
     nullable: false,
