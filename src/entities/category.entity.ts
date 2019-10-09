@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany, PrimaryColumn } from "typeorm";
+import { State } from "./enums/state.enum";
 
 @Entity()
 export class Category{
@@ -7,7 +8,10 @@ export class Category{
     type:"bigint", 
     name:"id"
   })
-  @PrimaryColumn()
+  @PrimaryColumn({
+    unique: true,
+    nullable: false
+  })
   id : number;
 
   @Column({
@@ -17,5 +21,12 @@ export class Category{
     length: 150
   })
   name : string;
-  
+
+  @Column({
+    nullable: false,
+    type: "enum",
+    enum: State,
+    name: "state"
+  })
+  state : State;
 }
