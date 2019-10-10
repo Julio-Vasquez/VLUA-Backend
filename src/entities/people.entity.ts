@@ -1,17 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, OneToOne, ManyToOne, JoinColumn } from "typeorm";
+import { User } from './user.entity';
+import { Gender } from './gender.entity'; 
+import { State } from './enums/state.enum';
 
 @Entity('People')
 export class People 
 {
-  @PrimaryGeneratedColumn({
-    type: "bigint",
-    name: "id"
-  })
+  @PrimaryGeneratedColumn("uuid")
   @PrimaryColumn({
     unique: true,
     nullable: false
   })
-  id : number;
+  id : string;
 
   @Column({
     nullable: false,
@@ -54,9 +54,16 @@ export class People
 
   @Column({
     nullable: false,
-    type: "varchar",
-    name: "direction",
-    length: 110
+    type: "enum",
+    enum: State,
+    name: "state"
   })
-  direction : string;
+  state : State;
+
+  @OneToOne(type => User, user => user.people)
+  user : User;
+
+  @ManyToOne(type => Gender, gender => gender.people)
+  @JoinColumn()
+  gender : Gender;
 }

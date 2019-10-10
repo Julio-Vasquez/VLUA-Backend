@@ -1,24 +1,21 @@
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, JoinColumn, ManyToOne } from "typeorm";
 import { State } from "./enums/state.enum";
+import { User } from "./user.entity";
 
 @Entity('Phone')
 export class Phone
 {
-  @PrimaryGeneratedColumn({
-    type:"bigint", 
-    name:"id"
-  })
+  @PrimaryGeneratedColumn("uuid")
   @PrimaryColumn({
     unique: true,
     nullable: false
   })
-  id : number;
+  id : string;
 
   @Column({
     nullable: false,
     type: "int",
-    name: "phone",
-    length: 10
+    name: "phone"
   })
   phone : number;
 
@@ -29,4 +26,8 @@ export class Phone
     name: "state"
   })
   state : State;
+
+  @ManyToOne(type => User, user => user.phone)
+  @JoinColumn()
+  user : User;
 }

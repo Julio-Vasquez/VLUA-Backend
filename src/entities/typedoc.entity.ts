@@ -1,19 +1,17 @@
-import { Entity, PrimaryColumn, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryColumn, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { State } from './enums/state.enum';
 import { TypeDocs } from './enums/typedoc.enum';
+import { User } from "./user.entity";
 
 @Entity('TypeDoc')
 export class TypeDoc
 {
-  @PrimaryGeneratedColumn({
-    type: "bigint",
-    name: "id"
-  })
+  @PrimaryGeneratedColumn("uuid")
   @PrimaryColumn({
     unique: true,
     nullable: false
   })
-  id : number;
+  id : string;
 
   @Column({
     nullable: false,
@@ -30,5 +28,8 @@ export class TypeDoc
     name: "state"
   })
   state : State; 
+
+  @OneToMany(type => User, user => user.typeDoc)
+  user : User[];
   
 }

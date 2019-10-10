@@ -1,18 +1,16 @@
-import { Entity, PrimaryColumn, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryColumn, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { State } from './enums/state.enum';
+import { Book } from "./book.entity";
 
 @Entity('Editorial')
 export class Editorial
 {
-  @PrimaryGeneratedColumn({
-    type: "bigint",
-    name: "id"
-  })
+  @PrimaryGeneratedColumn("uuid")
   @PrimaryColumn({
     unique: true,
     nullable: false
   })
-  id : number;
+  id : string;
 
   @Column({
     nullable: false,
@@ -37,4 +35,7 @@ export class Editorial
     name: "state"
   })
   state : State;
+
+  @OneToMany(type => Book, book => book.editorial)
+  book : Book[];
 }

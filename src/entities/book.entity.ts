@@ -1,20 +1,20 @@
-   //isbn
-import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, Index } from 'typeorm';
-
+import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, Index, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
+import { Editorial } from './editorial.entity';
+import { Author } from './author.entity';
+import { Category } from './category.entity';
+import { History } from './history.entity';
+import { State } from './enums/state.enum';
 
 @Entity('Book')
 @Index(["isbn", "name"],{unique: true})
 export class Book 
 {
-   @PrimaryGeneratedColumn({
-      type: "bigint",
-      name: "id"
-   })
+   @PrimaryGeneratedColumn("uuid")
    @PrimaryColumn({
       unique: true,
       nullable: false
    })
-   id : number;
+   id : string;
 
    @Column({
       nullable: false,
@@ -53,4 +53,26 @@ export class Book
    })
    tomo : number; 
 
+   @Column({
+      nullable: false,
+      type: "enum",
+      enum: State,
+      name: "state"
+    })
+    state : State;
+
+   @ManyToOne(type => Editorial, editorial => editorial.book)
+   @JoinColumn()
+   editorial : Editorial; 
+
+   @ManyToOne(type => Author, author => author.book)
+   @JoinColumn()
+   author : Author;
+
+   @ManyToOne(type => Category, category => category.book)
+   @JoinColumn()
+   category : Category;
+
+   @OneToMany(type => History, history => history.book)
+   history : History[];
 }

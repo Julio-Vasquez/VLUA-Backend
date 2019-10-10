@@ -1,19 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, OneToMany } from "typeorm";
 import { Genders } from './enums/gender.enum'
 import { State } from "./enums/state.enum";
+import { People } from "./people.entity";
 
 @Entity('Gender')
 export class Gender
 {
-  @PrimaryGeneratedColumn({
-    type: "bigint",
-    name: "id"
-  })
+  @PrimaryGeneratedColumn("uuid")
   @PrimaryColumn({
     unique: true,
     nullable: false
   })
-  id : number; 
+  id : string; 
 
   @Column({
     nullable: false,
@@ -30,4 +28,7 @@ export class Gender
     enum: State
   })
   state : State;
+
+  @OneToMany(type => People, user => user.gender)
+  people : People[];
 }

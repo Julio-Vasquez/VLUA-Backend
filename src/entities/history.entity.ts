@@ -1,23 +1,40 @@
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from "typeorm";
+import { Entity, Column, PrimaryColumn, JoinColumn, ManyToOne, CreateDateColumn } from "typeorm";
+import { User } from "./user.entity";
+import { Book } from "./book.entity";
+import { State } from "./enums/state.enum";
 
 @Entity('History')
 export class History
 {
-  @PrimaryGeneratedColumn()
-  public authorToBook: number;
+  @PrimaryColumn()
+  userId : string;
 
-  @Column()
-  public authorId! : number;
-
-  @Column()
-  public bookId! : number;
+  @PrimaryColumn()
+  bookId : string;
 
   @Column({
     nullable: false,
     type: "int",
     name: "cant"
   })
-  public cant! : number;
+  cant : number;
+
+  @CreateDateColumn()
+  lastDate : string;
+
+  @Column({
+    nullable: false,
+    type: "enum",
+    enum: State,
+    name: "state"
+  })
+  state : State;
   
-  
+  @ManyToOne(type => User, user => user.history)
+  @JoinColumn()
+  user : User;
+
+  @ManyToOne(type => Book, book => book.history)
+  @JoinColumn()
+  book : Book;
 }

@@ -1,19 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, OneToMany, JoinColumn } from 'typeorm';
 import { State } from './enums/state.enum';
-import { Permission } from './permission.entity';
-
+import { User } from './user.entity';
+import { Actions } from './actions.entity';
 
 @Entity('Role')
 export class Role
 {
-  @PrimaryGeneratedColumn({
-    type:"bigint", 
-    name:"id"
-  })
+  @PrimaryGeneratedColumn("uuid")
   @PrimaryColumn({
     unique: true
   })
-  id : number;
+  id : string;
 
   @Column({
     nullable: false,
@@ -31,8 +28,11 @@ export class Role
   })
   state : State;
 
-  @ManyToMany(type => Permission, permission => permission.rol)
-  @JoinTable({ name: 'rol_permiso_fk'})
-  permission : Permission[];
+  @OneToMany(type => Actions, actions => actions.role)
+  @JoinColumn()
+  actions : Actions[];
+
+  @OneToMany(type => User, user => user.role)
+  user : User[];
 
 }
