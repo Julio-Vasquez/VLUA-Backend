@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn, OneToMany, PrimaryColumn } from
 import { State } from "./enums/state.enum";
 import { Book } from "./book.entity";
 
-@Entity()
+@Entity('Category')
 export class Category{
 
   @PrimaryGeneratedColumn("uuid")

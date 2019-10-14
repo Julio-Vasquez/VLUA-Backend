@@ -1,8 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './modules/app.module';
 import { FastifyAdapter, NestFastifyApplication, } from '@nestjs/platform-fastify';
 import { ValidationPipe } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
+
+import { AppModule } from './modules/app.module';
 import { AppPrefix, AppPort, Mode, AppName, AppHost } from './modules/common/environment/environment';
 
 async function bootstrap() {

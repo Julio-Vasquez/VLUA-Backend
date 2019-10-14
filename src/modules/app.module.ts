@@ -14,9 +14,7 @@ import { BookModule } from './book/book.module';
       useFactory: async (config) => (config.orm_config),
       inject: ['ConfigService']
     }),
-    AuthModule,
-    UserModule,
-    BookModule,
+    BookModule
   ],
   controllers: [],
   providers: [],
