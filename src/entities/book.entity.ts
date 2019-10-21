@@ -51,7 +51,14 @@ export class Book
       type: "int",
       name: "tomo"
    })
-   tomo : number; 
+   tomo : number;
+   
+   @Column({
+      nullable: false,
+      type: "text",
+      name: "urlImg",
+   })
+   urlImg : string;
 
    @Column({
       nullable: false,

@@ -22,7 +22,7 @@ export class People
   nameOne : string;
 
   @Column({
-    nullable: false,
+    nullable: true,
     type: "varchar",
     name: "nameTwo",
     length: 55

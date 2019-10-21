@@ -28,9 +28,8 @@ export class Author
   })
   lastName : string;
 
-
   @Column({
-    nullable: false,
+    nullable: true,
     type: "date",
     name: "dateBirth"
   })

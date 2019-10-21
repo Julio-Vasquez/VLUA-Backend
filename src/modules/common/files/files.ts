@@ -6,7 +6,7 @@ export class Files {
     for (let item in arrayFile) {
       if (existsSync(arrayFile[item])) {
           unlink(arrayFile[item], err => {
-          console.log(err+'-->');
+          console.log(err + '-->');
           return false;
         });
       }

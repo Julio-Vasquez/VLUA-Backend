@@ -17,7 +17,7 @@ export class EMail
     type: "text",
     name: "email"
   })
-  email : string;
+  eMail : string;
 
   @Column({
     nullable: false,

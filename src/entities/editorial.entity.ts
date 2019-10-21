@@ -15,7 +15,7 @@ export class Editorial
   @Column({
     nullable: false,
     type: "varchar",
-    length: 30,
+    length: 100,
     name: "name"
   })
   name : string;

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, OneToOne, JoinColumn, OneToMany, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, OneToOne, JoinColumn, OneToMany, ManyToOne, Index } from "typeorm";
 import { State } from "./enums/state.enum";
 import { People } from "./people.entity";
 import { Role } from "./role.entity";
@@ -8,6 +8,7 @@ import { EMail } from "./email.entity";
 import { History } from './history.entity';
 
 @Entity('User')
+@Index(["userName"],{ unique: true })
 export class User
 {
   @PrimaryGeneratedColumn("uuid")
@@ -21,7 +22,8 @@ export class User
     nullable: false,
     type: "varchar",
     name: "userName",
-    length: 45
+    length: 45,
+    unique: true
   })
   userName : string;
 

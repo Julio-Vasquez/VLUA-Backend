@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Body, Post } from '@nestjs/common';
 import { BookService } from './book.service';
+import { ChangePasswordDto } from '../user/dto/changepassword.dto';
 
 @Controller('book')
 export class BookController {
@@ -13,5 +14,11 @@ export class BookController {
       return "hay archivos";
     }
     return "no hay archivos";
+  }
+  @Post('/test')
+  public async test(@Body() pass: ChangePasswordDto) : Promise <string>
+  {
+    console.log(pass)
+    return "hola";
   }
 }
