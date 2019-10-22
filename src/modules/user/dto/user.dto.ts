@@ -54,10 +54,16 @@ export class UserDto
   public readonly lastNameTwo : string;
 
   @IsDate({message: 'No es una fecha valida'})
+  @IsNotEmpty({
+    message : IsNE
+  })
   public readonly dateBirth : string;
 
   @IsString({
     message : IsStr
+  })
+  @IsNotEmpty({
+    message : IsNE
   })
   public readonly gender : string;
 
@@ -72,10 +78,16 @@ export class UserDto
   @IsEmail({},{
     message: 'No es un Email valido'
   })
+  @IsNotEmpty({
+    message : IsNE
+  })
   public readonly eMail : string;
 
   @IsPhoneNumber('CO',{
     message : 'No es un numero telefonico colombiano'
+  })
+  @IsNotEmpty({
+    message : IsNE
   })
   public readonly phone : number;
 }
