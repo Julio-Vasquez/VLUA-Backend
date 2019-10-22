@@ -15,10 +15,5 @@ export class BookController {
     }
     return "no hay archivos";
   }
-  @Post('/test')
-  public async test(@Body() pass: ChangePasswordDto) : Promise <string>
-  {
-    console.log(pass)
-    return "hola";
-  }
+  
 }

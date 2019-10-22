@@ -22,8 +22,7 @@ export class User
     nullable: false,
     type: "varchar",
     name: "userName",
-    length: 45,
-    unique: true
+    length: 45
   })
   userName : string;
 

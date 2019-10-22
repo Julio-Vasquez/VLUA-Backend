@@ -1,6 +1,5 @@
 import { IsNumber, IsString, IsNotEmpty, MinLength, MaxLength, IsDate, Min, IsISBN } from 'class-validator';
-import { IsStr, IsNE, MinL, MaxL, IsNb } from './../../common/const/const.dto';
-
+import { IsStr, IsNE, MinL, MaxL } from './../../common/const/const.dto';
 
 export class BookDto
 {
@@ -51,34 +50,26 @@ export class BookDto
   public readonly tomo : number;
 
   @IsString({
-    message : IsStr
-  })
-  @MinLength(4,{
-    message : 'La url ' + MinL + ' 4 Carácteres'
+    message: IsStr
   })
   @IsNotEmpty({
     message : IsNE
   })
-  public readonly urlImg : string;
+  public readonly category : string;
 
-  @IsNumber()
+  @IsString({
+    message: IsStr
+  })
   @IsNotEmpty({
     message : IsNE
   })
-  @Min(1)
-  public readonly category : number;
+  public readonly author : string;
 
-  @IsNumber()
+  @IsString({
+    message: IsStr
+  })
   @IsNotEmpty({
     message : IsNE
   })
-  @Min(1)
-  public readonly author : number;
-
-  @IsNumber()
-  @IsNotEmpty({
-    message : IsNE
-  })
-  @Min(1)
-  public readonly editorial : number;
+  public readonly editorial : string;
 }

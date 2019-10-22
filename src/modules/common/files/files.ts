@@ -2,7 +2,7 @@ import { existsSync, unlink } from 'fs';
 
 export class Files {
 
-  public deleteFile(arrayFile) {
+  public deleteFile(arrayFile : any[]) {
     for (let item in arrayFile) {
       if (existsSync(arrayFile[item])) {
           unlink(arrayFile[item], err => {
@@ -14,7 +14,7 @@ export class Files {
     return true;
   }
 
-  public prepareFile(array) {
+  public prepareFile(array : any[]) {
     let result = [];
     for (let item in array) {
       console.log('the item file ' + array[item])
