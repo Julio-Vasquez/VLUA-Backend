@@ -13,12 +13,12 @@ import { Files } from '../common/files/files';
 export class BookService 
 {
   constructor(
-    private readonly fls : Files,
+    
     private readonly connection : Connection,
     @InjectRepository(Book)
     private readonly repository : Repository<Book>
   ){}
-
+  private readonly fls : Files;
   //no test
   public async createBook(book : BookDto, coverUrl : string): Promise<boolean>
   {
@@ -90,6 +90,7 @@ export class BookService
       .addSelect('editorial.name', 'editorialName')
       .addSelect('editorial.direction', 'editorialDirection')
       .addSelect('category.name', 'categoryName')
+      .addSelect('category.code', 'dewey')
       .leftJoin('book.editorial', 'editorial')
       .leftJoin('book.category', 'category')
       .leftJoin('book.author', 'author')
@@ -113,6 +114,7 @@ export class BookService
       .addSelect('editorial.name', 'editorialName')
       .addSelect('editorial.direction', 'editorialDirection')
       .addSelect('category.name', 'categoryName')
+      .addSelect('category.code', 'dewey')
       .leftJoin('book.editorial', 'editorial')
       .leftJoin('book.category', 'category')
       .leftJoin('book.author', 'author')
@@ -137,6 +139,7 @@ export class BookService
       .addSelect('editorial.name', 'editorialName')
       .addSelect('editorial.direction', 'editorialDirection')
       .addSelect('category.name', 'categoryName')
+      .addSelect('category.code', 'dewey')
       .leftJoin('book.editorial', 'editorial')
       .leftJoin('book.category', 'category')
       .leftJoin('book.author', 'author')
@@ -162,6 +165,7 @@ export class BookService
       .addSelect('editorial.name', 'editorialName')
       .addSelect('editorial.direction', 'editorialDirection')
       .addSelect('category.name', 'categoryName')
+      .addSelect('category.code', 'dewey')
       .leftJoin('book.editorial', 'editorial')
       .leftJoin('book.category', 'category')
       .leftJoin('book.author', 'author')
@@ -187,6 +191,7 @@ export class BookService
       .addSelect('editorial.name', 'editorialName')
       .addSelect('editorial.direction', 'editorialDirection')
       .addSelect('category.name', 'categoryName')
+      .addSelect('category.code', 'dewey')
       .leftJoin('book.editorial', 'editorial')
       .leftJoin('book.category', 'category')
       .leftJoin('book.author', 'author')
@@ -211,6 +216,7 @@ export class BookService
       .addSelect('editorial.name', 'editorialName')
       .addSelect('editorial.direction', 'editorialDirection')
       .addSelect('category.name', 'categoryName')
+      .addSelect('category.code', 'dewey')
       .leftJoin('book.editorial', 'editorial')
       .leftJoin('book.category', 'category')
       .leftJoin('book.author', 'author')

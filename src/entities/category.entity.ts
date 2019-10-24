@@ -11,12 +11,19 @@ export class Category{
     nullable: false
   })
   id : string;
+  @Column({
+    nullable: false,
+    type: "varchar",
+    name: "code",
+    length: 3
+  })
+  code : string;
 
   @Column({
     nullable: false,
     type: "varchar",
     name: 'name',
-    length: 150
+    length: 50
   })
   name : string;
 
