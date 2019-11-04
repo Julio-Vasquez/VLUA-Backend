@@ -10,7 +10,7 @@ export class BookDto
   @IsNotEmpty({
     message: 'Un ISBN ( International Standard Book Number )' + IsNE
   })
-  public readonly isbn: string;
+  public readonly isbn : string;
 
   @IsString({
     message: IsStr

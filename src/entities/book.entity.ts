@@ -56,9 +56,16 @@ export class Book
    @Column({
       nullable: false,
       type: "text",
-      name: "urlImg",
+      name: "urlBook",
    })
-   urlImg : string;
+   urlBook : string;
+
+   @Column({
+      nullable: false,
+      type: "text",
+      name: "urlCover",
+   })
+   urlCover : string;
 
    @Column({
       nullable: false,

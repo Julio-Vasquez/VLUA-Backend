@@ -1,4 +1,4 @@
-export class Response 
+class Response 
 {
 
   private data: any;

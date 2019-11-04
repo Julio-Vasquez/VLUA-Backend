@@ -18,7 +18,7 @@ export class Files {
     let result = [];
     for (let item in array) {
       console.log('the item file ' + array[item])
-      result.push(array[item].replace('localhost', '.'))
+      result.push(array[item].replace('localhost', ''))
     }
     return result;
   }

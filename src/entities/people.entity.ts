@@ -1,9 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, OneToOne, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, OneToOne, ManyToOne, JoinColumn, Index } from "typeorm";
 import { User } from './user.entity';
 import { Gender } from './gender.entity'; 
 import { State } from './enums/state.enum';
 
 @Entity('People')
+@Index(["identification"],{ unique: true })
 export class People 
 {
   @PrimaryGeneratedColumn("uuid")
@@ -51,6 +52,14 @@ export class People
     name: "birthDate"
   })
   birthDate : string;
+
+  @Column({
+    nullable: false,
+    type: "bigint",
+    name: "identification"
+  })
+  identification : number;
+  
 
   @Column({
     nullable: false,
