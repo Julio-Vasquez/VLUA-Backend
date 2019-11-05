@@ -2,13 +2,19 @@ import { Injectable } from '@nestjs/common';
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { JwtService } from '@nestjs/jwt';
 
 import { User } from './../../entities/user.entity';
 import { LoginDto } from './dto/login.dto';
+import { UserService } from '../user/user.service';
+
 
 @Injectable()
-export class AuthService {
+export class AuthService 
+{
   constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
     @InjectRepository(User)
     private readonly repository: Repository<User>
   ){}
@@ -29,7 +35,6 @@ export class AuthService {
       .andWhere('user.state = :state', { state : 'Activo' })
       .execute()
     ;
-     
     return {
       name : res[0].name,
       lastName : res[0].lastName,
@@ -41,13 +46,11 @@ export class AuthService {
     };
   }
 
-  public async validUser()
+  public async validUser(token) : Promise<any>
   {
-    /*
-    const payload:any = this.jwtService.decode(token);
+    const payload : any = this.jwtService.decode(token);
     if( payload )
-        return await this.userService.validUser(payload);
+      return await this.userService.validUser(payload);
     return false;
-    */
   }
 }

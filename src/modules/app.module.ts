@@ -15,7 +15,8 @@ import { BookModule } from './book/book.module';
       inject: ['ConfigService']
     }),
     BookModule,
-    AuthModule
+    AuthModule,
+    UserModule
   ],
   controllers: [],
   providers: [],

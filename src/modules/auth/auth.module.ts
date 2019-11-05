@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { UserService } from './../user/user.service';
 import { User } from './../../entities/user.entity';
 
 import { JwtKey } from './../common/environment/environment';
@@ -19,7 +20,8 @@ import { JwtKey } from './../common/environment/environment';
     AuthController 
   ],
   providers : [ 
-    AuthService 
+    AuthService,
+    UserService 
   ],
   exports : []
 })

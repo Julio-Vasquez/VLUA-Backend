@@ -11,6 +11,7 @@ export class Category{
     nullable: false
   })
   id : string;
+
   @Column({
     nullable: false,
     type: "varchar",
