@@ -13,8 +13,21 @@ export class UserService
     private readonly repository : Repository<User>
   ){}
     
-  public async myProfile(username : UserNameDto){
-
+  public async myProfile(userName : UserNameDto){
+   /* return await this.repository
+      .createQueryBuilder('user')
+      .select()
+      .addSelect()
+      .addSelect()
+      .addSelect()
+      .addSelect()
+      .addSelect()
+      .addSelect()
+      .addSelect()
+      .innerJoin()
+      .innerJoin()
+      
+    );*/
   }
 
   public async validUser(jwt: any): Promise<any> {

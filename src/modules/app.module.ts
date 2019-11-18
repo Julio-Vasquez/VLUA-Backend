@@ -6,6 +6,8 @@ import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { BookModule } from './book/book.module';
+import { EditorialModule } from './editorial/editorial.module';
+import { AuthorModule } from './author/author.module';
 
 @Module({
   imports: [
@@ -16,7 +18,9 @@ import { BookModule } from './book/book.module';
     }),
     BookModule,
     AuthModule,
-    UserModule
+    UserModule,
+    EditorialModule,
+    AuthorModule
   ],
   controllers: [],
   providers: [],
