@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, OneToOne, ManyToOne, JoinColumn, Index } from "typeorm";
 import { User } from './user.entity';
 import { Gender } from './gender.entity'; 
+import { TypeDoc } from './typedoc.entity';
 import { State } from './enums/state.enum';
 
 @Entity('People')
@@ -75,4 +76,8 @@ export class People
   @ManyToOne(type => Gender, gender => gender.people)
   @JoinColumn()
   gender : Gender;
+
+  @ManyToOne(type => TypeDoc, typeDoc => typeDoc.people)
+  @JoinColumn()
+  typeDoc : TypeDoc;
 }

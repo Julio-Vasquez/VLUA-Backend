@@ -1,7 +1,7 @@
 import { Entity, PrimaryColumn, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { State } from './enums/state.enum';
 import { TypeDocs } from './enums/typedoc.enum';
-import { User } from "./user.entity";
+import { People } from "./people.entity";
 
 @Entity('TypeDoc')
 export class TypeDoc
@@ -29,7 +29,7 @@ export class TypeDoc
   })
   state : State; 
 
-  @OneToMany(type => User, user => user.typeDoc)
-  user : User[];
+  @OneToMany(type => People, user => user.typeDoc)
+  people : People[];
   
 }

@@ -2,7 +2,6 @@ import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, OneToOne, JoinCo
 import { State } from "./enums/state.enum";
 import { People } from "./people.entity";
 import { Role } from "./role.entity";
-import { TypeDoc } from "./typedoc.entity";
 import { Phone } from "./phone.entity";
 import { EMail } from "./email.entity";
 import { History } from './history.entity';
@@ -49,10 +48,6 @@ export class User
   @ManyToOne(type => Role, role => role.user)
   @JoinColumn()
   role : Role;
-
-  @ManyToOne(type => TypeDoc, typeDoc => typeDoc.user)
-  @JoinColumn()
-  typeDoc : TypeDoc;
 
   @OneToMany(type => Phone, phone => phone.user)
   phone : Phone[];
