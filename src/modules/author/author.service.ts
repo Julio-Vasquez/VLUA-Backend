@@ -22,7 +22,7 @@ export class AuthorService
         lastName: author.lastName
       }
     );
-   
+   console.log(res);
     if(!res)
     {
       await this.repository.insert(
