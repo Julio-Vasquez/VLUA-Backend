@@ -16,18 +16,23 @@ export class AuthorService
 
   public async createAuthor(author : AuthorDto) : Promise<boolean>
   {
-    const res : Author = await this.repository.findOne({
-      name : author.name,
-      lastName: author.lastName
-    });
-   
-    if(!res){
-      await this.repository.insert({
+    const res : Author = await this.repository.findOne(
+      {
         name : author.name,
-        lastName: author.lastName,
-        dateBirth: author.dateBirth,
-        state: State.Active
-      });
+        lastName: author.lastName
+      }
+    );
+   
+    if(!res)
+    {
+      await this.repository.insert(
+        {
+          name : author.name,
+          lastName: author.lastName,
+          dateBirth: author.dateBirth,
+          state: State.Active
+        }
+      );
       return true;
     }
     return false;
@@ -35,9 +40,11 @@ export class AuthorService
 
   public async findAll(): Promise<Author[]>
   {
-    return await this.repository.find({
-      where : { state : 'Activo'}
-    });
+    return await this.repository.find(
+      {
+        where : { state : 'Activo'}
+      }
+    );
   }
 
   public async updateAuthor(author : AuthorDto, id : string): Promise<boolean>
@@ -50,11 +57,16 @@ export class AuthorService
       }
     );
     if(exist.length === 1){
-      const res : UpdateResult = await this.repository.update({id : id},{
-        name: author.name,
-        lastName: author.lastName,
-        dateBirth: author.dateBirth
-      });
+      const res : UpdateResult = await this.repository.update(
+        {
+          id : id
+        },
+        {
+          name: author.name,
+          lastName: author.lastName,
+          dateBirth: author.dateBirth
+        }
+      );
       return res.affected > 0 ;
     }
     return false;
@@ -69,8 +81,13 @@ export class AuthorService
         }
       }
     );
-    if(exist.length === 1){
-      const res : DeleteResult = await this.repository.delete({id : id});
+    if(exist.length === 1)
+    {
+      const res : DeleteResult = await this.repository.delete(
+        {  
+          id : id
+        }
+      );
       return res.affected > 0 ;
     }
     return false;
@@ -78,11 +95,13 @@ export class AuthorService
 
   public async findByName(name : string): Promise<Author[]>
   {
-    return await this.repository.find({
-      where : { 
-        state : 'Activo', 
-        name : name
+    return await this.repository.find(
+      {
+        where : { 
+          state : 'Activo', 
+          name : name
+        }
       }
-    });
+    );
   }
 }

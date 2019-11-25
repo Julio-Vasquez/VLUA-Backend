@@ -41,6 +41,15 @@ VALUES
 	( '94bb1f81-086f-4290-875b-624947b4e66d', '800', 'Literatura & retórica ', 'Activo' ),
 	( '44cf413f-5d4f-4b12-bb95-b839f31dccf5', '900', 'Geografía & historia', 'Activo' );
 	
+
+
+
+	/*
+		INSERT INTO 
+	`People`
+VALUES
+	( '49172f13-2558-4852-9d4e-6e08f6299850', 'Julio', 'Alfredo', 'Vasquez', 'Lievano', '1996-02-22', 1117542316, 'Activo', 'd8503e02-eca0-4b3a-ad93-b6795974b362', 'bf4f7f8c-9f77-4e8d-bcdb-d4298d404477' );
+	*/
 INSERT INTO 
 	`People`
 VALUES
@@ -66,6 +75,13 @@ VALUES
 	( 'c41bffd1-f234-490a-ad5d-8e0f90f1123a', 'Paloma', '', 'Hinestroza', 'Mena', '1994-08-04', 1437800920, 'Activo', '4939e9ad-f8e9-46bf-90ec-6884706a3d58' ),
 	( '6c587855-8033-4944-9bbd-6f1e816a6c76', 'Briyit', 'Camila', 'Rincon', 'Oviedo', '1991-08-05', 261203907, 'Activo', '4939e9ad-f8e9-46bf-90ec-6884706a3d58' );
 	
+
+	/*
+	INSERT INTO 
+	`User`
+VALUES
+	( '8958a8f6-0107-4d32-bf4b-2a31ba093be6', 'DarKPhuRioN', PASSWORD ( 'phurion123' ), 'Activo', '49172f13-2558-4852-9d4e-6e08f6299850', '24fc8de3-17cf-4976-ae07-689ca0b31dfa');
+	*/
 INSERT INTO 
 	`User`
 VALUES
