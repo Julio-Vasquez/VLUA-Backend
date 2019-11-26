@@ -30,8 +30,9 @@ export class Author
 
   @Column({
     nullable: true,
-    type: "date",
-    name: "dateBirth"
+    type: "varchar",
+    name: "dateBirth",
+    length: "12"
   })
   dateBirth : string;
 

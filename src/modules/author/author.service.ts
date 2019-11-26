@@ -56,7 +56,7 @@ export class AuthorService
         }
       }
     );
-    if(exist.length === 1){
+    if(exist.length == 1){
       const res : UpdateResult = await this.repository.update(
         {
           id : id
@@ -67,7 +67,7 @@ export class AuthorService
           dateBirth: author.dateBirth
         }
       );
-      return res.affected > 0 ;
+      return res.raw.affectedRows > 0;
     }
     return false;
   }

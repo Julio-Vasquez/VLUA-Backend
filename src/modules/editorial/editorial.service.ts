@@ -17,16 +17,20 @@ export class EditorialService
 
   public async createEditorial(editorial : EditorialDto) : Promise<boolean>
   {
-    const res : Editorial = await this.repository.findOne({
-      name : editorial.name
-    });
-   
-    if(!res){
-      await this.repository.insert({
-        name : editorial.name,
-        direction: editorial.direction,
-        state: State.Active
-      });
+    const res : Editorial = await this.repository.findOne(
+      {
+        name : editorial.name
+      }
+    );
+    if(!res)
+    {
+      await this.repository.insert(
+        {
+          name : editorial.name,
+          direction: editorial.direction,
+          state: State.Active
+        }
+      );
       return true;
     }
     return false;
@@ -34,9 +38,11 @@ export class EditorialService
 
   public async findAll(): Promise<Editorial[]>
   {
-    return await this.repository.find({
-      where : { state : 'Activo'}
-    });
+    return await this.repository.find(
+      {
+        where : { state : 'Activo'}
+      }
+    );
   }
 
   public async updateEditorial(editorial : EditorialDto, id : string): Promise<boolean>
@@ -48,12 +54,18 @@ export class EditorialService
         }
       }
     );
-    if(exist.length === 1){
-      const res : UpdateResult = await this.repository.update({id : id},{
-        name: editorial.name,
-        direction: editorial.direction
-      });
-      return res.affected > 0 ;
+    if(exist.length === 1)
+    {
+      const res : UpdateResult = await this.repository.update(
+        {
+          id : id
+        },
+        {
+          name: editorial.name,
+          direction: editorial.direction
+        }
+      );
+      return  res.raw.affectedRows > 0 ;
     }
     return false;
   }
@@ -68,19 +80,25 @@ export class EditorialService
       }
     );
     if(exist.length === 1){
-      const res : DeleteResult = await this.repository.delete({id : id});
+      const res : DeleteResult = await this.repository.delete(
+        {
+          id : id
+        }
+      );
       return res.affected > 0 ;
     }
   }
 
   public async findByName(name : string): Promise<Editorial[]>
   {
-    return await this.repository.find({
-      where : { 
-        state : 'Activo', 
-        name : name
+    return await this.repository.find(
+      {
+        where : { 
+          state : 'Activo', 
+          name : name
+        }
       }
-    });
+    );
   }
 
 }

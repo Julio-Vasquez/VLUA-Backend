@@ -78,7 +78,7 @@ export class AuthorController
   }
 
 
-  @Delete('/deleteauthor/:id')
+  @Delete('/delete/:id')
   public async deleteAuthor(@Param('id') id : string)
   {
     let res = await this.serviceAuthor.deleteAuthor(id);
@@ -99,12 +99,11 @@ export class AuthorController
     ;
   }
 
-  //cambiar el where a nombre y apellido
-  @Put('/updateauthor/')
-  public async updateAuthor(@Body() newAuthor : AuthorDto)
+  @Put('/update/:id')
+  public async updateAuthor(@Body() newAuthor : AuthorDto, @Param('id') id : string)
   {
-    let id : string = "asdasdasd";
     let res = await this.serviceAuthor.updateAuthor(newAuthor,id);
+    console.log(res + "---->")
     if( res)
     {
       return Response

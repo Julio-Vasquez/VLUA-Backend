@@ -31,7 +31,6 @@ export class AuthorDto
   })
   public readonly lastName : string;
 
-  @IsDateString()
   @IsNotEmpty({
     message : IsNE
   })
