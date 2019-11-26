@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DeleteResult, UpdateResult } from 'typeorm';
+import { Repository, DeleteResult, UpdateResult, Like } from 'typeorm';
 
 import { Author } from './../../entities/author.entity';
 import { AuthorDto } from './dto/author.dto';
@@ -96,11 +96,11 @@ export class AuthorService
   public async findByName(name : string): Promise<Author[]>
   {
     return await this.repository.find(
-      {
+      { 
         where : { 
           state : 'Activo', 
-          name : name
-        }
+          name : Like(`%${name}%`)
+        } 
       }
     );
   }
