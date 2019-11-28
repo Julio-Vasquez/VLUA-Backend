@@ -9,10 +9,12 @@ import { AppPrefix, AppPort, Mode, AppName, AppHost } from './modules/common/env
 async function bootstrap() {
   const logger = new Logger('HttpsServer');
   const app = await NestFactory.create<NestExpressApplication>(
-    AppModule, 
-    new ExpressAdapter({ logger : true})
+    AppModule,
+    {
+      logger : console
+    }
   );
-
+  //logger : console. logger : logger
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix(AppPrefix);
