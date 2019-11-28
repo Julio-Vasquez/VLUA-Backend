@@ -2,13 +2,17 @@ import { Module, Global } from '@nestjs/common';
 
 import { ConfigService } from './config/config.service';
 
+import { FileUploadService } from './files/multer.service'; 
+
 @Global()
 @Module({
   providers: [
-    ConfigService
+    ConfigService, 
+    FileUploadService
   ],
   exports: [
-    ConfigService
+    ConfigService,
+    FileUploadService
   ]
 })
 export class CommonModule {}

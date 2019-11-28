@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { FastifyAdapter, NestFastifyApplication, } from '@nestjs/platform-fastify';
+import { NestExpressApplication, ExpressAdapter } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 
@@ -8,9 +8,9 @@ import { AppPrefix, AppPort, Mode, AppName, AppHost } from './modules/common/env
 
 async function bootstrap() {
   const logger = new Logger('HttpsServer');
-  const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
-    new FastifyAdapter({ logger: true })
+  const app = await NestFactory.create<NestExpressApplication>(
+    AppModule, 
+    new ExpressAdapter({ logger : true})
   );
 
   app.enableCors();
@@ -25,6 +25,3 @@ async function bootstrap() {
   });
 }
 bootstrap();
-
-
-

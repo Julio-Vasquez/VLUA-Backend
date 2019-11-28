@@ -28,7 +28,7 @@ export class BookService
         isbn : book.isbn
       }
     });
-    //prepare files to delete in possible err //[0]urlBook, [1]urlCover
+    ////[0]urlBook, [1]urlCover
     const arrayFilesImg = this.fls.prepareFile(url);
     if(!exist)
     {

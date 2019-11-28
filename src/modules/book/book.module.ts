@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import { Module,} from '@nestjs/common';
+import { MulterModule } from '@nestjs/platform-express';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { BookController } from './book.controller';
@@ -10,6 +11,12 @@ import { Author } from './../../entities/author.entity';
 
 @Module({
   imports: [
+    MulterModule.registerAsync({
+      useFactory: async (file) => (
+        file.configMulter()
+      ),
+      inject: ['FileUploadService']
+    }),
     TypeOrmModule.forFeature([Book, Editorial, Author])
   ],
   controllers: [BookController],
