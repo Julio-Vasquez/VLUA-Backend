@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, MinLength, MaxLength, IsDateString, IsISO8601 } from 'class-validator';
+import { IsString, IsNotEmpty, MinLength, MaxLength, IsISO8601 } from 'class-validator';
 import { IsStr, IsNE, MinL, MaxL } from './../../common/const/const.dto';
 
 export class AuthorDto

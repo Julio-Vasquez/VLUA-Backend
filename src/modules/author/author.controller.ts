@@ -16,7 +16,7 @@ export class AuthorController
   public async createAuthor(@Body() author : AuthorDto)
   {
     console.log(author.dateBirth)
-    let res = await this.serviceAuthor.createAuthor(author);
+    const res = await this.serviceAuthor.createAuthor(author);
     if(res)
     {
       return Response
@@ -31,7 +31,7 @@ export class AuthorController
     }
     return Response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
-      .message('author existente no validas')
+      .message('Ya existe un autor, credenciales no validas.')
       .json({ data: [] })
     ;
   }
@@ -51,15 +51,14 @@ export class AuthorController
     }
     return Response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
-      .message('author existente no validas')
+      .message('No hay ningun registro de autores.')
       .json({ data: [] })
     ;
   }
 
   @Get('/listname/:name')
   public async listAuthorsByName(@Param('name') name: string){
-    let res : Author[] = await this.serviceAuthor.findByName(name);
-    console.log(name);
+    const res : Author[] = await this.serviceAuthor.findByName(name);
     if(res.length > 0 )
     {
       return Response
@@ -72,7 +71,7 @@ export class AuthorController
     }
     return Response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
-      .message('author existente no validas')
+      .message('No existe ningun autor con ese nombre o apellido.')
       .json({ data: [] })
     ;
   }
@@ -81,7 +80,7 @@ export class AuthorController
   @Delete('/delete/:id')
   public async deleteAuthor(@Param('id') id : string)
   {
-    let res = await this.serviceAuthor.deleteAuthor(id);
+    const res = await this.serviceAuthor.deleteAuthor(id);
     if( res )
     {
       return Response
@@ -94,7 +93,7 @@ export class AuthorController
     }
     return Response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
-      .message('author existente no validas')
+      .message('Ese ID no corresponde a ningun author, no se pudo eliminar nada!')
       .json({ data: [] })
     ;
   }
@@ -102,9 +101,8 @@ export class AuthorController
   @Put('/update/:id')
   public async updateAuthor(@Body() newAuthor : AuthorDto, @Param('id') id : string)
   {
-    let res = await this.serviceAuthor.updateAuthor(newAuthor,id);
-    console.log(res + "---->")
-    if( res)
+    const res = await this.serviceAuthor.updateAuthor(newAuthor,id);
+    if( res )
     {
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})

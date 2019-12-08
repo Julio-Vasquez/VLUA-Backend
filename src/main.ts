@@ -11,7 +11,8 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
     AppModule,
     {
-      logger : console
+      logger : logger,
+      cors : true
     }
   );
   //logger : console. logger : logger

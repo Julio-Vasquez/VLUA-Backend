@@ -97,10 +97,16 @@ export class AuthorService
   {
     return await this.repository.find(
       { 
-        where : { 
-          state : 'Activo', 
-          name : Like(`%${name}%`)
-        } 
+        where : [
+          { 
+            state : 'Activo', 
+            name : Like(`%${name}%`)
+          },
+          {
+            state : 'Activo', 
+            lastName : Like(`%${name}%`)
+          }
+        ] 
       }
     );
   }

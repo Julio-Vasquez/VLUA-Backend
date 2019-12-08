@@ -35,15 +35,18 @@ export class AuthService
       .andWhere('user.state = :state', { state : 'Activo' })
       .execute()
     ;
-    return {
-      name : res[0].name,
-      lastName : res[0].lastName,
-      userName : res[0].userName,
-      role : res[0].rol,
-      state : res[0].state,
-      start: (new Date().getTime() /1000),
-      end:  Math.round(new Date().getTime() /1000) + 21600
-    };
+    if(res && res.length > 0){
+      return {
+        name : res[0].name,
+        lastName : res[0].lastName,
+        userName : res[0].userName,
+        role : res[0].rol,
+        state : res[0].state,
+        start: (new Date().getTime() /1000),
+        end:  Math.round(new Date().getTime() /1000) + 21600
+      };
+    }
+    return false;
   }
 
   public async validUser(token) : Promise<any>

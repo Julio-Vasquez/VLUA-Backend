@@ -17,20 +17,20 @@ export class AuthController{
 
   @Post('/login')
   public async login(@Body() login : LoginDto){
-    let res = await this.authService.login(login);
-      if (res) {
-        return Response
-          .status({ statusCode: HttpStatus.OK, state: 'OK' })
-          .message('login OK')
-          .json({
-            data: this.jwtService.sign(res)
-          })
-        ;
-      }
+    const res = await this.authService.login(login);
+    if (res) {
       return Response
-        .status({ statusCode: HttpStatus.UNAUTHORIZED, state: 'UNAUTHORIZED'})
-        .message('Credenciales no validas')
-        .json({ data: [] })
+        .status({ statusCode: HttpStatus.OK, state: 'OK' })
+        .message('login OK')
+        .json({
+          data: this.jwtService.sign(res)
+        })
       ;
-  }
+    }
+    return Response
+      .status({ statusCode: HttpStatus.UNAUTHORIZED, state: 'UNAUTHORIZED'})
+      .message('Credenciales no validas')
+      .json({ data: [] })
+    ;
+    }
 }
