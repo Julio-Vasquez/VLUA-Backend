@@ -14,7 +14,7 @@ export class UserController{
 
   @Post('/profile')
   public async myProfile(@Body() un : UserNameDto){
-    let res  = await this.userService.myProfile(un);
+    const res  = await this.userService.myProfile(un);
     if(res.length > 0)
     {
       return Response

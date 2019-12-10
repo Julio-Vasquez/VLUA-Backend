@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DeleteResult, UpdateResult } from 'typeorm';
+import { Repository, DeleteResult, UpdateResult, Like } from 'typeorm';
 
 import { Editorial } from './../../entities/editorial.entity';
 
@@ -95,7 +95,7 @@ export class EditorialService
       {
         where : { 
           state : 'Activo', 
-          name : name
+          name : Like(`%${name}%`)
         }
       }
     );

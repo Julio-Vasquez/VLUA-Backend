@@ -2,7 +2,6 @@ import { Controller, Get, Body, Post, Param, UploadedFiles, UseInterceptors, Htt
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 import { BookService } from './book.service';
-import { ChangePasswordDto } from '../user/dto/changepassword.dto';
 import { BookDto } from './dto/book.dto';
 
 import { AppHost } from './../common/environment/environment';
@@ -44,12 +43,14 @@ export class BookController {
     const res : boolean = await this.book.createBook(
       book,
       [
-        (AppHost+'/'+ file.urlBook[0].path),
-        (AppHost+'/'+ file.urlCover[0].path)
+        (AppHost + '/' + file.urlBook[0].path),
+        (AppHost + '/' + file.urlCover[0].path)
       ]
     );
-    if( file ){
-      if(res){
+    if( file )
+    {
+      if(res)
+      {
         return Response
           .status({ statusCode: HttpStatus.OK, state: 'OK'})
           .message('Registro exitoso')
@@ -58,22 +59,23 @@ export class BookController {
       }
       return Response
         .status({ statusCode: HttpStatus.CONFLICT, state: 'CONFLICT' })
-       .message('Ya existe el registro')
-       .json()
+        .message('Ya existe el registro')
+        .json()
       ;
     }
+
     this.fl.deleteFile(
       [
-        (AppHost+'/'+ file.urlBook[0].path),
-        (AppHost+'/'+ file.urlCover[0].path)
+        (AppHost + '/' + file.urlBook[0].path),
+        (AppHost + '/' + file.urlCover[0].path)
       ]
     );
 
     return Response
-        .status({ statusCode: HttpStatus.BAD_REQUEST, state: 'ERROR BAD_REQUEST' })
-        .message('No ha llegado ningun dato al servidor')
-        .json()
-      ;
+      .status({ statusCode: HttpStatus.BAD_REQUEST, state: 'ERROR BAD_REQUEST' })
+      .message('No ha llegado ningun dato al servidor')
+      .json()
+    ;
   }
   
 }

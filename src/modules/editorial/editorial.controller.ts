@@ -16,14 +16,14 @@ export class EditorialController
   ){}
 
   @Post('/create')
-  public async createAuthor(@Body() editorial : EditorialDto)
+  public async createEditorial(@Body() editorial : EditorialDto)
   {
-    let res = await this.serviceEditorial.createEditorial(editorial);
+    const res = await this.serviceEditorial.createEditorial(editorial);
     if(res)
     {
       return Response
         .status({ statusCode: HttpStatus.OK, state: 'OK'})
-        .message('Editorial Registrado Correctamente!')
+        .message('Editorial Registrada Correctamente!')
         .json(
           { 
             data: res
@@ -33,14 +33,14 @@ export class EditorialController
     }
     return Response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
-      .message('Editorial existente no validas')
+      .message('Ya existe esa editorial, no se registro nada!')
       .json({ data: [] })
     ;
   }
 
   @Get('/list')
-  public async listAuthors(){
-    let res: Editorial[] = await this.serviceEditorial.findAll();
+  public async listEditorials(){
+    const res: Editorial[] = await this.serviceEditorial.findAll();
     if(res.length > 0 )
     {
       return Response
@@ -53,15 +53,14 @@ export class EditorialController
     }
     return Response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
-      .message('Editorial existente no validas')
+      .message('No hay ningun registro de editorial.')
       .json({ data: [] })
     ;
   }
 
   @Get('/listname/:name')
-  public async listAuthorsByName(@Param('name') name: string){
-    let res : Editorial[] = await this.serviceEditorial.findByName(name);
-    console.log(name);
+  public async listEditorialByName(@Param('name') name: string){
+    const res : Editorial[] = await this.serviceEditorial.findByName(name);
     if(res.length > 0 )
     {
       return Response
@@ -74,16 +73,16 @@ export class EditorialController
     }
     return Response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
-      .message('author existente no validas')
+      .message('NO existe ninguna editorial que coincida con ese nombre')
       .json({ data: [] })
     ;
   }
 
 
   @Delete('/delete/:id')
-  public async deleteAuthor(@Param('id') id : string)
+  public async deleteEditorial(@Param('id') id : string)
   {
-    let res = await this.serviceEditorial.deleteEditorial(id);
+    const res = await this.serviceEditorial.deleteEditorial(id);
     if( res )
     {
       return Response
@@ -96,15 +95,15 @@ export class EditorialController
     }
     return Response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
-      .message('author existente no validas')
+      .message('Ese ID no corresponde a ninguna editorial, no se pudo eliminar nada!')
       .json({ data: [] })
     ;
   }
 
   @Put('/update/:id')
-  public async updateAuthor(@Body() newEditorial : EditorialDto, @Param('id') id : string)
+  public async updateEditorial(@Body() newEditorial : EditorialDto, @Param('id') id : string)
   {
-    let res = await this.serviceEditorial.updateEditorial(newEditorial,id);
+    const res = await this.serviceEditorial.updateEditorial(newEditorial,id);
     if( res)
     {
       return Response
@@ -117,7 +116,7 @@ export class EditorialController
     }
     return Response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
-      .message('editorial existente no validas')
+      .message('No existe ninguna editorial con ese ID, no se actualizo nada!')
       .json({ data: [] })
     ;
   }
