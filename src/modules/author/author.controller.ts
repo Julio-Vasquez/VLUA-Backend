@@ -2,6 +2,7 @@ import { Controller, Get, Body, Post, HttpStatus, Param, Delete, Put } from '@ne
 import { AuthorService } from './author.service';
 
 import  Response   from './../common/response/response';
+
 import { AuthorDto } from './dto/author.dto';
 import { Author } from './../../entities/author.entity';
 
@@ -15,7 +16,6 @@ export class AuthorController
   @Post('/create')
   public async createAuthor(@Body() author : AuthorDto)
   {
-    console.log(author.dateBirth)
     const res = await this.serviceAuthor.createAuthor(author);
     if(res)
     {
@@ -50,7 +50,7 @@ export class AuthorController
       ;
     }
     return Response
-      .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
+      .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT' })
       .message('No hay ningun registro de autores.')
       .json({ data: [] })
     ;

@@ -8,6 +8,7 @@ import { UserService } from './../user/user.service';
 import { User } from './../../entities/user.entity';
 
 import { JwtKey } from './../common/environment/environment';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports : [
@@ -15,6 +16,14 @@ import { JwtKey } from './../common/environment/environment';
     JwtModule.register({ 
       secret: JwtKey
     }),
+    MulterModule.registerAsync(
+      {
+        useFactory: async file => (
+          file.configMulter()
+        ),
+        inject: ['FileUploadService']
+      }
+    )
   ],
   controllers : [ 
     AuthController 

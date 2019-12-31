@@ -32,12 +32,10 @@ export class UserService
       .where('user.userName = :userName', { userName : userName.userName})
       .andWhere("people.state = 'Activo'")
       .execute();
-    ;
   }
 
   public async validUser(jwt: any): Promise<any> {
-    console.log(jwt.idUser)
-    let res = await this.repository
+    const res = await this.repository
         .createQueryBuilder("user")
         .select("user.id", "idUser")
         .addSelect("user.UserName", "userName")
@@ -46,5 +44,4 @@ export class UserService
     ;
     return (res) ? jwt : false;
   }
-
 }

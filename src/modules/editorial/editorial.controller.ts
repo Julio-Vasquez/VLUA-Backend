@@ -103,7 +103,7 @@ export class EditorialController
   @Put('/update/:id')
   public async updateEditorial(@Body() newEditorial : EditorialDto, @Param('id') id : string)
   {
-    const res = await this.serviceEditorial.updateEditorial(newEditorial,id);
+    const res = await this.serviceEditorial.updateEditorial(newEditorial, id);
     if( res)
     {
       return Response
