@@ -44,8 +44,8 @@ export class AuthController{
       ]
     )
   )
-  public async uploadFile(@UploadedFiles() files)
+  public async uploadFile(@UploadedFiles() file)
   {
-    console.log(files);
+    console.log(file);
   }
 }

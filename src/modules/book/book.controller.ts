@@ -40,23 +40,23 @@ export class BookController {
   @Post('/create')
   public async createBook(@Body() book : BookDto, @UploadedFiles() file)
   {
-    const res : boolean = await this.book.createBook(
-      book,
-      [
-        (AppHost + '/' + file.urlBook[0].path),
-        (AppHost + '/' + file.urlCover[0].path)
-      ]
-    );
-    if( file )
-    {
-      if(res)
-      {
+    if( file ){
+      const res : boolean = await this.book.createBook(
+        book,
+        [
+          (AppHost + '/' + file.urlBook[0].path),
+          (AppHost + '/' + file.urlCover[0].path)
+        ]
+      );
+
+      if(res){
         return Response
           .status({ statusCode: HttpStatus.OK, state: 'OK'})
           .message('Registro exitoso')
           .json()
         ;
       }
+      
       return Response
         .status({ statusCode: HttpStatus.CONFLICT, state: 'CONFLICT' })
         .message('Ya existe el registro')

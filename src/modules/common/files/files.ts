@@ -28,10 +28,10 @@ export class Files {
   }
 
   private renameFile(array) {
-    return;
+    return true;
   }
 
   private moveFile(array) {
-    return;
+    return true;
   }
 }
