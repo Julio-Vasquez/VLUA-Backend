@@ -1,4 +1,4 @@
-import { Controller, Body, Post, HttpStatus, UseInterceptors, UploadedFiles } from '@nestjs/common';
+import { Controller, Body, Post, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { LoginDto } from './dto/login.dto';
@@ -6,8 +6,6 @@ import { LoginDto } from './dto/login.dto';
 import  Response   from './../common/response/response';
 
 import { AuthService } from './auth.service';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
-
 
 @Controller('auth')
 export class AuthController{
@@ -33,19 +31,5 @@ export class AuthController{
       .message('Credenciales no validas')
       .json({ data: [] })
     ;
-  }
-
-  @Post('files')
-  @UseInterceptors(
-    FileFieldsInterceptor(
-      [
-        {name : 'img1', maxCount : 1},
-        {name : 'img2', maxCount : 1}
-      ]
-    )
-  )
-  public async uploadFile(@UploadedFiles() file)
-  {
-    console.log(file);
   }
 }

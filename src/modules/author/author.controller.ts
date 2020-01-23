@@ -17,16 +17,11 @@ export class AuthorController
   public async createAuthor(@Body() author : AuthorDto)
   {
     const res = await this.serviceAuthor.createAuthor(author);
-    if(res)
-    {
+    if(res){
       return Response
         .status({ statusCode: HttpStatus.OK, state: 'OK'})
         .message('Autor Registrado Correctamente!')
-        .json(
-          { 
-            data: res
-          }
-        )
+        .json({ data: res })
       ;
     }
     return Response
@@ -36,8 +31,8 @@ export class AuthorController
     ;
   }
 
-  @Get('/list')
-  public async listAuthors(){
+  @Get('/findall')
+  public async findAll(){
     let res: Author[] = await this.serviceAuthor.findAll();
     if(res.length > 0 )
     {
@@ -56,8 +51,8 @@ export class AuthorController
     ;
   }
 
-  @Get('/listname/:name')
-  public async listAuthorsByName(@Param('name') name: string){
+  @Get('/findbyname/:name')
+  public async findByName(@Param('name') name: string){
     const res : Author[] = await this.serviceAuthor.findByName(name);
     if(res.length > 0 )
     {
@@ -71,7 +66,7 @@ export class AuthorController
     }
     return Response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
-      .message('No existe ningun autor con ese nombre o apellido.')
+      .message(`No existe ningun autor con ese nombre o apellido : ${name}`)
       .json({ data: [] })
     ;
   }

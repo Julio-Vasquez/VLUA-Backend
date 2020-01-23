@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, MinLength, MaxLength, IsPhoneNumber, IsEmail, IsDate } from 'class-validator';
+import { IsString, IsNotEmpty, MinLength, MaxLength, IsPhoneNumber, IsEmail, IsISO8601 } from 'class-validator';
 import { IsStr, IsNE, MinL, MaxL } from './../../common/const/const.dto';
 
 export class UserDto
@@ -53,7 +53,7 @@ export class UserDto
   })
   public readonly lastNameTwo : string;
 
-  @IsDate({message: 'No es una fecha valida'})
+  @IsISO8601({message: 'No es una fecha valida'})
   @IsNotEmpty({
     message : IsNE
   })

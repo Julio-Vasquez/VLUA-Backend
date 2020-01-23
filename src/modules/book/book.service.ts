@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {  Repository, QueryRunner, DeleteResult } from 'typeorm';
+import { Repository, Connection, QueryRunner, DeleteResult, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Book } from './../../entities/book.entity';
@@ -14,15 +14,14 @@ import { Files } from '../common/files/files';
 export class BookService 
 {
   constructor(
-    
+    private readonly connection: Connection,
     @InjectRepository(Book)
     private readonly repository : Repository<Book>
   ){}
 
-  private readonly fls : Files;
+  private readonly fls : Files = new Files();
   
-  public async createBook(book : BookDto, url : string[] ) : Promise<boolean>
-  {
+  public async createBook(book : BookDto, url : string[] ) : Promise<boolean>{
     const exist : Book = await this.repository.findOne({
       where : {
         isbn : book.isbn
@@ -30,42 +29,33 @@ export class BookService
     });
     ////[0]urlBook, [1]urlCover
     const arrayFilesImg = this.fls.prepareFile(url);
-    if(!exist)
-    {
-      const queryRunner: QueryRunner =  this.repository.queryRunner;
+    
+    if(!exist){
+      const queryRunner: QueryRunner =  this.connection.createQueryRunner();
       await queryRunner.connect();
       await queryRunner.startTransaction();
       try
       {
-        await queryRunner.query(
-          "INSERT INTO `book`"
-          +"(`id`, `isbn`, `name`, `publication`, `edition`, `tomo`, `urlImg`, `state`, `editorialId`, `authorId`, `categoryId`)"
-          +"VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-          [
-            book.isbn,
-            book.name, 
-            book.publication, 
-            book.edition, 
-            book.tomo, 
-            url[0], 
-            url[1],
-            'Activo', 
-            book.editorial, 
-            book.author, 
-            book.category
-          ]
-        );
+        await this.repository.insert({
+          isbn : book.isbn,
+          name : book.name,
+          publication : book.publication,
+          edition : book.edition,
+          tomo : book.tomo,
+          urlBook : url[0],
+          urlCover : url[1],
+          state : State.Active,
+          editorial : () => `'${book.editorial}'`,
+          author: () => `'${book.author}'`,
+          category : () => `'${book.category}'`
+        });
         await queryRunner.commitTransaction();
         return true;
-      }
-      catch(err)
-      {
+      }catch(err) {
         await queryRunner.rollbackTransaction();
         this.fls.deleteFile(arrayFilesImg);
         return false;
-      }
-      finally
-      {
+      }finally {
         await queryRunner.release();
       }
     }
@@ -78,8 +68,9 @@ export class BookService
     return await this.repository
       .createQueryBuilder('book')
       .select('book.isbn', 'ISBN')
+      .addSelect('book.id', 'ID')
       .addSelect('book.name', 'nameBook')
-      .addSelect('book.publication', 'datePublication')
+      .addSelect("CONCAT(book.publication,'')", 'datePublication')
       .addSelect('book.tomo', 'tomo')
       .addSelect('book.state', 'state')
       .addSelect('book.urlBook', 'book')
@@ -98,13 +89,13 @@ export class BookService
     ;
   }
 
-  public async findByAuthor(authorName : string) : Promise<Book[]>
-  {
+  public async findByAuthor(authorName : string) : Promise<Book[]>{
     return await this.repository
       .createQueryBuilder('book')
       .select('book.isbn', 'ISBN')
+      .addSelect('book.id', 'ID')
       .addSelect('book.name', 'nameBook')
-      .addSelect('book.publication', 'datePublication')
+      .addSelect("CONCAT(book.publication,'')", 'datePublication')
       .addSelect('book.tomo', 'tomo')
       .addSelect('book.state', 'state')
       .addSelect('book.urlBook', 'book')
@@ -124,13 +115,13 @@ export class BookService
     ;
   }
 
-  public async findByCategory(category : string) : Promise<Book[]>
-  {
+  public async findByCategory(code : string) : Promise<Book[]>{
     return await this.repository
       .createQueryBuilder('book')
       .select('book.isbn', 'ISBN')
+      .addSelect('book.id', 'ID')
       .addSelect('book.name', 'nameBook')
-      .addSelect('book.publication', 'datePublication')
+      .addSelect("CONCAT(book.publication,'')", 'datePublication')
       .addSelect('book.tomo', 'tomo')
       .addSelect('book.state', 'state')
       .addSelect('book.urlBook', 'book')
@@ -145,19 +136,19 @@ export class BookService
       .leftJoin('book.category', 'category')
       .leftJoin('book.author', 'author')
       .where("book.state = 'Activo'")
-      .andWhere('category.name = :category', { category : category })
-      .orderBy('category.name', 'ASC', 'NULLS LAST')
+      .andWhere('category.code = :code', { code : code })
+      .orderBy('category.name', 'ASC')
       .execute()
     ;
   }
   
-  public async findByEditorial(editorial : string) : Promise<Book[]>
-  {
+  public async findByEditorial(editorial : string) : Promise<Book[]>{
     return await this.repository
       .createQueryBuilder('book')
       .select('book.isbn', 'ISBN')
+      .addSelect('book.id', 'ID')
       .addSelect('book.name', 'nameBook')
-      .addSelect('book.publication', 'datePublication')
+      .addSelect("CONCAT(book.publication, '')", "datePublication")
       .addSelect('book.tomo', 'tomo')
       .addSelect('book.state', 'state')
       .addSelect('book.urlBook', 'book')
@@ -168,12 +159,12 @@ export class BookService
       .addSelect('editorial.direction', 'editorialDirection')
       .addSelect('category.name', 'categoryName')
       .addSelect('category.code', 'dewey')
-      .leftJoin('book.editorial', 'editorial')
-      .leftJoin('book.category', 'category')
-      .leftJoin('book.author', 'author')
-      .where("book.state = 'Activo'")
-      .andWhere('editorial.name = :editorial', { editorial : editorial })
-      .orderBy('editorial.name', 'ASC', 'NULLS LAST')
+      .innerJoin('book.editorial', 'editorial')
+      .innerJoin('book.category', 'category')
+      .innerJoin('book.author', 'author')
+      .where('editorial.name LIKE :editorial', { editorial : '%'+ editorial + '%' })
+      .andWhere("book.state = 'Activo'")
+      .orderBy('editorial.name', 'ASC')
       .execute()
     ;
   }
@@ -183,8 +174,9 @@ export class BookService
     return await this.repository
       .createQueryBuilder('book')
       .select('book.isbn', 'ISBN')
+      .addSelect('book.id', 'ID')
       .addSelect('book.name', 'nameBook')
-      .addSelect('book.publication', 'datePublication')
+      .addSelect("CONCAT(book.publication,'')", 'datePublication')
       .addSelect('book.tomo', 'tomo')
       .addSelect('book.state', 'state')
       .addSelect('book.urlBook', 'book')
@@ -209,6 +201,7 @@ export class BookService
     return await this.repository
       .createQueryBuilder('book')
       .select('book.isbn', 'ISBN')
+      .addSelect('book.id', 'ID')
       .addSelect('book.name', 'nameBook')
       .addSelect('book.publication', 'datePublication')
       .addSelect('book.tomo', 'tomo')
@@ -225,15 +218,18 @@ export class BookService
       .leftJoin('book.category', 'category')
       .leftJoin('book.author', 'author')
       .where("book.state = 'Activo'")
-      .andWhere('book.name = :nameBook', { nameBook : nameBook })
-      .orderBy('book.name', 'ASC', 'NULLS LAST')
+      .andWhere('book.name LIKE :nameBook', { nameBook : '%' + nameBook + '%' })
+      .orderBy('book.name', 'ASC')
       .execute()
     ;
   }
 
-  public async updateDataBook(book : BookDto,  url : string[] ) : Promise<boolean>
-  {
-   const res = await this.repository.update(
+  public async updateBook(book : BookDto,  url : string[] ) : Promise<boolean>{
+    const { editorial, author, category } : any = book;
+    const res : UpdateResult = await this.repository.update(
+      {
+        isbn : book.isbn
+      },
       {
         isbn : book.isbn,
         name : book.name,
@@ -242,90 +238,39 @@ export class BookService
         tomo : book.tomo, 
         urlBook : url[0],
         urlCover : url[1],
-        state : State.Active
-      },
-      {
-        isbn : book.isbn
-      });
-    return res.affected > 0;
-  }
-
-  public async updateReferencesBook(editorial : string, author : string, category : string, isbn : string): Promise<boolean>
-  {
-    const queryRunner: QueryRunner =  this.repository.queryRunner;
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try
-    {
-      await queryRunner.query(
-        `UPDATE 
-          book
-        SET
-          book.editorial = ?,
-          book.author = ?,
-          book.category = ?
-        WHERE
-          book.isbn = ${isbn}
-        ;
-        `,
-        [
-          editorial,
-          author,
-          category
-        ]
-      );
-      await queryRunner.commitTransaction();
-      return true;
-    }
-    catch(err)
-    {
-      await queryRunner.rollbackTransaction();
-      console.log(err);
-      return false;
-    }
-    finally
-    {
-      await queryRunner.release();
-    }
-  }
-
-  public async updateBook(book : BookDto,  url : string[]) : Promise<boolean>
-  {
-    return(
-        this.updateDataBook(book, url) 
-        && 
-        this.updateReferencesBook(book.editorial, book.author, book.category, book.isbn)
-      )
-      ?
-      true
-      :
-      false
-      ;
-  }
-
-  public async updateISBN(id : string, newISBN: string) : Promise<boolean>
-  {
-    const res =  await this.repository.update(
-      {
-        isbn : newISBN
-      },
-      {
-        id : id
+        state : State.Active,
+        editorial : editorial,
+        author: author,
+        category : category
       }
     );
-    return res.affected > 0;
+    return res.raw.affectedRows > 0;
   }
 
-  public async deleteBook(ISBN : string) : Promise<boolean>{
+  public async updateISBN(id : string, newISBN: ISBNDto) : Promise<boolean>{
+    const res : UpdateResult =  await this.repository.update(
+      {
+        id : id
+      },
+      {
+        isbn : newISBN.isbn
+      }
+    );
+    return res.raw.affectedRows > 0;
+  }
+
+  public async deleteBook(ISBN : ISBNDto) : Promise<boolean>{
     const exists : Book[] = await this.repository.find(
       {
         select : ["urlBook", "urlCover"],
-        where : { isbn : ISBN }
+        where : {
+          isbn : ISBN.isbn 
+        }
       }
     );
 
     if(exists.length === 1 && exists && this.fls.prepareFile([exists[0].urlBook, exists[0].urlCover]) ){
-      const res : DeleteResult = await this.repository.delete({isbn : ISBN});
+      const res : DeleteResult = await this.repository.delete({isbn : ISBN.isbn});
       return res.affected > 0;
     }
     return false;

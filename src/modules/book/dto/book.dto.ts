@@ -1,4 +1,4 @@
-import { IsNumber, IsString, IsNotEmpty, MinLength, MaxLength, IsDate, Min, IsISBN } from 'class-validator';
+import { IsNumberString, IsString, IsNotEmpty, MinLength, MaxLength, IsISO8601, IsISBN } from 'class-validator';
 import { IsStr, IsNE, MinL, MaxL } from './../../common/const/const.dto';
 
 export class BookDto
@@ -26,27 +26,24 @@ export class BookDto
   })
   public readonly name : string;
 
-  @IsString({
-    message : IsStr
-  })
-  @IsDate()
+  @IsISO8601()
   @IsNotEmpty({
     message : IsNE
   })
   public readonly publication : string;
 
-  @IsNumber()
   @IsNotEmpty({
     message : IsNE
   })
-  @Min(1)
+  @IsNumberString()
   public readonly edition : number;
 
-  @IsNumber()
   @IsNotEmpty({
     message : IsNE
   })
-  @Min(1)
+  @IsNumberString({
+    message : 'que coño'
+  })
   public readonly tomo : number;
 
   @IsString({

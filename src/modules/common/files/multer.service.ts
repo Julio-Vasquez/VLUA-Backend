@@ -35,6 +35,7 @@ export class FileUploadService
 					cb(null, `./uploads/${folderName}/`);
 				},
 				filename: (req, file, cb) => {
+					console.log(file)
 					cb(null,
 						file.originalname.split(".")[0]
 					+ '-Date-'

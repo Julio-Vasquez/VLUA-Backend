@@ -10,10 +10,6 @@ import { State } from './enums/state.enum';
 export class Book 
 {
    @PrimaryGeneratedColumn("uuid")
-   @PrimaryColumn({
-      unique: true,
-      nullable: false
-   })
    id : string;
 
    @Column({

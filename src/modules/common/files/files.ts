@@ -17,7 +17,7 @@ export class Files {
     return true;
   }
 
-  public prepareFile(array : any[]) {
+  public prepareFile(array : string[]) {
     let result = [];
     for (let item in array) 
     {

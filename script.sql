@@ -4,6 +4,9 @@ CREATE DATABASE vluaDB;
 
 USE vluaDB;
 
+
+
+
 INSERT INTO 
 	`Gender`
 (
@@ -15,6 +18,32 @@ VALUES
 	( 'd8503e02-eca0-4b3a-ad93-b6795974b362', 'Masculino', 'Activo' ),
 	( '15418620-63d8-458c-bf70-5caede1a948d', 'Femenino', 'Activo' ),
 	( '4939e9ad-f8e9-46bf-90ec-6884706a3d58', 'Transgenero', 'Activo' );
+
+
+INSERT INTO 
+	`Author`
+(
+	`id`,
+	`name`,
+	`lastName`,
+	`dateBirth`,
+	`state`
+)
+VALUES
+( '11bf01f8-79dd-4e60-b91d-1557ab026ef6', 'Julio', 'Verne', '1998-09-30', 'Activo'),
+( '0c62b4ab-17ba-4e8e-a9f5-e2aebd638298', 'Gabriel', 'Garcia', '1927-04-17', 'Activo');
+
+INSERT INTO 
+	`Editorial`
+(
+	`id`,
+	`name`,
+	`direction`,
+	`state`
+)
+VALUES
+( 'c81e1a90-5090-4ec1-82d6-1b6dfbbed3e1', 'Libro Plus', 'Carrera 5 # 23-18', 'Activo'),
+( 'e471bfc8-de7e-49f9-96a2-e110b1816dbe', 'Mundo Letras', 'Calle 9 # 63-18', 'Activo');
 	
 INSERT INTO 
 	`TypeDoc`

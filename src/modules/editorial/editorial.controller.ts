@@ -12,13 +12,13 @@ import { Editorial } from './../../entities/editorial.entity';
 export class EditorialController
 {
   constructor(
-    private readonly serviceEditorial : EditorialService
+    private readonly editorialService : EditorialService
   ){}
 
   @Post('/create')
   public async createEditorial(@Body() editorial : EditorialDto)
   {
-    const res = await this.serviceEditorial.createEditorial(editorial);
+    const res = await this.editorialService.createEditorial(editorial);
     if(res)
     {
       return Response
@@ -38,9 +38,9 @@ export class EditorialController
     ;
   }
 
-  @Get('/list')
-  public async listEditorials(){
-    const res: Editorial[] = await this.serviceEditorial.findAll();
+  @Get('/findall')
+  public async findAll(){
+    const res: Editorial[] = await this.editorialService.findAll();
     if(res.length > 0 )
     {
       return Response
@@ -58,9 +58,9 @@ export class EditorialController
     ;
   }
 
-  @Get('/listname/:name')
-  public async listEditorialByName(@Param('name') name: string){
-    const res : Editorial[] = await this.serviceEditorial.findByName(name);
+  @Get('/findbyname/:name')
+  public async findByName(@Param('name') name: string){
+    const res : Editorial[] = await this.editorialService.findByName(name);
     if(res.length > 0 )
     {
       return Response
@@ -73,7 +73,7 @@ export class EditorialController
     }
     return Response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
-      .message('NO existe ninguna editorial que coincida con ese nombre')
+      .message(`NO existe ninguna editorial llamada : ${name}`)
       .json({ data: [] })
     ;
   }
@@ -82,7 +82,7 @@ export class EditorialController
   @Delete('/delete/:id')
   public async deleteEditorial(@Param('id') id : string)
   {
-    const res = await this.serviceEditorial.deleteEditorial(id);
+    const res = await this.editorialService.deleteEditorial(id);
     if( res )
     {
       return Response
@@ -103,9 +103,8 @@ export class EditorialController
   @Put('/update/:id')
   public async updateEditorial(@Body() newEditorial : EditorialDto, @Param('id') id : string)
   {
-    const res = await this.serviceEditorial.updateEditorial(newEditorial, id);
-    if( res)
-    {
+    const res = await this.editorialService.updateEditorial(newEditorial, id);
+    if( res ){
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Actualización Correctamente')
@@ -120,4 +119,5 @@ export class EditorialController
       .json({ data: [] })
     ;
   }
+  
 }
