@@ -7,10 +7,10 @@ export class UserNameDto {
   @IsNotEmpty({ message: IsNE })
   @IsString({ message : IsStr })
   @MinLength(4, {
-    message : 'El usuario ' + MinL + ' 4 Carácteres'
+    message : `El usuario  ${MinL(4)}`
   })
   @MaxLength(45, {
-    message : 'El usuario ' + MaxL + ' 45 Carácteres'
+    message : `El usuario ${MaxL(45)}`
   })
   public readonly userName : string;
   

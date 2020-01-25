@@ -5,16 +5,16 @@ export class BookDto {
 
   @IsString({ message : IsStr })
   @IsISBN(13, { message : IsIsbn })
-  @IsNotEmpty({ message: 'Un ISBN ( International Standard Book Number )' + IsNE })
+  @IsNotEmpty({ message: `Un ISBN ( International Standard Book Number ) ${IsNE}` })
   public readonly isbn : string;
 
   @IsString({ message: IsStr })
   @IsNotEmpty({ message : IsNE })
   @MinLength(2, {
-    message : 'El nombre del libro ' + MinL + ' 2 Carácteres.' 
+    message : `El nombre del libro  ${MinL(2)}` 
   })
   @MaxLength(450, {
-    message : 'El nombre del libro ' + MaxL + ' 450 Carácteres.'
+    message : `El nombre del libro ${MaxL(450)}`
   })
   public readonly name : string;
 

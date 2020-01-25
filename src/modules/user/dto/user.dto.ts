@@ -6,36 +6,36 @@ export class UserDto {
   @IsString({ message : IsStr })
   @IsNotEmpty({ message : IsNE })
   @MinLength(3, {
-    message : 'El Primer Nombre ' + MinL + ' 4 Carácteres'
+    message : `El Primer Nombre ${MinL(4)}`
   })
   @MaxLength(50, {
-    message : 'El Primer Nombre ' + MaxL + ' 45 Carácteres'
+    message : `El Primer Nombre${MaxL(45)}`
   })
   public readonly nameOne : string;
 
   @IsString({ message : IsStr })
   @MaxLength(55, {
-    message : 'El Segundo Nombre ' + MaxL + ' 55 Carácteres'
+    message : `El Segundo Nombre  ${MaxL(55)}`
   })
   public readonly nameTwo : string;
 
   @IsString({ message : IsStr })
   @IsNotEmpty({ message : IsNE })
   @MinLength(3, {
-    message : 'El Primer Apellido ' + MinL + ' 4 Carácteres'
+    message : `El Primer Apellido ${MinL(4)}`
   })
   @MaxLength(60, {
-    message : 'El Primer Apellido ' + MaxL + ' 60 Carácteres'
+    message : `El Primer Apellido ${MaxL(60)}`
   })
   public readonly lastNameOne : string;
 
   @IsString({ message : IsStr })
   @IsNotEmpty({ message : IsNE })
   @MinLength(3, {
-    message : 'El Segundo Apellido ' + MinL + ' 3 Carácteres'
+    message : `El Segundo Apellido ${MinL(3)}`
   })
   @MaxLength(65, {
-    message : 'El Segundo Apellido ' + MaxL + ' 65 Carácteres'
+    message : `El Segundo Apellido  ${MaxL(65)}`
   })
   public readonly lastNameTwo : string;
 
