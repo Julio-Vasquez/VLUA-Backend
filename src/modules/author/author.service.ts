@@ -7,60 +7,43 @@ import { AuthorDto } from './dto/author.dto';
 import { State } from './../../entities/enums/state.enum';
 
 @Injectable()
-export class AuthorService
-{
+export class AuthorService {
+
   constructor(
     @InjectRepository(Author)
     private readonly repository : Repository<Author>
   ){}
 
-  public async createAuthor(author : AuthorDto) : Promise<boolean>
-  {
-    const res : Author = await this.repository.findOne(
-      {
+  public async createAuthor(author : AuthorDto) : Promise<boolean> {
+    const res : Author = await this.repository.findOne({
+      name : author.name,
+      lastName: author.lastName
+    });
+    if( !res ){
+      const op =await this.repository.insert({
         name : author.name,
-        lastName: author.lastName
-      }
-    );
-   console.log(res);
-    if(!res)
-    {
-      await this.repository.insert(
-        {
-          name : author.name,
-          lastName: author.lastName,
-          dateBirth: author.dateBirth,
-          state: State.Active
-        }
-      );
-      return true;
+        lastName: author.lastName,
+        dateBirth: author.dateBirth,
+        state: State.Active
+      });
+      return op.raw.affectedRows > 0;
     }
     return false;
   }
 
-  public async findAll(): Promise<Author[]>
-  {
-    return await this.repository.find(
-      {
-        where : { state : 'Activo'}
-      }
-    );
+  public async findAll(): Promise<Author[]> {
+    return await this.repository.find({
+      where : { state : 'Activo'}
+    });
   }
 
-  public async updateAuthor(author : AuthorDto, id : string): Promise<boolean>
-  {
-    const exist: Author[] =  await this.repository.find(
-      {
-        where : {
-          id : id
-        }
-      }
-    );
-    if(exist.length == 1){
+  public async updateAuthor(author : AuthorDto, id : string): Promise<boolean> {
+    const exist: Author[] =  await this.repository.find({
+      where : { id : id }
+    });
+    if( exist.length == 1 ){
       const res : UpdateResult = await this.repository.update(
-        {
-          id : id
-        },
+        { id : id },
         {
           name: author.name,
           lastName: author.lastName,
@@ -72,42 +55,31 @@ export class AuthorService
     return false;
   }
 
-  public async deleteAuthor(id : string): Promise<boolean>
-  {
-    const exist: Author[] =  await this.repository.find(
-      {
-        where : {
-          id : id
-        }
-      }
-    );
-    if(exist.length === 1)
-    {
-      const res : DeleteResult = await this.repository.delete(
-        {  
-          id : id
-        }
-      );
+  public async deleteAuthor(id : string): Promise<boolean> {
+    const exist: Author[] =  await this.repository.find({
+      where : { id : id }
+    });
+    if(exist.length === 1) {
+      const res : DeleteResult = await this.repository.delete({  
+        id : id
+      });
       return res.affected > 0 ;
     }
     return false;
   }
 
-  public async findByName(name : string): Promise<Author[]>
-  {
-    return await this.repository.find(
-      { 
-        where : [
-          { 
-            state : 'Activo', 
-            name : Like(`%${name}%`)
-          },
-          {
-            state : 'Activo', 
-            lastName : Like(`%${name}%`)
-          }
+  public async findByName(name : string): Promise<Author[]> { //case or where x = y or y =x
+    return await this.repository.find({ 
+      where : [
+        { 
+          state : 'Activo', 
+          name : Like(`%${name}%`)
+        },
+        {
+          state : 'Activo', 
+          lastName : Like(`%${name}%`)
+        }
         ] 
-      }
-    );
+    });
   }
 }

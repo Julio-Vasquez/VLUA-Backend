@@ -1,15 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, JoinColumn, ManyToOne } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, JoinColumn, ManyToOne, Index } from "typeorm";
+
 import { State } from "./enums/state.enum";
 import { User } from "./user.entity";
 
 @Entity('Phone')
+@Index( ["phone"], { unique : true })
 export class Phone
 {
   @PrimaryGeneratedColumn("uuid")
-  @PrimaryColumn({
-    unique: true,
-    nullable: false
-  })
   id : string;
 
   @Column({

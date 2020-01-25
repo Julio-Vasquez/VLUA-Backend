@@ -1,20 +1,23 @@
 import { Controller, Get, Body, Post, Param, UploadedFiles, UseInterceptors, HttpStatus, Put, Delete } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
-import { BookService } from './book.service';
-import { BookDto } from './dto/book.dto';
+import { Files } from './../common/files/files';
+import Response from './../common/response/response';
+
 import { Book } from './../../entities/book.entity';
+import { BookDto } from './dto/book.dto';
+import { ISBNDto } from './dto/isbn.dto';
+
+import { BookService } from './book.service';
 
 import { AppHost } from './../common/environment/environment';
-import { Files } from './../common/files/files';
-
-import Response from './../common/response/response';
-import { ISBNDto } from './dto/isbn.dto';
 
 @Controller('book')
 export class BookController {
 
-  constructor(private readonly bookService: BookService){}
+  constructor(
+    private readonly bookService: BookService
+  ){}
 
   private readonly fl = new Files();
   /* Este controlador por el multer debe recibir 2 archivos,elprimero es el pdf del book, el segundo es el cover */
@@ -26,9 +29,9 @@ export class BookController {
     ]
   ))
   @Post('/create')
-  public async createBook(@Body() book : BookDto, @UploadedFiles() file){
-    if(file.urlBook !== undefined && file.urlCover !== undefined){ //Check if the files arrived.
-      const res : boolean = await this.bookService.createBook( book,[
+  public async createBook(@Body() book : BookDto, @UploadedFiles() file) {
+    if( file.urlBook !== undefined && file.urlCover !== undefined ){ //Check if the files arrived.
+      const res : boolean = await this.bookService.createBook( book, [
         (AppHost + '/' + file.urlBook[0].path),
         (AppHost + '/' + file.urlCover[0].path)
       ]);
@@ -54,15 +57,13 @@ export class BookController {
   }
 
   @Get('/findall')
-  public async allBook() : Promise<any>{
+  public async allBook() : Promise<any> {
     const res : Book[] = await this.bookService.findAll();
-    if(res.length > 0 ){
+    if( res.length > 0 ) {
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Carga Correctamente')
-        .json({
-          data : res
-        })
+        .json({ data : res })
       ;
     }
     return Response
@@ -73,15 +74,13 @@ export class BookController {
   }
 
   @Get('/findbyname/:name')
-  public async findByName(@Param('name') name: string) : Promise<any>{
-    const res : Book[] = await this.bookService.findByNameBook(name);
-    if(res.length > 0 ){
+  public async findByName(@Param('name') name: string) : Promise<any> {
+    const res : Book[] = await this.bookService.findByNameBook( name );
+    if( res.length > 0 ) {
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Carga Correctamente')
-        .json({
-          data : res
-        })
+        .json({ data : res })
       ;
     }
     return Response
@@ -92,15 +91,13 @@ export class BookController {
   }
 
   @Get('/findbyauthor/:name')
-  public async findByAuthor(@Param('name') name: string) : Promise<any>{
-    const res : Book[] = await this.bookService.findByAuthor(name);
-    if(res.length > 0 ){
+  public async findByAuthor(@Param('name') name: string) : Promise<any> {
+    const res : Book[] = await this.bookService.findByAuthor( name );
+    if( res.length > 0 ){
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Carga Correctamente')
-        .json({
-          data : res
-        })
+        .json({ data : res })
       ;
     }
     return Response
@@ -111,15 +108,13 @@ export class BookController {
   }
 
   @Get('/findbycategory/:name')
-  public async findByCategory(@Param('name') name: string) : Promise<any>{
-    const res : Book[] = await this.bookService.findByCategory(name);
-    if(res.length > 0 ){
+  public async findByCategory(@Param('name') name: string) : Promise<any> {
+    const res : Book[] = await this.bookService.findByCategory( name );
+    if( res.length > 0 ){
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Carga Correctamente')
-        .json({
-          data : res
-        })
+        .json({ data : res })
       ;
     }
     return Response
@@ -130,9 +125,9 @@ export class BookController {
   }
 
   @Get('/findbyeditorial/:name')
-  public async findByEditorial(@Param('name') name: string) : Promise<any>{
+  public async findByEditorial(@Param('name') name: string) : Promise<any> {
     const res : Book[] = await this.bookService.findByEditorial(name);
-    if(res.length > 0 ){
+    if( res.length > 0 ){
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Carga Correctamente')
@@ -147,13 +142,13 @@ export class BookController {
   }
 
   @Get('/findbyisbn/')
-  public async findByISBN(@Body() isbn: ISBNDto) : Promise<any>{
-    const res : Book[] = await this.bookService.findByISBN(isbn);
-    if(res.length > 0 ){
+  public async findByISBN(@Body() isbn: ISBNDto) : Promise<any> {
+    const res : Book[] = await this.bookService.findByISBN( isbn );
+    if( res.length > 0 ){
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Carga Correctamente')
-        .json({data : res})
+        .json({ data : res })
       ;
     }
     return Response
@@ -170,13 +165,12 @@ export class BookController {
     ]
   ))
   @Put('/update')
-  public async updateBook(@Body() book : BookDto, @UploadedFiles() file){
-    if(file.urlBook !== undefined && file.urlCover !== undefined){ //Check if the files arrived.
-      const res : boolean = await this.bookService.updateBook( book,[
+  public async updateBook(@Body() book : BookDto, @UploadedFiles() file) {
+    if( file.urlBook !== undefined && file.urlCover !== undefined ) { //Check if the files arrived.
+      const res : boolean = await this.bookService.updateBook( book, [
         (AppHost + '/' + file.urlBook[0].path),
         (AppHost + '/' + file.urlCover[0].path)
       ]);
-
       if( res ){ //Check if the record could be created.
         return Response
           .status({ statusCode: HttpStatus.OK, state: 'OK'})
@@ -199,8 +193,8 @@ export class BookController {
   }
 
   @Put('/updateisbn/:id')
-  public async updateIsbn(@Body() newIsbn : ISBNDto, @Param('id') id : string){
-    const res = await this.bookService.updateISBN(id, newIsbn);
+  public async updateIsbn(@Body() newIsbn : ISBNDto, @Param('id') id : string) {
+    const res = await this.bookService.updateISBN( id, newIsbn );
     if( res ){
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
@@ -216,8 +210,8 @@ export class BookController {
   }
 
   @Delete('/delete')
-  public async deleteBook(@Body() isbn: ISBNDto){
-    const res  = await this.bookService.deleteBook(isbn);
+  public async deleteBook(@Body() isbn: ISBNDto) {
+    const res  = await this.bookService.deleteBook( isbn );
     if( res ){
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
@@ -231,5 +225,4 @@ export class BookController {
       .json({ data: [] })
     ;
   }
-  
 }

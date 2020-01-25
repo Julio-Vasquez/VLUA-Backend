@@ -5,24 +5,21 @@ import  Response   from './../common/response/response';
 import { UserService } from './user.service';
 import { UserNameDto } from './dto/username.dto';
 
-
 @Controller('user')
-export class UserController{
+export class UserController {
+
   constructor(
     private readonly userService : UserService
   ){}
 
   @Post('/profile')
-  public async myProfile(@Body() un : UserNameDto){
-    const res  = await this.userService.myProfile(un);
-    if(res.length > 0)
-    {
+  public async myProfile(@Body() un : UserNameDto) {
+    const res  = await this.userService.myProfile( un );
+    if( res.length > 0 ){
       return Response
         .status({ statusCode: HttpStatus.OK, state: 'OK' })
         .message('profile OK')
-        .json({
-          data: res
-        })
+        .json({ data: res })
       ;
     }
     return Response
@@ -31,5 +28,4 @@ export class UserController{
       .json({ data: [] })
     ;
   }
-
 }

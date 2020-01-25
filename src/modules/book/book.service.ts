@@ -11,11 +11,11 @@ import { ISBNDto } from './dto/isbn.dto';
 import { Files } from '../common/files/files';
 
 @Injectable()
-export class BookService 
-{
+export class BookService {
+
   constructor(
     private readonly connection: Connection,
-    @InjectRepository(Book)
+    @InjectRepository( Book )
     private readonly repository : Repository<Book>
   ){}
 
@@ -23,19 +23,15 @@ export class BookService
   
   public async createBook(book : BookDto, url : string[] ) : Promise<boolean>{
     const exist : Book = await this.repository.findOne({
-      where : {
-        isbn : book.isbn
-      }
+      where : { isbn : book.isbn }
     });
     ////[0]urlBook, [1]urlCover
     const arrayFilesImg = this.fls.prepareFile(url);
-    
-    if(!exist){
+    if( !exist ){
       const queryRunner: QueryRunner =  this.connection.createQueryRunner();
       await queryRunner.connect();
       await queryRunner.startTransaction();
-      try
-      {
+      try {
         await this.repository.insert({
           isbn : book.isbn,
           name : book.name,
@@ -51,11 +47,11 @@ export class BookService
         });
         await queryRunner.commitTransaction();
         return true;
-      }catch(err) {
+      }catch( err ) {
         await queryRunner.rollbackTransaction();
         this.fls.deleteFile(arrayFilesImg);
         return false;
-      }finally {
+      } finally {
         await queryRunner.release();
       }
     }
@@ -64,7 +60,7 @@ export class BookService
     return false;
   }
 
-  public async findAll(): Promise<Book[]>{
+  public async findAll(): Promise<Book[]> {
     return await this.repository
       .createQueryBuilder('book')
       .select('book.isbn', 'ISBN')
@@ -89,7 +85,7 @@ export class BookService
     ;
   }
 
-  public async findByAuthor(authorName : string) : Promise<Book[]>{
+  public async findByAuthor(authorName : string) : Promise<Book[]> {
     return await this.repository
       .createQueryBuilder('book')
       .select('book.isbn', 'ISBN')
@@ -115,7 +111,7 @@ export class BookService
     ;
   }
 
-  public async findByCategory(code : string) : Promise<Book[]>{
+  public async findByCategory(code : string) : Promise<Book[]> {
     return await this.repository
       .createQueryBuilder('book')
       .select('book.isbn', 'ISBN')
@@ -142,7 +138,7 @@ export class BookService
     ;
   }
   
-  public async findByEditorial(editorial : string) : Promise<Book[]>{
+  public async findByEditorial(editorial : string) : Promise<Book[]> {
     return await this.repository
       .createQueryBuilder('book')
       .select('book.isbn', 'ISBN')
@@ -169,8 +165,7 @@ export class BookService
     ;
   }
   
-  public async findByISBN(ISBN : ISBNDto) : Promise<Book[]>
-  {
+  public async findByISBN(ISBN : ISBNDto) : Promise<Book[]> {
     return await this.repository
       .createQueryBuilder('book')
       .select('book.isbn', 'ISBN')
@@ -196,8 +191,7 @@ export class BookService
     ;
   }
 
-  public async findByNameBook(nameBook : string ) : Promise <Book[]>
-  {
+  public async findByNameBook(nameBook : string ) : Promise <Book[]> {
     return await this.repository
       .createQueryBuilder('book')
       .select('book.isbn', 'ISBN')
@@ -224,12 +218,10 @@ export class BookService
     ;
   }
 
-  public async updateBook(book : BookDto,  url : string[] ) : Promise<boolean>{
+  public async updateBook(book : BookDto,  url : string[] ) : Promise<boolean> {
     const { editorial, author, category } : any = book;
     const res : UpdateResult = await this.repository.update(
-      {
-        isbn : book.isbn
-      },
+      { isbn : book.isbn },
       {
         isbn : book.isbn,
         name : book.name,
@@ -247,29 +239,22 @@ export class BookService
     return res.raw.affectedRows > 0;
   }
 
-  public async updateISBN(id : string, newISBN: ISBNDto) : Promise<boolean>{
+  public async updateISBN(id : string, newISBN: ISBNDto) : Promise<boolean> {
     const res : UpdateResult =  await this.repository.update(
-      {
-        id : id
-      },
-      {
-        isbn : newISBN.isbn
-      }
+      { id : id },
+      { isbn : newISBN.isbn }
     );
     return res.raw.affectedRows > 0;
   }
 
-  public async deleteBook(ISBN : ISBNDto) : Promise<boolean>{
-    const exists : Book[] = await this.repository.find(
-      {
-        select : ["urlBook", "urlCover"],
-        where : {
-          isbn : ISBN.isbn 
-        }
-      }
-    );
+  public async deleteBook(ISBN : ISBNDto) : Promise<boolean> {
+    const exists : Book[] = await this.repository.find({
+      select : ["urlBook", "urlCover"],
+      where : { isbn : ISBN.isbn }
+    });
 
-    if(exists.length === 1 && exists && this.fls.prepareFile([exists[0].urlBook, exists[0].urlCover]) ){
+    if( exists && exists.length === 1){
+      this.fls.prepareFile([exists[0].urlBook, exists[0].urlCover]);
       const res : DeleteResult = await this.repository.delete({isbn : ISBN.isbn});
       return res.affected > 0;
     }

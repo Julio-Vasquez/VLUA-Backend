@@ -1,15 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, OneToMany, Index } from "typeorm";
+
 import { Book } from "./book.entity";
 import { State } from "./enums/state.enum";
 
 @Entity('Author')
+@Index( ["name", "lastName"], { unique : true })
 export class Author
 {
   @PrimaryGeneratedColumn("uuid")
-  @PrimaryColumn({
-    unique: true,
-    nullable: false
-  })
   id : string;
 
   @Column({

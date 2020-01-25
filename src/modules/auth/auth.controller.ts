@@ -8,7 +8,8 @@ import  Response   from './../common/response/response';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
-export class AuthController{
+export class AuthController {
+
   constructor(
     private readonly authService: AuthService,
     private readonly jwtService: JwtService,
@@ -21,9 +22,7 @@ export class AuthController{
       return Response
         .status({ statusCode: HttpStatus.OK, state: 'OK' })
         .message('login OK')
-        .json({
-          data: this.jwtService.sign(res)
-        })
+        .json({ data: this.jwtService.sign(res) })
       ;
     }
     return Response

@@ -1,13 +1,10 @@
-import { existsSync, unlink } from 'fs';
+import { existsSync, unlink } from 'fs-extra';
 
 export class Files {
 
-  public deleteFile(arrayFile : any[]) 
-  {
-    for (let item in arrayFile) 
-    {
-      if (existsSync(arrayFile[item])) 
-      {
+  public deleteFile(arrayFile : any[]) {
+    for (let item in arrayFile) {
+      if (existsSync(arrayFile[item])) {
         unlink(arrayFile[item], err => {
           console.log(err + '-->');
           return false;
@@ -19,8 +16,7 @@ export class Files {
 
   public prepareFile(array : string[]) {
     let result = [];
-    for (let item in array) 
-    {
+    for (let item in array) {
       console.log('the item file ' + array[item]);
       result.push(array[item].replace('localhost', ''));
     }
@@ -35,3 +31,5 @@ export class Files {
     return true;
   }
 }
+
+//export default new Files;

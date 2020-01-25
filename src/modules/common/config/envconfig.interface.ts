@@ -1,4 +1,3 @@
-export interface EnvConfig
-{
+export interface EnvConfig {
   [props : string] : string;
 }

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { Genders } from './enums/gender.enum'
 import { State } from "./enums/state.enum";
 import { People } from "./people.entity";
@@ -7,10 +7,6 @@ import { People } from "./people.entity";
 export class Gender
 {
   @PrimaryGeneratedColumn("uuid")
-  @PrimaryColumn({
-    unique: true,
-    nullable: false
-  })
   id : string; 
 
   @Column({

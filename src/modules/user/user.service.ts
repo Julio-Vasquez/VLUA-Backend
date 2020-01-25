@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import { User } from './../../entities/user.entity';
-import { Repository } from 'typeorm';
+
 import { UserNameDto } from './dto/username.dto';
 
-
 @Injectable()
-export class UserService
-{
+export class UserService {
+
   constructor(
     @InjectRepository(User)
     private readonly repository : Repository<User>
   ){}
     
-  public async myProfile(userName : UserNameDto){
+  public async myProfile(userName : UserNameDto) {
    return await this.repository
       .createQueryBuilder('user')
       .select("user.userName", "UserName")
@@ -31,16 +31,17 @@ export class UserService
       .innerJoin("people.gender", "gender")
       .where('user.userName = :userName', { userName : userName.userName})
       .andWhere("people.state = 'Activo'")
-      .execute();
+      .execute()
+    ;
   }
 
   public async validUser(jwt: any): Promise<any> {
     const res = await this.repository
-        .createQueryBuilder("user")
-        .select("user.id", "idUser")
-        .addSelect("user.UserName", "userName")
-        .where("user.userName = :userName", { userName: jwt.userName })
-        .getOne()
+      .createQueryBuilder("user")
+      .select("user.id", "idUser")
+      .addSelect("user.UserName", "userName")
+      .where("user.userName = :userName", { userName: jwt.userName })
+      .getOne()
     ;
     return (res) ? jwt : false;
   }

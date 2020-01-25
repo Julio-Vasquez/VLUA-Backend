@@ -4,4 +4,4 @@ export  enum TypeDocs
     TI = 'Tarjeta de Identidad',
     CE = 'Cédula de Extranjería',
     PA = 'Pasaporte'
-}
+};

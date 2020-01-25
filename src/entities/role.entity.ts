@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, OneToMany } from 'typeorm';
+
 import { State } from './enums/state.enum';
 import { User } from './user.entity';
 

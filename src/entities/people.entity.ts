@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, OneToOne, ManyToOne, JoinColumn, Index } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToOne, JoinColumn, Index } from "typeorm";
+
 import { User } from './user.entity';
 import { Gender } from './gender.entity'; 
 import { TypeDoc } from './typedoc.entity';
@@ -9,10 +10,6 @@ import { State } from './enums/state.enum';
 export class People 
 {
   @PrimaryGeneratedColumn("uuid")
-  @PrimaryColumn({
-    unique: true,
-    nullable: false
-  })
   id : string;
 
   @Column({

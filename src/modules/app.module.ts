@@ -13,7 +13,9 @@ import { AuthorModule } from './author/author.module';
   imports: [
     CommonModule,
     TypeOrmModule.forRootAsync({
-      useFactory: async (config) => (config.orm_config),
+      useFactory: async config => (
+        config.orm_config
+      ),
       inject: ['ConfigService']
     }),
     BookModule,

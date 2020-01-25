@@ -11,16 +11,20 @@ import { Author } from './../../entities/author.entity';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([ Book, Editorial, Author ]),
     MulterModule.registerAsync({
-      useFactory: async (file) => (
+      useFactory: async file => (
         file.configMulter()
       ),
       inject: ['FileUploadService']
-    }),
-    TypeOrmModule.forFeature([Book, Editorial, Author])
+    })
   ],
-  controllers: [BookController],
-  providers: [BookService],
+  controllers: [
+    BookController
+  ],
+  providers: [
+    BookService
+  ],
   exports: []
 })
 export class BookModule {}

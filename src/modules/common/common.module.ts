@@ -6,6 +6,8 @@ import { FileUploadService } from './files/multer.service';
 
 @Global()
 @Module({
+  imports : [],
+  controllers : [],
   providers: [
     ConfigService, 
     FileUploadService

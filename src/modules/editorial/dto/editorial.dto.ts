@@ -1,14 +1,10 @@
 import { IsString, IsNotEmpty, MinLength, MaxLength } from 'class-validator';
 import { IsStr, IsNE, MinL, MaxL } from './../../common/const/const.dto';
 
-export class EditorialDto
-{
-  @IsString({
-    message : IsStr
-  })
-  @IsNotEmpty({
-    message : IsNE
-  })
+export class EditorialDto {
+
+  @IsString({ message : IsStr })
+  @IsNotEmpty({ message : IsNE })
   @MinLength(8, {
     message : 'El Nombre de la editorial ' + MinL + ' 8 Carácteres'
   })
@@ -17,16 +13,12 @@ export class EditorialDto
   })
   public readonly name : string;
 
-  @IsString({
-    message : IsStr
-  })
-  @IsNotEmpty({
-    message : IsNE
-  })
-  @MinLength(8,{
+  @IsString({ message : IsStr })
+  @IsNotEmpty({ message : IsNE })
+  @MinLength(8, {
     message : 'La dirección ' + MinL + ' 8 Caracteres'
   })
-  @MaxLength(80,{
+  @MaxLength(80, {
     message : 'La dirección ' + MaxL + ' 100 Carácteres'
   })
   public readonly direction : string;

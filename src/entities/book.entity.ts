@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, Index, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
+
 import { Editorial } from './editorial.entity';
 import { Author } from './author.entity';
 import { Category } from './category.entity';
@@ -6,7 +7,7 @@ import { History } from './history.entity';
 import { State } from './enums/state.enum';
 
 @Entity('Book')
-@Index(["isbn", "name"],{unique: true})
+@Index( ["isbn", "name"], { unique: true })
 export class Book 
 {
    @PrimaryGeneratedColumn("uuid")

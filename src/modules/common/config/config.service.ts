@@ -11,8 +11,8 @@ export class ConfigService
   private readonly filePath = `.env`;
   private logger = new Logger(`ConfigService`, true);
 
-  constructor(){
-    if (!existsSync(this.filePath)) {
+  constructor() {
+    if ( !existsSync( this.filePath )) {
       this.logger.error(`Config file ${this.filePath} not exist`);
       throw new Error();
     }
@@ -38,7 +38,7 @@ export class ConfigService
       DB_LOGGING: Joi.boolean()
     });
 
-    const { error, value  } = envVars.validate(envConfig);
+    const { error, value } = envVars.validate(envConfig);
 
     if (error) {
       this.logger.error(`Configuration validation error: ${error.message}`)
@@ -61,5 +61,4 @@ export class ConfigService
       entities: ['dist/entities/**/*.entity{.ts,.js}']
     }
   }
-
 }

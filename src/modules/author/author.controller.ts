@@ -1,23 +1,24 @@
 import { Controller, Get, Body, Post, HttpStatus, Param, Delete, Put } from '@nestjs/common';
-import { AuthorService } from './author.service';
+
+import { Author } from './../../entities/author.entity';
 
 import  Response   from './../common/response/response';
 
+import { AuthorService } from './author.service';
+
 import { AuthorDto } from './dto/author.dto';
-import { Author } from './../../entities/author.entity';
 
 @Controller('author')
-export class AuthorController
-{
+export class AuthorController {
+
   constructor(
     private readonly serviceAuthor : AuthorService
   ){}
 
   @Post('/create')
-  public async createAuthor(@Body() author : AuthorDto)
-  {
-    const res = await this.serviceAuthor.createAuthor(author);
-    if(res){
+  public async createAuthor(@Body() author : AuthorDto) {
+    const res = await this.serviceAuthor.createAuthor( author );
+    if( res ) {
       return Response
         .status({ statusCode: HttpStatus.OK, state: 'OK'})
         .message('Autor Registrado Correctamente!')
@@ -32,16 +33,13 @@ export class AuthorController
   }
 
   @Get('/findall')
-  public async findAll(){
+  public async findAll() {
     let res: Author[] = await this.serviceAuthor.findAll();
-    if(res.length > 0 )
-    {
+    if( res.length > 0 ){
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Carga Correctamente')
-        .json({
-          data : res
-        })
+        .json({ data : res })
       ;
     }
     return Response
@@ -53,15 +51,12 @@ export class AuthorController
 
   @Get('/findbyname/:name')
   public async findByName(@Param('name') name: string){
-    const res : Author[] = await this.serviceAuthor.findByName(name);
-    if(res.length > 0 )
-    {
+    const res : Author[] = await this.serviceAuthor.findByName( name );
+    if( res.length > 0 ) {
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Carga Correctamente')
-        .json({
-          data : res
-        })
+        .json({ data : res })
       ;
     }
     return Response
@@ -71,19 +66,14 @@ export class AuthorController
     ;
   }
 
-
   @Delete('/delete/:id')
-  public async deleteAuthor(@Param('id') id : string)
-  {
-    const res = await this.serviceAuthor.deleteAuthor(id);
-    if( res )
-    {
+  public async deleteAuthor(@Param('id') id : string) {
+    const res = await this.serviceAuthor.deleteAuthor( id );
+    if( res ){
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Eliminacion Correctamente')
-        .json({
-          data : res
-        })
+        .json({ data : res })
       ;
     }
     return Response
@@ -94,17 +84,13 @@ export class AuthorController
   }
 
   @Put('/update/:id')
-  public async updateAuthor(@Body() newAuthor : AuthorDto, @Param('id') id : string)
-  {
+  public async updateAuthor(@Body() newAuthor : AuthorDto, @Param('id') id : string) {
     const res = await this.serviceAuthor.updateAuthor(newAuthor,id);
-    if( res )
-    {
+    if( res ){
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Actualización Correctamente')
-        .json({
-          data : res
-        })
+        .json({ data : res })
       ;
     }
     return Response

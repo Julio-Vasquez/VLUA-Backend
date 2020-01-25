@@ -1,34 +1,28 @@
 import { Controller, Get, Body, Param, Post, Put, Delete, HttpStatus } from '@nestjs/common';
 
+import { Editorial } from './../../entities/editorial.entity';
+
 import { EditorialService } from './editorial.service';
 
 import  Response   from './../common/response/response';
 
 import { EditorialDto } from './dto/editorial.dto';
-import { Editorial } from './../../entities/editorial.entity';
-
 
 @Controller('editorial')
-export class EditorialController
-{
+export class EditorialController {
+  
   constructor(
     private readonly editorialService : EditorialService
   ){}
 
   @Post('/create')
-  public async createEditorial(@Body() editorial : EditorialDto)
-  {
-    const res = await this.editorialService.createEditorial(editorial);
-    if(res)
-    {
+  public async createEditorial(@Body() editorial : EditorialDto) {
+    const res = await this.editorialService.createEditorial( editorial );
+    if( res ) {
       return Response
         .status({ statusCode: HttpStatus.OK, state: 'OK'})
         .message('Editorial Registrada Correctamente!')
-        .json(
-          { 
-            data: res
-          }
-        )
+        .json({ data: res })
       ;
     }
     return Response
@@ -39,16 +33,13 @@ export class EditorialController
   }
 
   @Get('/findall')
-  public async findAll(){
+  public async findAll() {
     const res: Editorial[] = await this.editorialService.findAll();
-    if(res.length > 0 )
-    {
+    if( res.length > 0 ) {
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Carga Correctamente')
-        .json({
-          data : res
-        })
+        .json({ data : res })
       ;
     }
     return Response
@@ -59,16 +50,13 @@ export class EditorialController
   }
 
   @Get('/findbyname/:name')
-  public async findByName(@Param('name') name: string){
-    const res : Editorial[] = await this.editorialService.findByName(name);
-    if(res.length > 0 )
-    {
+  public async findByName(@Param('name') name: string) {
+    const res : Editorial[] = await this.editorialService.findByName( name );
+    if( res.length > 0 ){
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Carga Correctamente')
-        .json({
-          data : res
-        })
+        .json({ data : res })
       ;
     }
     return Response
@@ -78,19 +66,14 @@ export class EditorialController
     ;
   }
 
-
   @Delete('/delete/:id')
-  public async deleteEditorial(@Param('id') id : string)
-  {
-    const res = await this.editorialService.deleteEditorial(id);
-    if( res )
-    {
+  public async deleteEditorial(@Param('id') id : string) {
+    const res = await this.editorialService.deleteEditorial( id );
+    if( res ) {
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Eliminacion Correctamente')
-        .json({
-          data : res
-        })
+        .json({ data : res })
       ;
     }
     return Response
@@ -101,16 +84,13 @@ export class EditorialController
   }
 
   @Put('/update/:id')
-  public async updateEditorial(@Body() newEditorial : EditorialDto, @Param('id') id : string)
-  {
-    const res = await this.editorialService.updateEditorial(newEditorial, id);
+  public async updateEditorial(@Body() newEditorial : EditorialDto, @Param('id') id : string) {
+    const res = await this.editorialService.updateEditorial( newEditorial, id );
     if( res ){
       return Response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Actualización Correctamente')
-        .json({
-          data : res
-        })
+        .json({ data : res })
       ;
     }
     return Response
@@ -119,5 +99,4 @@ export class EditorialController
       .json({ data: [] })
     ;
   }
-  
 }
