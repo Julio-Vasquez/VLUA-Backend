@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { BookModule } from './book/book.module';
 import { EditorialModule } from './editorial/editorial.module';
 import { AuthorModule } from './author/author.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -22,11 +23,11 @@ import { AuthorModule } from './author/author.module';
     AuthModule,
     UserModule,
     EditorialModule,
-    AuthorModule
+    AuthorModule,
+    CategoryModule
   ],
   controllers: [],
   providers: [],
+  exports : []
 })
-export class AppModule {
-  constructor(private readonly connection : Connection){}
-}
+export class AppModule { }

@@ -1,6 +1,6 @@
 import { Controller, Post, Get, Body, HttpStatus } from '@nestjs/common';
 
-import  Response   from './../common/response/response';
+import { Response } from './../common/response/response';
 
 import { UserService } from './user.service';
 import { UserNameDto } from './dto/username.dto';
@@ -9,6 +9,7 @@ import { UserNameDto } from './dto/username.dto';
 export class UserController {
 
   constructor(
+    private readonly response : Response,
     private readonly userService : UserService
   ){}
 
@@ -16,13 +17,13 @@ export class UserController {
   public async myProfile(@Body() un : UserNameDto) {
     const res  = await this.userService.myProfile( un );
     if( res.length > 0 ){
-      return Response
+      return this.response
         .status({ statusCode: HttpStatus.OK, state: 'OK' })
         .message('profile OK')
         .json({ data: res })
       ;
     }
-    return Response
+    return this.response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
       .message('Credenciales no validas')
       .json({ data: [] })

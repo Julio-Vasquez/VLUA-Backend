@@ -20,7 +20,7 @@ export class AuthorService {
       lastName: author.lastName
     });
     if( !res ){
-      const op =await this.repository.insert({
+      const op = await this.repository.insert({
         name : author.name,
         lastName: author.lastName,
         dateBirth: author.dateBirth,
@@ -38,10 +38,10 @@ export class AuthorService {
   }
 
   public async updateAuthor(author : AuthorDto, id : string): Promise<boolean> {
-    const exist: Author[] =  await this.repository.find({
+    const exist: Author =  await this.repository.findOne({
       where : { id : id }
     });
-    if( exist.length == 1 ){
+    if( exist ){
       const res : UpdateResult = await this.repository.update(
         { id : id },
         {
@@ -56,10 +56,10 @@ export class AuthorService {
   }
 
   public async deleteAuthor(id : string): Promise<boolean> {
-    const exist: Author[] =  await this.repository.find({
+    const exist: Author =  await this.repository.findOne({
       where : { id : id }
     });
-    if(exist.length === 1) {
+    if( exist ) {
       const res : DeleteResult = await this.repository.delete({  
         id : id
       });
@@ -79,7 +79,7 @@ export class AuthorService {
           state : 'Activo', 
           lastName : Like(`%${name}%`)
         }
-        ] 
+      ] 
     });
   }
 }

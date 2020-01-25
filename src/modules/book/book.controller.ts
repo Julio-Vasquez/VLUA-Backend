@@ -2,7 +2,7 @@ import { Controller, Get, Body, Post, Param, UploadedFiles, UseInterceptors, Htt
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 import { Files } from './../common/files/files';
-import Response from './../common/response/response';
+import { Response } from './../common/response/response';
 
 import { Book } from './../../entities/book.entity';
 import { BookDto } from './dto/book.dto';
@@ -16,10 +16,10 @@ import { AppHost } from './../common/environment/environment';
 export class BookController {
 
   constructor(
-    private readonly bookService: BookService
+    private readonly response : Response,
+    private readonly files : Files,
+    private readonly bookService : BookService
   ){}
-
-  private readonly fl = new Files();
   /* Este controlador por el multer debe recibir 2 archivos,elprimero es el pdf del book, el segundo es el cover */
 
   @UseInterceptors(FileFieldsInterceptor(
@@ -36,20 +36,20 @@ export class BookController {
         (AppHost + '/' + file.urlCover[0].path)
       ]);
       if( res ){ //Check if the record could be created.
-        return Response
+        return this.response
           .status({ statusCode: HttpStatus.OK, state: 'OK'})
           .message('Registro exitoso')
           .json({ data: [] })
         ;
       }
-      this.fl.deleteFile([(AppHost + '/' + file.urlBook[0].path), (AppHost + '/' + file.urlCover[0].path)]);
-      return Response
+      this.files.deleteFile([(AppHost + '/' + file.urlBook[0].path), (AppHost + '/' + file.urlCover[0].path)]);
+      return this.response
         .status({ statusCode: HttpStatus.CONFLICT, state: 'CONFLICT' })
         .message('Ya existe el registro')
         .json({ data: [] })
       ;
     }
-    return Response
+    return this.response
       .status({ statusCode: HttpStatus.BAD_REQUEST, state: 'ERROR BAD_REQUEST' })
       .message('No ha llegado ningun Archivo dato al servidor')
       .json({ data: [] })
@@ -60,13 +60,13 @@ export class BookController {
   public async allBook() : Promise<any> {
     const res : Book[] = await this.bookService.findAll();
     if( res.length > 0 ) {
-      return Response
+      return this.response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Carga Correctamente')
         .json({ data : res })
       ;
     }
-    return Response
+    return this.response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT' })
       .message('No hay ningun registro de Libros.')
       .json({ data: [] })
@@ -74,16 +74,16 @@ export class BookController {
   }
 
   @Get('/findbyname/:name')
-  public async findByName(@Param('name') name: string) : Promise<any> {
+  public async findByName(@Param('name') name: string)  {
     const res : Book[] = await this.bookService.findByNameBook( name );
     if( res.length > 0 ) {
-      return Response
+      return this.response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Carga Correctamente')
         .json({ data : res })
       ;
     }
-    return Response
+    return this.response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT' })
       .message(`No hay ningun registro de Libros con el nombre : ${name}`)
       .json({ data: [] })
@@ -91,16 +91,16 @@ export class BookController {
   }
 
   @Get('/findbyauthor/:name')
-  public async findByAuthor(@Param('name') name: string) : Promise<any> {
+  public async findByAuthor(@Param('name') name: string) {
     const res : Book[] = await this.bookService.findByAuthor( name );
     if( res.length > 0 ){
-      return Response
+      return this.response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Carga Correctamente')
         .json({ data : res })
       ;
     }
-    return Response
+    return this.response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT' })
       .message(`No hay ningun registro de Libros del autor : ${name}`)
       .json({ data: [] })
@@ -108,16 +108,16 @@ export class BookController {
   }
 
   @Get('/findbycategory/:name')
-  public async findByCategory(@Param('name') name: string) : Promise<any> {
+  public async findByCategory(@Param('name') name: string) {
     const res : Book[] = await this.bookService.findByCategory( name );
     if( res.length > 0 ){
-      return Response
+      return this.response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Carga Correctamente')
         .json({ data : res })
       ;
     }
-    return Response
+    return this.response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT' })
       .message(`No hay ningun registro de Libros de la categoria (dewey) : ${name}`)
       .json({ data: [] })
@@ -125,16 +125,16 @@ export class BookController {
   }
 
   @Get('/findbyeditorial/:name')
-  public async findByEditorial(@Param('name') name: string) : Promise<any> {
+  public async findByEditorial(@Param('name') name: string) {
     const res : Book[] = await this.bookService.findByEditorial(name);
     if( res.length > 0 ){
-      return Response
+      return this.response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Carga Correctamente')
         .json({data : res})
       ;
     }
-    return Response
+    return this.response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT' })
       .message(`No hay ningun registro de Libros de la editorial : ${name}`)
       .json({ data: [] })
@@ -145,13 +145,13 @@ export class BookController {
   public async findByISBN(@Body() isbn: ISBNDto) : Promise<any> {
     const res : Book[] = await this.bookService.findByISBN( isbn );
     if( res.length > 0 ){
-      return Response
+      return this.response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Carga Correctamente')
         .json({ data : res })
       ;
     }
-    return Response
+    return this.response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT' })
       .message(`No hay ningun registro de Libros con el isbn : ${isbn}`)
       .json({ data: [] })
@@ -165,27 +165,27 @@ export class BookController {
     ]
   ))
   @Put('/update')
-  public async updateBook(@Body() book : BookDto, @UploadedFiles() file) {
+  public async updateBook(@Body() book : BookDto, @UploadedFiles() file, @Param('id') id : string) {
     if( file.urlBook !== undefined && file.urlCover !== undefined ) { //Check if the files arrived.
-      const res : boolean = await this.bookService.updateBook( book, [
+      const res : boolean = await this.bookService.updateBook( id, book, [
         (AppHost + '/' + file.urlBook[0].path),
         (AppHost + '/' + file.urlCover[0].path)
       ]);
       if( res ){ //Check if the record could be created.
-        return Response
+        return this.response
           .status({ statusCode: HttpStatus.OK, state: 'OK'})
           .message('Actualizacion exitosa')
           .json({ data: [] })
         ;
       }
-      this.fl.deleteFile([(AppHost + '/' + file.urlBook[0].path), (AppHost + '/' + file.urlCover[0].path)]);
-      return Response
+      this.files.deleteFile([(AppHost + '/' + file.urlBook[0].path), (AppHost + '/' + file.urlCover[0].path)]);
+      return this.response
         .status({ statusCode: HttpStatus.CONFLICT, state: 'CONFLICT' })
         .message('No existe el registro')
         .json({ data: [] })
       ;
     }
-    return Response
+    return this.response
       .status({ statusCode: HttpStatus.BAD_REQUEST, state: 'ERROR BAD_REQUEST' })
       .message('No ha llegado ningun Archivo dato al servidor')
       .json({ data: [] })
@@ -196,13 +196,13 @@ export class BookController {
   public async updateIsbn(@Body() newIsbn : ISBNDto, @Param('id') id : string) {
     const res = await this.bookService.updateISBN( id, newIsbn );
     if( res ){
-      return Response
+      return this.response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Actualización Correctamente')
         .json({ data : res })
       ;
     }
-    return Response
+    return this.response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
       .message('No existe ningun libro con ese ID, no se actualizo nada!')
       .json({ data: [] })
@@ -213,13 +213,13 @@ export class BookController {
   public async deleteBook(@Body() isbn: ISBNDto) {
     const res  = await this.bookService.deleteBook( isbn );
     if( res ){
-      return Response
+      return this.response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
         .message('Eliminacion Correctamente')
         .json({ data : res })
       ;
     }
-    return Response
+    return this.response
       .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
       .message(`No existe ningun libro con  el isbn ${isbn.isbn}, no se elimino nada`)
       .json({ data: [] })

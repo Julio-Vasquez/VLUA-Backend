@@ -48,7 +48,7 @@ export class AuthService {
     return false;
   }
 
-  public async validUser( token ) : Promise<any>{
+  public async validUser( token ) {
     const payload : any = this.jwtService.decode( token );
     if( payload )
       return await this.userService.validUser( payload );

@@ -13,8 +13,8 @@ export class BookDto {
   @MinLength(2, {
     message : `El nombre del libro  ${MinL(2)}` 
   })
-  @MaxLength(450, {
-    message : `El nombre del libro ${MaxL(450)}`
+  @MaxLength(180, {
+    message : `El nombre del libro ${MaxL(180)}`
   })
   public readonly name : string;
 

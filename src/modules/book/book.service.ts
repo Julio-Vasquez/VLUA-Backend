@@ -14,19 +14,18 @@ import { Files } from '../common/files/files';
 export class BookService {
 
   constructor(
+    private readonly files : Files,
     private readonly connection: Connection,
     @InjectRepository( Book )
     private readonly repository : Repository<Book>
   ){}
-
-  private readonly fls : Files = new Files();
   
   public async createBook(book : BookDto, url : string[] ) : Promise<boolean>{
     const exist : Book = await this.repository.findOne({
       where : { isbn : book.isbn }
     });
     ////[0]urlBook, [1]urlCover
-    const arrayFilesImg = this.fls.prepareFile(url);
+    const arrayFilesImg = this.files.prepareFile(url);
     if( !exist ){
       const queryRunner: QueryRunner =  this.connection.createQueryRunner();
       await queryRunner.connect();
@@ -49,14 +48,14 @@ export class BookService {
         return true;
       }catch( err ) {
         await queryRunner.rollbackTransaction();
-        this.fls.deleteFile(arrayFilesImg);
+        this.files.deleteFile(arrayFilesImg);
         return false;
       } finally {
         await queryRunner.release();
       }
     }
     //in this point exists one error and proceed delete files
-    this.fls.deleteFile(arrayFilesImg);
+    this.files.deleteFile(arrayFilesImg);
     return false;
   }
 
@@ -218,33 +217,45 @@ export class BookService {
     ;
   }
 
-  public async updateBook(book : BookDto,  url : string[] ) : Promise<boolean> {
-    const { editorial, author, category } : any = book;
-    const res : UpdateResult = await this.repository.update(
-      { isbn : book.isbn },
-      {
-        isbn : book.isbn,
-        name : book.name,
-        publication : book.publication,
-        edition : book.edition,
-        tomo : book.tomo, 
-        urlBook : url[0],
-        urlCover : url[1],
-        state : State.Active,
-        editorial : editorial,
-        author: author,
-        category : category
-      }
-    );
-    return res.raw.affectedRows > 0;
+  public async updateBook(id : string, book : BookDto,  url : string[] ) : Promise<boolean> {
+    const exist : Book = await this.repository.findOne({
+      where : { id : id }
+    });
+   if( exist ) {
+      const { editorial, author, category } : any = book;
+      const res : UpdateResult = await this.repository.update(
+        { isbn : book.isbn },
+        {
+          isbn : book.isbn,
+          name : book.name,
+          publication : book.publication,
+          edition : book.edition,
+          tomo : book.tomo, 
+          urlBook : url[0],
+          urlCover : url[1],
+          state : State.Active,
+          editorial : editorial,
+          author: author,
+          category : category
+        }
+      );
+      return res.raw.affectedRows > 0;
+    }
+   return false;
   }
 
   public async updateISBN(id : string, newISBN: ISBNDto) : Promise<boolean> {
-    const res : UpdateResult =  await this.repository.update(
-      { id : id },
-      { isbn : newISBN.isbn }
-    );
-    return res.raw.affectedRows > 0;
+    const exist : Book = await this.repository.findOne({
+      where : { id : id }
+    });
+    if( exist ){
+      const res : UpdateResult =  await this.repository.update(
+        { id : id },
+        { isbn : newISBN.isbn }
+      );
+      return res.raw.affectedRows > 0;
+    }
+    return false;
   }
 
   public async deleteBook(ISBN : ISBNDto) : Promise<boolean> {
@@ -252,9 +263,8 @@ export class BookService {
       select : ["urlBook", "urlCover"],
       where : { isbn : ISBN.isbn }
     });
-
     if( exists && exists.length === 1){
-      this.fls.prepareFile([exists[0].urlBook, exists[0].urlCover]);
+      this.files.prepareFile([exists[0].urlBook, exists[0].urlCover]);
       const res : DeleteResult = await this.repository.delete({isbn : ISBN.isbn});
       return res.affected > 0;
     }

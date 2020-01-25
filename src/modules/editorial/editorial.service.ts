@@ -32,15 +32,15 @@ export class EditorialService {
 
   public async findAll(): Promise<Editorial[]> {
     return await this.repository.find({
-      where : { state : 'Activo'}
+      where : { state : 'Activo' }
     });
   }
 
   public async updateEditorial(editorial : EditorialDto, id : string): Promise<boolean> {
-    const exist: Editorial[] =  await this.repository.find({
+    const exist : Editorial =  await this.repository.findOne({
       where : { id : id }
     });
-    if( exist.length === 1 ) {
+    if( exist) {
       const res : UpdateResult = await this.repository.update(
         { id : id },
         {
@@ -54,10 +54,10 @@ export class EditorialService {
   }
 
   public async deleteEditorial(id : string): Promise<boolean> {
-    const exist: Editorial[] =  await this.repository.find({
+    const exist: Editorial =  await this.repository.findOne({
         where : { id : id }
     });
-    if( exist.length === 1 ){
+    if( exist ){
       const res : DeleteResult = await this.repository.delete({ 
         id : id 
       });

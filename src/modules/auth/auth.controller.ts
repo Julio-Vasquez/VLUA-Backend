@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 
 import { LoginDto } from './dto/login.dto';
 
-import  Response   from './../common/response/response';
+import  { Response }   from './../common/response/response';
 
 import { AuthService } from './auth.service';
 
@@ -11,21 +11,22 @@ import { AuthService } from './auth.service';
 export class AuthController {
 
   constructor(
-    private readonly authService: AuthService,
-    private readonly jwtService: JwtService,
+    private readonly response : Response,
+    private readonly authService : AuthService,
+    private readonly jwtService : JwtService,
   ){}
 
   @Post('/login')
   public async login(@Body() login : LoginDto){
     const res = await this.authService.login(login);
     if (res) {
-      return Response
+      return this.response
         .status({ statusCode: HttpStatus.OK, state: 'OK' })
         .message('login OK')
         .json({ data: this.jwtService.sign(res) })
       ;
     }
-    return Response
+    return this.response
       .status({ statusCode: HttpStatus.UNAUTHORIZED, state: 'UNAUTHORIZED'})
       .message('Credenciales no validas')
       .json({ data: [] })

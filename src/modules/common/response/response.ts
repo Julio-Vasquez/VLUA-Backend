@@ -1,4 +1,4 @@
-class Response {
+export class Response {
 
   private data: any;
   private msg: string;
@@ -25,4 +25,4 @@ class Response {
   }
 }
 
-export default new Response();
+//export default new Response();

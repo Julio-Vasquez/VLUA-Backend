@@ -4,7 +4,7 @@ import { State } from "./enums/state.enum";
 import { Book } from "./book.entity";
 
 @Entity('Category')
-@Index( ["name"], { unique : true })
+@Index( ["name", "code"], { unique : true })
 export class Category{
 
   @PrimaryGeneratedColumn("uuid")

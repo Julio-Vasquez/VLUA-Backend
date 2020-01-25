@@ -8,7 +8,7 @@ export const MaxL = long => `Debe contener maximo ${long} Carácteres`;
 
 export const IsNb = 'Debe ingresar un numero valido ' ;
 
-export const IsDt = 'Debe ingresar una fecha validad, con el formato YYYY-MM-DD ';
+export const IsDt = 'Debe ingresar una fecha validad, con el formato YYYY-MM-DD';
 
 export const IsIsbn = 'Debe ingresar un International Standard Book Number (ISBN) Valido ';
 
