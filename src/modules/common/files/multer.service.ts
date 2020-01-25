@@ -1,7 +1,7 @@
 import { diskStorage } from 'multer';
 import { existsSync, mkdirsSync } from 'fs-extra';
 import { HttpException } from '@nestjs/common';
-import * as moment from 'moment';
+import { format } from 'date-fns';
 
 import { AppName } from './../environment/environment';
 
@@ -9,17 +9,16 @@ export class FileUploadService
 {
   public configMulter(): any {
     let folderName: string = "";
-    moment.locale('co');
   //limits en byts (1kb = 1000)
     return {
 			fileFilter: (req, file, cb) => {
 				if (file.mimetype.match(/\/(jpg|jpeg|png|bmp|tif|svg)$/)) {
 					folderName = "cover";
 					cb(null, true);
-				}else if(file.mimetype.match(/\/(pdf)$/)){
+				} else if(file.mimetype.match(/\/(pdf)$/)) {
 					folderName = "book";
 					cb(null, true);
-				}else{
+				}else {
 					cb(null, false);
           cb(	new HttpException(`Ese tipo de archivo no es soportado por ${AppName}`, 400), false);
         }
@@ -35,15 +34,9 @@ export class FileUploadService
 					cb(null, `./uploads/${folderName}/`);
 				},
 				filename: (req, file, cb) => {
-					console.log(file)
-					cb(null,
-						file.originalname.split(".")[0]
-					+ '-Date-'
-					+ moment().format('YYYY-MMMM-DD')
-					+ '-Time-'
-					+ moment().format('h-mm-ss-a')
-					+ '.'
-					+ file.mimetype.split("/")[1]	
+					console.log(file.originalname.split(".")[0])
+					cb( null, 
+						`${folderName}-dt-${format(new Date(),'yyyyMMMMdd')}-tm-${format(new Date(),'h-mm-ss-a')}.${file.mimetype.split("/")[1]}`
 					);
 				}
 			})
