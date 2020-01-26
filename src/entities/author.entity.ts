@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, OneToMany, Index } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Index, ManyToOne, JoinColumn } from "typeorm";
 
 import { Book } from "./book.entity";
+import { Gender } from './gender.entity';
 import { State } from "./enums/state.enum";
 
 @Entity('Author')
@@ -41,6 +42,10 @@ export class Author
   })
   state : State;
 
-  @OneToMany(type => Book, book => book.author)
+  @OneToMany(type => Book, book => book.author, { nullable : false })
   book : Book[];
+
+  @ManyToOne(type => Gender, gender => gender.people, { nullable : false })
+  @JoinColumn()
+  gender : Gender;
 }

@@ -38,20 +38,20 @@ export class User
   })
   state : State;
 
-  @OneToOne(type => People, people => people.user)
+  @OneToOne(type => People, people => people.user, { nullable : false })
   @JoinColumn()
   people : People;
 
-  @ManyToOne(type => Role, role => role.user)
+  @ManyToOne(type => Role, role => role.user, { nullable : false })
   @JoinColumn()
   role : Role;
 
-  @OneToMany(type => Phone, phone => phone.user)
+  @OneToMany(type => Phone, phone => phone.user, { nullable : false } )
   phone : Phone[];
 
-  @OneToMany(type => EMail, eMail => eMail.user)
+  @OneToMany(type => EMail, eMail => eMail.user, { nullable : false })
   eMail : EMail[];
 
-  @OneToMany(type => History, history => history.user)
+  @OneToMany(type => History, history => history.user, { nullable : false })
   history : History[];
 }

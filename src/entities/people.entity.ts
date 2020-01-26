@@ -67,14 +67,14 @@ export class People
   })
   state : State;
 
-  @OneToOne(type => User, user => user.people)
+  @OneToOne(type => User, user => user.people, { nullable : false })
   user : User;
 
-  @ManyToOne(type => Gender, gender => gender.people)
+  @ManyToOne(type => Gender, gender => gender.people, { nullable : false })
   @JoinColumn()
   gender : Gender;
 
-  @ManyToOne(type => TypeDoc, typeDoc => typeDoc.people)
+  @ManyToOne(type => TypeDoc, typeDoc => typeDoc.people, { nullable : false })
   @JoinColumn()
   typeDoc : TypeDoc;
 }

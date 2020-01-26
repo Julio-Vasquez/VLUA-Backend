@@ -26,7 +26,7 @@ export class TypeDoc
   })
   state : State; 
 
-  @OneToMany(type => People, user => user.typeDoc)
+  @OneToMany(type => People, user => user.typeDoc, { nullable : false })
   people : People[];
   
 }

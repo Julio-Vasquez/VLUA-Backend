@@ -1,5 +1,5 @@
-import { IsString, IsNotEmpty, MinLength, MaxLength, IsISO8601 } from 'class-validator';
-import { IsStr, IsNE, MinL, MaxL, IsDt } from './../../common/const/const.dto';
+import { IsString, IsNotEmpty, MinLength, MaxLength, IsISO8601, IsUUID } from 'class-validator';
+import { IsStr, IsNE, MinL, MaxL, IsDt, IsUUIDKey } from './../../common/const/const.dto';
 
 export class AuthorDto  {
 
@@ -26,4 +26,9 @@ export class AuthorDto  {
   @IsNotEmpty({ message : IsNE })
   @IsISO8601( { message : IsDt })
   public readonly dateBirth : string;
+
+  @IsString({ message : IsStr})
+  @IsNotEmpty({ message : IsNE})
+  @IsUUID('4', { message : IsUUIDKey(4)})
+  public readonly gender : any;
 }

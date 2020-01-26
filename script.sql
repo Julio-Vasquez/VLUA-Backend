@@ -27,11 +27,12 @@ INSERT INTO
 	`name`,
 	`lastName`,
 	`dateBirth`,
-	`state`
+	`state`,
+	`genderId`
 )
 VALUES
-( '11bf01f8-79dd-4e60-b91d-1557ab026ef6', 'Julio', 'Verne', '1998-09-30', 'Activo'),
-( '0c62b4ab-17ba-4e8e-a9f5-e2aebd638298', 'Gabriel', 'Garcia', '1927-04-17', 'Activo');
+( '11bf01f8-79dd-4e60-b91d-1557ab026ef6', 'Julio', 'Verne', '1998-09-30', 'Activo', 'd8503e02-eca0-4b3a-ad93-b6795974b362'),
+( '0c62b4ab-17ba-4e8e-a9f5-e2aebd638298', 'Gabriel', 'Garcia', '1927-04-17', 'Activo', 'd8503e02-eca0-4b3a-ad93-b6795974b362');
 
 INSERT INTO 
 	`Editorial`

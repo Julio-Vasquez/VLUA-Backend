@@ -24,7 +24,7 @@ export class EMail
   })
   state : State;
 
-  @ManyToOne(type => User, user => user.eMail)
+  @ManyToOne(type => User, user => user.eMail, { nullable : false })
   @JoinColumn()
   user : User;
 }

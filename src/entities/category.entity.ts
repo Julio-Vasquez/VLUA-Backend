@@ -34,6 +34,6 @@ export class Category{
   })
   state : State;
 
-  @OneToMany(type => Book, book => book.category)
+  @OneToMany(type => Book, book => book.category, { nullable : false })
   book : Book[];
 }

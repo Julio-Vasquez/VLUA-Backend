@@ -34,6 +34,6 @@ export class Editorial
   })
   state : State;
 
-  @OneToMany(type => Book, book => book.editorial)
+  @OneToMany(type => Book, book => book.editorial, { nullable : false })
   book : Book[];
 }

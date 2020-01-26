@@ -24,7 +24,8 @@ export class AuthorService {
         name : author.name,
         lastName: author.lastName,
         dateBirth: author.dateBirth,
-        state: State.Active
+        state: State.Active,
+        gender : author.gender
       });
       return op.raw.affectedRows > 0;
     }
@@ -32,9 +33,18 @@ export class AuthorService {
   }
 
   public async findAll(): Promise<Author[]> {
-    return await this.repository.find({
-      where : { state : 'Activo'}
-    });
+    return await this.repository
+      .createQueryBuilder('author')
+      .select('author.id', 'idAuthor')
+      .addSelect('author.name', 'nameAuthor')
+      .addSelect('author.lastName', 'lastNameAuthor')
+      .addSelect('gender.gender', 'genderAuthor')
+      .addSelect('author.state', 'state')
+      .innerJoin('author.gender', 'gender')
+      .where("author.state = 'Activo'")
+      .orderBy('author.name', 'ASC')
+      .execute()
+    ;
   }
 
   public async updateAuthor(author : AuthorDto, id : string): Promise<boolean> {
@@ -47,7 +57,8 @@ export class AuthorService {
         {
           name: author.name,
           lastName: author.lastName,
-          dateBirth: author.dateBirth
+          dateBirth: author.dateBirth,
+          gender : author.gender
         }
       );
       return res.raw.affectedRows > 0;
@@ -69,17 +80,18 @@ export class AuthorService {
   }
 
   public async findByName(name : string): Promise<Author[]> { //case or where x = y or y =x
-    return await this.repository.find({ 
-      where : [
-        { 
-          state : 'Activo', 
-          name : Like(`%${name}%`)
-        },
-        {
-          state : 'Activo', 
-          lastName : Like(`%${name}%`)
-        }
-      ] 
-    });
+    return await this.repository
+      .createQueryBuilder('author')
+      .select('author.id', 'idAuthor')
+      .addSelect('author.name', 'nameAuthor')
+      .addSelect('author.lastName', 'lastNameAuthor')
+      .addSelect('gender.gender', 'genderAuthor')
+      .addSelect('author.state', 'state')
+      .innerJoin('author.gender', 'gender')
+      .where("author.state = 'Activo' AND author.name LIKE :name", { name : '%' + name + '%' })
+      .orWhere("author.lastName LIKE :name AND author.state = 'Activo'", { name : '%' + name + '%' })
+      .orderBy('author.name', 'ASC')
+      .execute()
+    ;
   }
 }

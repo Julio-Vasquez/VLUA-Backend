@@ -35,7 +35,8 @@ export class CategoryService {
 
   public async findAll(): Promise<Category[]> {
     return await this.repository.find({ 
-      where : { state : 'Activo' }
+      where : { state : 'Activo' },
+      order : { code : "ASC" }
     });
   }
 

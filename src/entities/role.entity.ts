@@ -28,6 +28,6 @@ export class Role
   })
   state : State;
 
-  @OneToMany(type => User, user => user.role)
+  @OneToMany(type => User, user => user.role, { nullable : false })
   user : User[];
 }

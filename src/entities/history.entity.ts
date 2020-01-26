@@ -31,11 +31,12 @@ export class History
   })
   state : State;
   
-  @ManyToOne(type => User, user => user.history)
+  @ManyToOne(type => User, user => user.history, { nullable : false })
   @JoinColumn()
   user : User;
 
-  @ManyToOne(type => Book, book => book.history)
+  @ManyToOne(type => Book, book => book.history, { nullable : false })
   @JoinColumn()
   book : Book;
+
 }

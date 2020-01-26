@@ -25,7 +25,7 @@ export class Phone
   })
   state : State;
 
-  @ManyToOne(type => User, user => user.phone)
+  @ManyToOne(type => User, user => user.phone, { nullable : false })
   @JoinColumn()
   user : User;
 }

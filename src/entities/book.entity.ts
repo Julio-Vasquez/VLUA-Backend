@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, PrimaryColumn, Column, Index, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, Index, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
 
 import { Editorial } from './editorial.entity';
 import { Author } from './author.entity';
@@ -72,18 +72,18 @@ export class Book
     })
     state : State;
 
-   @ManyToOne(type => Editorial, editorial => editorial.book)
+   @ManyToOne(type => Editorial, editorial => editorial.book, { nullable : false })
    @JoinColumn()
    editorial : Editorial; 
 
-   @ManyToOne(type => Author, author => author.book)
+   @ManyToOne(type => Author, author => author.book, { nullable : false })
    @JoinColumn()
    author : Author;
 
-   @ManyToOne(type => Category, category => category.book)
+   @ManyToOne(type => Category, category => category.book, { nullable : false })
    @JoinColumn()
    category : Category;
 
-   @OneToMany(type => History, history => history.book)
+   @OneToMany(type => History, history => history.book, { nullable : false })
    history : History[];
 }
