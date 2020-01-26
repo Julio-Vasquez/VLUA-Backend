@@ -1,5 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { AuthMiddleware } from './../common/middleware/auth.middleware';
 
 import { Editorial } from './../../entities/editorial.entity';
 
@@ -18,4 +20,14 @@ import { EditorialService } from './editorial.service';
   ],
   exports : []
 })
-export class EditorialModule {}
+export class EditorialModule implements NestModule{
+  configure(consumer : MiddlewareConsumer){
+    consumer
+      .apply(AuthMiddleware)
+      .exclude(
+        { path: 'editorial/findall', method: RequestMethod.GET },
+        { path: 'editorial/findbyname/:name', method: RequestMethod.GET}
+      )
+      .forRoutes(EditorialController)
+  }
+}

@@ -1,5 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { AuthMiddleware } from './../common/middleware/auth.middleware';
 
 import { User } from './../../entities/user.entity';
 
@@ -18,4 +20,10 @@ import { UserService } from './user.service';
   ],
   exports : []
 })
-export class UserModule {}
+export class UserModule implements NestModule {
+  configure(consumer: MiddlewareConsumer){
+    consumer
+    .apply(AuthMiddleware)
+    .forRoutes(UserController)
+  }
+}

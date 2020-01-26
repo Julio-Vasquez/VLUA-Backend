@@ -1,5 +1,7 @@
-import { Module } from "@nestjs/common";
+import { Module, NestModule, MiddlewareConsumer, RequestMethod  } from "@nestjs/common";
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { AuthMiddleware } from './../common/middleware/auth.middleware';
 
 import { Category } from "./../../entities/category.entity";
 
@@ -18,4 +20,13 @@ import { CategoryService } from "./category.service";
   ],
   exports : []
 })
-export class CategoryModule {}
+export class CategoryModule implements NestModule {
+  configure(consumer : MiddlewareConsumer){
+    consumer
+      .apply(AuthMiddleware)
+      .exclude(
+        { path: 'category/findall', method: RequestMethod.GET }
+      )
+      .forRoutes(CategoryController)
+  }
+}

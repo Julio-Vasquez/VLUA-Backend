@@ -1,6 +1,8 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod  } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { AuthMiddleware } from './../common/middleware/auth.middleware';
 
 import { BookController } from './book.controller';
 import { BookService } from './book.service';
@@ -27,4 +29,18 @@ import { Author } from './../../entities/author.entity';
   ],
   exports: []
 })
-export class BookModule {}
+export class BookModule implements NestModule {
+  configure(consumer : MiddlewareConsumer){
+    consumer
+      .apply(AuthMiddleware)
+      .exclude(
+        { path: 'book/findall', method: RequestMethod.GET },
+        { path: 'book/findbyname/:name', method: RequestMethod.GET },
+        { path: 'book/findbyauthor/:name', method: RequestMethod.GET },
+        { path: 'book/findbycategory/:name', method: RequestMethod.GET },
+        { path: 'book/findbyeditorial/:name', method: RequestMethod.GET },
+        { path: 'book//findbyisbn', method: RequestMethod.GET },
+      )
+      .forRoutes(BookController)
+  }
+}
