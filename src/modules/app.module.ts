@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
 
 import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';

@@ -1,14 +1,14 @@
 import { Logger } from '@nestjs/common';
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs-extra';
 import { parse } from 'dotenv';
 import * as Joi from '@hapi/joi'; 
 
 import { EnvConfig } from './envconfig.interface';
 
-export class ConfigService
-{
-  private readonly env: EnvConfig;
-  private readonly filePath = `.env`;
+export class ConfigService {
+
+  private readonly environment : EnvConfig;
+  private readonly filePath = `.orm`;
   private logger = new Logger(`ConfigService`, true);
 
   constructor() {
@@ -16,18 +16,11 @@ export class ConfigService
       this.logger.error(`Config file ${this.filePath} not exist`);
       throw new Error();
     }
-  this.env = this.validate(parse(readFileSync(this.filePath, 'utf-8')));
+    this.environment = this.validate(parse(readFileSync(this.filePath, 'utf-8')));
   }
 
   private validate(envConfig: EnvConfig): EnvConfig {
-    const envVars: Joi.ObjectSchema = Joi.object({
-      NODE_ENV: Joi.string(),
-      APP_NAME: Joi.string(),
-      APP_HOST: Joi.string().hostname().default('localhost'),
-      APP_URL_PREFIX: Joi.string(),
-      APP_PORT: Joi.number().port().default(8550),
-      JWT_KEY: Joi.string(),
-      HOST_SITE: Joi.string().default('localhost:3000/'),
+    const envProps : Joi.ObjectSchema = Joi.object({
       DB_TYPE: Joi.string().default('mysql'),
       DB_HOST: Joi.string().hostname().default('localhost'),
       DB_USERNAME: Joi.string().default('root'),
@@ -37,27 +30,25 @@ export class ConfigService
       DB_SYNCHRONIZE: Joi.boolean(),
       DB_LOGGING: Joi.boolean()
     });
-
-    const { error, value } = envVars.validate(envConfig);
-
+    const { error, value } = envProps.validate(envConfig);
     if (error) {
       this.logger.error(`Configuration validation error: ${error.message}`)
       throw new Error();
     }
-  return value;
-}
+    return value;
+  }
 
-  get orm_config(): any {
-    console.log(this.env)
+  get orm_config() : any {
+    console.log(this.environment)
     return {
-      type: this.env.DB_TYPE,
-      host: this.env.DB_HOST,
-      port: this.env.DB_PORT,
-      username: this.env.DB_USERNAME,
-      password: this.env.DB_PASSWORD,
-      database: this.env.DB_DATABASE,
-      synchronize: this.env.DB_SYNCHRONIZE,
-      logging: this.env.DB_LOGGING,
+      type: this.environment.DB_TYPE,
+      host: this.environment.DB_HOST,
+      port: this.environment.DB_PORT,
+      username: this.environment.DB_USERNAME,
+      password: this.environment.DB_PASSWORD,
+      database: this.environment.DB_DATABASE,
+      synchronize: this.environment.DB_SYNCHRONIZE,
+      logging: this.environment.DB_LOGGING,
       entities: ['dist/entities/**/*.entity{.ts,.js}']
     }
   }

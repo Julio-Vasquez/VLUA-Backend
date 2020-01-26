@@ -5,8 +5,10 @@ import { Files } from './../common/files/files';
 import { Response } from './../common/response/response';
 
 import { Book } from './../../entities/book.entity';
+
 import { BookDto } from './dto/book.dto';
 import { ISBNDto } from './dto/isbn.dto';
+import { UUIDDto } from '../common/const/uuid.dto';
 
 import { BookService } from './book.service';
 
@@ -141,8 +143,8 @@ export class BookController {
     ; 
   }
 
-  @Get('/findbyisbn/')
-  public async findByISBN(@Body() isbn: ISBNDto) : Promise<any> {
+  @Get('/findbyisbn')
+  public async findByISBN(@Body() isbn: ISBNDto) {
     const res : Book[] = await this.bookService.findByISBN( isbn );
     if( res.length > 0 ){
       return this.response
@@ -165,9 +167,9 @@ export class BookController {
     ]
   ))
   @Put('/update')
-  public async updateBook(@Body() book : BookDto, @UploadedFiles() file, @Param('id') id : string) {
+  public async updateBook(@Body() book : BookDto, @UploadedFiles() file, @Body() uuid : UUIDDto) {
     if( file.urlBook !== undefined && file.urlCover !== undefined ) { //Check if the files arrived.
-      const res : boolean = await this.bookService.updateBook( id, book, [
+      const res : boolean = await this.bookService.updateBook( uuid.id, book, [
         (AppHost + '/' + file.urlBook[0].path),
         (AppHost + '/' + file.urlCover[0].path)
       ]);
@@ -192,9 +194,9 @@ export class BookController {
     ;
   }
 
-  @Put('/updateisbn/:id')
-  public async updateIsbn(@Body() newIsbn : ISBNDto, @Param('id') id : string) {
-    const res = await this.bookService.updateISBN( id, newIsbn );
+  @Put('/updateisbn')
+  public async updateIsbn(@Body() newIsbn : ISBNDto, @Body() uuid : UUIDDto) {
+    const res = await this.bookService.updateISBN( uuid.id, newIsbn );
     if( res ){
       return this.response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})

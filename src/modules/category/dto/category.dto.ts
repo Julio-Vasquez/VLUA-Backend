@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, Length, IsNumberString, MinLength, MaxLength} from "class-validator";
+import { IsNotEmpty, IsString, Length, IsNumberString, MinLength, MaxLength } from "class-validator";
 import { IsNE, IsNmbStr, IsStr, MinL, MaxL } from "./../../common/const/const.dto";
 
 export class CategoryDto {

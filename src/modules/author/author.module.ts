@@ -1,5 +1,8 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod  } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PassportModule } from '@nestjs/passport';
+
+import { AuthMiddleware } from './../common/middleware/auth.middleware';
 
 import { Author } from './../../entities/author.entity';
 
@@ -8,6 +11,7 @@ import { AuthorService } from './author.service';
 
 @Module({
   imports : [
+    //PassportModule.register({}),
     TypeOrmModule.forFeature([ Author ]),
   ],
   controllers : [
@@ -18,4 +22,14 @@ import { AuthorService } from './author.service';
   ],
   exports : []
 })
-export class AuthorModule {}
+export class AuthorModule implements NestModule {
+  configure(consumer : MiddlewareConsumer){
+    consumer
+      .apply(AuthMiddleware)
+      .exclude(
+        { path: 'author/findall', method: RequestMethod.GET },
+        { path: 'author/findbyname/:name', method: RequestMethod.GET}
+      )
+      .forRoutes(AuthorController)
+  }
+}

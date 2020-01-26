@@ -35,14 +35,14 @@ export class UserService {
     ;
   }
 
-  public async validUser(jwt: any): Promise<any> {
+  public async validUser(username : string): Promise<any> {//chekear que exista
     const res = await this.repository
       .createQueryBuilder("user")
       .select("user.id", "idUser")
       .addSelect("user.UserName", "userName")
-      .where("user.userName = :userName", { userName: jwt.userName })
+      .where("user.userName = :userName", { userName: username })
       .getOne()
     ;
-    return (res) ? jwt : false;
+    return  res ? true : false;
   }
 }

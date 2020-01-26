@@ -1,9 +1,11 @@
-import { Controller, Get, HttpStatus, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Post, Body, Put, Delete } from '@nestjs/common';
+
 import { CategoryService } from './category.service';
 
 import { Category } from './../../entities/category.entity';
 
 import { CategoryDto } from './dto/category.dto';
+import { UUIDDto } from './../common/const/uuid.dto';
 
 import { Response } from './../common/response/response';
 
@@ -49,9 +51,9 @@ export class CategoryController {
     ;
   }
 
-  @Put('/update/:id')
-  public async updateCategory(@Body() category : CategoryDto, @Param('id') id : string) {
-    const res = await this.categoryService.updateCategory( category, id );
+  @Put('/update')
+  public async updateCategory(@Body() category : CategoryDto, @Body() uuid : UUIDDto) {
+    const res = await this.categoryService.updateCategory( category, uuid.id );
     if( res ){
       return this.response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
@@ -67,8 +69,8 @@ export class CategoryController {
   }
 
   @Delete('/delete')
-  public async deleteCategory(@Body('id') id : string) {
-    const res = await this.categoryService.deleteCategory( id );
+  public async deleteCategory(@Body() uuid : UUIDDto) {
+    const res = await this.categoryService.deleteCategory( uuid.id );
     if( res ) {
       return this.response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})

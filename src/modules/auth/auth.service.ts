@@ -49,9 +49,9 @@ export class AuthService {
   }
 
   public async validUser( token ) {
-    const payload : any = this.jwtService.decode( token );
+    const payload : any = this.jwtService.decode(token);
     if( payload )
-      return await this.userService.validUser( payload );
+      return await this.userService.validUser(payload.userName);
     return false;
   }
 }

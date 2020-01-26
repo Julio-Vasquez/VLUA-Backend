@@ -7,6 +7,7 @@ import { Response }   from './../common/response/response';
 import { AuthorService } from './author.service';
 
 import { AuthorDto } from './dto/author.dto';
+import { UUIDDto } from './../common/const/uuid.dto';
 
 @Controller('author')
 export class AuthorController {
@@ -67,9 +68,9 @@ export class AuthorController {
     ;
   }
 
-  @Delete('/delete/:id')
-  public async deleteAuthor(@Param('id') id : string) {
-    const res = await this.serviceAuthor.deleteAuthor( id );
+  @Delete('/delete')
+  public async deleteAuthor(@Body() uuid : UUIDDto) {
+    const res = await this.serviceAuthor.deleteAuthor( uuid.id );
     if( res ){
       return this.response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
@@ -84,9 +85,9 @@ export class AuthorController {
     ;
   }
 
-  @Put('/update/:id')
-  public async updateAuthor(@Body() newAuthor : AuthorDto, @Param('id') id : string) {
-    const res = await this.serviceAuthor.updateAuthor(newAuthor,id);
+  @Put('/update')
+  public async updateAuthor(@Body() newAuthor : AuthorDto, @Body() uuid : UUIDDto)  {
+    const res = await this.serviceAuthor.updateAuthor(newAuthor, uuid.id);
     if( res ){
       return this.response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})

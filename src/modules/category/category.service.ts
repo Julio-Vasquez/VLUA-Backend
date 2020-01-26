@@ -43,7 +43,6 @@ export class CategoryService {
     const exist : Category = await this.repository.findOne({
       where : { id : id }
     });
-    console.log(exist)
     if ( exist ) {
       const update : UpdateResult = await this.repository.update(
         { id : id },

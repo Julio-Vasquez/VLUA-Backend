@@ -7,6 +7,7 @@ import { EditorialService } from './editorial.service';
 import { Response } from './../common/response/response';
 
 import { EditorialDto } from './dto/editorial.dto';
+import { UUIDDto } from './../common/const/uuid.dto';
 
 @Controller('editorial')
 export class EditorialController {
@@ -67,9 +68,9 @@ export class EditorialController {
     ;
   }
 
-  @Delete('/delete/:id')
-  public async deleteEditorial(@Param('id') id : string) {
-    const res = await this.editorialService.deleteEditorial( id );
+  @Delete('/delete')
+  public async deleteEditorial(@Body() uuid : UUIDDto) {
+    const res = await this.editorialService.deleteEditorial( uuid.id );
     if( res ) {
       return this.response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
@@ -84,9 +85,9 @@ export class EditorialController {
     ;
   }
 
-  @Put('/update/:id')
-  public async updateEditorial(@Body() newEditorial : EditorialDto, @Param('id') id : string) {
-    const res = await this.editorialService.updateEditorial( newEditorial, id );
+  @Put('/update')
+  public async updateEditorial(@Body() newEditorial : EditorialDto, @Body() uuid : UUIDDto ) {
+    const res = await this.editorialService.updateEditorial( newEditorial, uuid.id );
     if( res ){
       return this.response
         .status({ statusCode : HttpStatus.OK, state : 'OK'})
