@@ -39,8 +39,8 @@ export class BookModule implements NestModule {
         { path: 'book/findbyauthor/:name', method: RequestMethod.GET },
         { path: 'book/findbycategory/:name', method: RequestMethod.GET },
         { path: 'book/findbyeditorial/:name', method: RequestMethod.GET },
-        { path: 'book//findbyisbn', method: RequestMethod.GET },
+        { path: 'book/findbyisbn', method: RequestMethod.GET },
       )
-      .forRoutes(BookController)
+      .forRoutes(BookController);
   }
 }
