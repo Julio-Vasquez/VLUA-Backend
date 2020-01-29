@@ -10,6 +10,8 @@ import { BookService } from './book.service';
 import { Book } from './../../entities/book.entity';
 import { Editorial } from './../../entities/editorial.entity';
 import { Author } from './../../entities/author.entity';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtKey } from '../common/environment/environment';
 
 @Module({
   imports: [
@@ -19,6 +21,9 @@ import { Author } from './../../entities/author.entity';
         file.configMulter()
       ),
       inject: ['FileUploadService']
+    }),
+    JwtModule.register({
+      secret : JwtKey
     })
   ],
   controllers: [

@@ -1,6 +1,6 @@
 import { Module, NestModule, MiddlewareConsumer, RequestMethod  } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PassportModule } from '@nestjs/passport';
+
 import { JwtModule } from '@nestjs/jwt';
 
 import { AuthMiddleware } from './../common/middleware/auth.middleware';
@@ -13,7 +13,6 @@ import { AuthorService } from './author.service';
 
 @Module({
   imports : [
-    //PassportModule.register({}),
     JwtModule.register({ 
       secret: JwtKey
     }),
