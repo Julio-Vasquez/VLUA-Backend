@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany, ManyToOne, Index } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany, ManyToOne, Index, BeforeInsert } from "typeorm";
+import { hash, compare } from 'bcrypt';
 
 import { State } from "./enums/state.enum";
 import { People } from "./people.entity";
@@ -26,7 +27,7 @@ export class User
     nullable: false,
     type: "varchar",
     name: "password",
-    length: 45
+    length: 60
   })
   password : string;
 
@@ -54,4 +55,13 @@ export class User
 
   @OneToMany(type => History, history => history.user, { nullable : false })
   history : History[];
+
+  @BeforeInsert()
+  public async hashPassword() {
+    this.password = await hash(this.password, 10);
+  }
+
+  public async comparePassword(attempt: string) : Promise<boolean>{
+    return await compare(attempt, this.password);
+  }
 }

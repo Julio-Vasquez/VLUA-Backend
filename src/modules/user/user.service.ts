@@ -35,14 +35,13 @@ export class UserService {
     ;
   }
 
-  public async validUser(username : string): Promise<any> {//chekear que exista
-    const res = await this.repository
-      .createQueryBuilder("user")
-      .select("user.id", "idUser")
-      .addSelect("user.UserName", "userName")
-      .where("user.userName = :userName", { userName: username })
-      .getOne()
-    ;
-    return  res ? true : false;
+  public async validateUserToken(username : string): Promise<boolean> {//chekear que exista
+    const res = await this.repository.findOne({ where : { userName : username}});
+    return res ? true : false;
+  }
+
+  public async validUser( username : string, password : string){
+    const user = await this.repository.findOne({ where : { userName : username } });
+    return user && await user.comparePassword(password) ? true : false;
   }
 }

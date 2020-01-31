@@ -18,7 +18,7 @@ export class LoginDto {
   @MinLength(4, {
     message : `La contraseña ${MinL(4)}`
   })
-  @MaxLength(45, {
+  @MaxLength(60, {
     message : `La contraseña ${MaxL(45)}`
   })
   public readonly password : string;

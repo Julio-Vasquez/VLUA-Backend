@@ -1,4 +1,5 @@
-import { Controller, Body, Post, HttpStatus } from '@nestjs/common';
+import { Controller, Body, Post, HttpStatus, UseGuards, } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
 
 import { LoginDto } from './dto/login.dto';
@@ -16,9 +17,12 @@ export class AuthController {
     private readonly jwtService : JwtService,
   ){}
 
+  @UseGuards(AuthGuard('local'))
   @Post('/login')
   public async login(@Body() login : LoginDto){
     const res = await this.authService.login(login);
+    console.log('controlador')
+    console.log(res)
     if (res) {
       return this.response
         .status({ statusCode: HttpStatus.OK, state: 'OK' })
