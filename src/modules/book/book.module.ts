@@ -6,7 +6,8 @@ import {
 } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 import { AuthMiddleware } from './../common/middleware/auth.middleware';
 
 import { BookController } from './book.controller';
@@ -15,7 +16,7 @@ import { BookService } from './book.service';
 import { Book } from './../../entities/book.entity';
 import { Editorial } from './../../entities/editorial.entity';
 import { Author } from './../../entities/author.entity';
-import { JwtModule } from '@nestjs/jwt';
+
 
 @Module({
   imports: [
@@ -43,7 +44,7 @@ export class BookModule implements NestModule {
         { path: 'book/findbycategory/:name', method: RequestMethod.GET },
         { path: 'book/findbyeditorial/:name', method: RequestMethod.GET },
         { path: 'book/findbyisbn', method: RequestMethod.GET },
-        { path: 'book/createbook', method: RequestMethod.POST },
+        { path: 'book/create', method: RequestMethod.POST },
       )
       .forRoutes(BookController);
   }

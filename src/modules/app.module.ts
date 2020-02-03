@@ -15,8 +15,8 @@ import { OrmConfigService } from './common/provider/ormconfig.service';
   imports: [
     CommonModule,
     TypeOrmModule.forRootAsync({
-      imports: [CommonModule],
-      useExisting: OrmConfigService,
+      imports : [ConfigModule],
+      useExisting: OrmConfigService
     }),
     BookModule,
     AuthModule,

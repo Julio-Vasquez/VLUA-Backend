@@ -51,6 +51,8 @@ export class ConfigService {
       username: this.environment.DB_USERNAME,
       password: this.environment.DB_PASSWORD,
       database: this.environment.DB_DATABASE,
+      synchronize: this.environment.DB_SYNCHRONIZE,
+      loggin: this.environment.DB_LOGGING
     };
   }
 }

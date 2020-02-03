@@ -32,9 +32,12 @@ export class BookController {
     private readonly files: Files,
     private readonly bookService: BookService,
     private readonly config: ConfigService,
-  ) {}
+  ) {
+    
+  }
+  
   /* Este controlador por el multer debe recibir 2 archivos,elprimero es el pdf del book, el segundo es el cover */
-
+  
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'urlBook', maxCount: 1 },
@@ -44,7 +47,6 @@ export class BookController {
   @Post('/create')
   public async createBook(@Body() book: BookDto, @UploadedFiles() file) {
     const AppHost = this.config.get<string>('app.host');
-    console.log(AppHost);
     if (file.urlBook !== undefined && file.urlCover !== undefined) {
       //Check if the files arrived.
       const res: boolean = await this.bookService.createBook(book, [

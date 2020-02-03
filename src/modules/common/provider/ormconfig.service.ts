@@ -19,7 +19,7 @@ import { Author } from './../../../entities/author.entity';
 export class OrmConfigService implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): TypeOrmModuleOptions {
     const env = new ConfigService().orm_config;
-
+    console.log(env)
     return {
       //entities: [process.cwd() + '/dist/entities/**/*.entity{.ts,.js}'],
       name: 'default',
@@ -44,6 +44,8 @@ export class OrmConfigService implements TypeOrmOptionsFactory {
         Editorial,
         Author,
       ],
+      synchronize: env.synchronize || true,
+      logging: env.logging || true
     };
   }
   getOrm(): any {
