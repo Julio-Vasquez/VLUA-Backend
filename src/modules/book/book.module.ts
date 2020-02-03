@@ -1,4 +1,9 @@
-import { Module, NestModule, MiddlewareConsumer, RequestMethod  } from '@nestjs/common';
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+  RequestMethod,
+} from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -11,31 +16,24 @@ import { Book } from './../../entities/book.entity';
 import { Editorial } from './../../entities/editorial.entity';
 import { Author } from './../../entities/author.entity';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtKey } from '../common/environment/environment';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ Book, Editorial, Author ]),
+    TypeOrmModule.forFeature([Book, Editorial, Author]),
     MulterModule.registerAsync({
-      useFactory: async file => (
-        file.configMulter()
-      ),
-      inject: ['FileUploadService']
+      useFactory: async file => file.configMulter(),
+      inject: ['FileUploadService'],
     }),
     JwtModule.register({
-      secret : JwtKey
-    })
+      secret: '',
+    }),
   ],
-  controllers: [
-    BookController
-  ],
-  providers: [
-    BookService
-  ],
-  exports: []
+  controllers: [BookController],
+  providers: [BookService],
+  exports: [],
 })
 export class BookModule implements NestModule {
-  configure(consumer : MiddlewareConsumer){
+  configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
       .exclude(
@@ -45,6 +43,7 @@ export class BookModule implements NestModule {
         { path: 'book/findbycategory/:name', method: RequestMethod.GET },
         { path: 'book/findbyeditorial/:name', method: RequestMethod.GET },
         { path: 'book/findbyisbn', method: RequestMethod.GET },
+        { path: 'book/createbook', method: RequestMethod.POST },
       )
       .forRoutes(BookController);
   }

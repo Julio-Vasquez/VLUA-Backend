@@ -8,25 +8,25 @@ import { BookModule } from './book/book.module';
 import { EditorialModule } from './editorial/editorial.module';
 import { AuthorModule } from './author/author.module';
 import { CategoryModule } from './category/category.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { OrmConfigService } from './common/provider/ormconfig.service';
 
 @Module({
   imports: [
     CommonModule,
     TypeOrmModule.forRootAsync({
-      useFactory: async config => (
-        config.orm_config
-      ),
-      inject: ['ConfigService']
+      imports: [CommonModule],
+      useExisting: OrmConfigService,
     }),
     BookModule,
     AuthModule,
     UserModule,
     EditorialModule,
     AuthorModule,
-    CategoryModule
+    CategoryModule,
   ],
   controllers: [],
   providers: [],
-  exports : []
+  exports: [],
 })
-export class AppModule { }
+export class AppModule {}

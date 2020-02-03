@@ -6,30 +6,24 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthMiddleware } from './../common/middleware/auth.middleware';
 
 import { User } from './../../entities/user.entity';
-import { JwtKey } from './../common/environment/environment';
+import { ConfigService } from '@nestjs/config';
 
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 
 @Module({
-  imports : [
-    TypeOrmModule.forFeature([ User ]),
-    JwtModule.register({ 
-      secret: JwtKey
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    JwtModule.register({
+      secret: '',
     }),
   ],
-  controllers : [
-    UserController
-  ],
-  providers : [
-    UserService
-  ],
-  exports : []
+  controllers: [UserController],
+  providers: [UserService],
+  exports: [],
 })
 export class UserModule implements NestModule {
-  configure(consumer: MiddlewareConsumer){
-    consumer
-    .apply(AuthMiddleware)
-    .forRoutes(UserController)
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes(UserController);
   }
 }

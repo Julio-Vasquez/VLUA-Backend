@@ -11,36 +11,23 @@ import { AuthService } from './auth.service';
 import { UserService } from './../user/user.service';
 import { LocalStrategy } from './../common/strategy/local.strategy';
 import { JwtStrategy } from './../common/strategy/jwt.strategy';
-
-import { JwtKey } from './../common/environment/environment';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
-  imports : [
-    TypeOrmModule.forFeature([ User ]),
+  imports: [
+    TypeOrmModule.forFeature([User]),
     PassportModule,
-    JwtModule.register({ 
-      secret: JwtKey,
-      signOptions: { expiresIn : 21600 }
+    JwtModule.register({
+      secret: '',
+      signOptions: { expiresIn: 21600 },
     }),
     MulterModule.registerAsync({
-      useFactory: async file => (
-        file.configMulter()
-      ),
-      inject: ['FileUploadService']
-    })
+      useFactory: async file => file.configMulter(),
+      inject: ['FileUploadService'],
+    }),
   ],
-  controllers : [ 
-    AuthController 
-  ],
-  providers : [ 
-    AuthService,
-    UserService, 
-    LocalStrategy, 
-    JwtStrategy
-  ],
-  exports : [
-    AuthService, 
-    LocalStrategy, 
-    JwtStrategy]
+  controllers: [AuthController],
+  providers: [AuthService, UserService, LocalStrategy, JwtStrategy],
+  exports: [AuthService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}

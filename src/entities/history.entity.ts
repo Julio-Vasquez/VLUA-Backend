@@ -1,42 +1,55 @@
-import { Entity, Column, PrimaryColumn, JoinColumn, ManyToOne, CreateDateColumn } from "typeorm";
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  JoinColumn,
+  ManyToOne,
+  CreateDateColumn,
+} from 'typeorm';
 
-import { User } from "./user.entity";
-import { Book } from "./book.entity";
-import { State } from "./enums/state.enum";
+import { User } from './user.entity';
+import { Book } from './book.entity';
+import { State } from './enums/state.enum';
 
 @Entity('History')
-export class History
-{
+export class History {
   @PrimaryColumn()
-  userId : string;
+  userId: string;
 
   @PrimaryColumn()
-  bookId : string;
+  bookId: string;
 
   @Column({
     nullable: false,
-    type: "int",
-    name: "cant"
+    type: 'int',
+    name: 'cant',
   })
-  cant : number;
+  cant: number;
 
   @CreateDateColumn()
-  lastDate : string;
+  lastDate: string;
 
   @Column({
     nullable: false,
-    type: "enum",
+    type: 'enum',
     enum: State,
-    name: "state"
+    name: 'state',
   })
-  state : State;
-  
-  @ManyToOne(type => User, user => user.history, { nullable : false })
-  @JoinColumn()
-  user : User;
+  state: State;
 
-  @ManyToOne(type => Book, book => book.history, { nullable : false })
+  @ManyToOne(
+    type => User,
+    user => user.history,
+    { nullable: false },
+  )
   @JoinColumn()
-  book : Book;
+  user: User;
 
+  @ManyToOne(
+    type => Book,
+    book => book.history,
+    { nullable: false },
+  )
+  @JoinColumn()
+  book: Book;
 }

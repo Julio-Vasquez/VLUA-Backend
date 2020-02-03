@@ -1,26 +1,24 @@
 import { Module, Global } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 
-import { ConfigService } from './config/config.service';
-
-import { FileUploadService } from './files/multer.service'; 
+import { FileUploadService } from './files/multer.service';
 import { Response } from './response/response';
 import { Files } from './files/files';
+import { OrmConfigService } from './provider/ormconfig.service';
+
+import app from './environment/environment.config';
 
 @Global()
 @Module({
-  imports : [],
-  controllers : [],
-  providers: [
-    ConfigService,
-    Files, 
-    FileUploadService,
-    Response
+  imports: [
+    ConfigModule.forRoot({
+      load: [app],
+      envFilePath: process.cwd() + '/.env',
+      isGlobal: true,
+    }),
   ],
-  exports: [
-    ConfigService,
-    Files,
-    FileUploadService,
-    Response
-  ]
+  controllers: [],
+  providers: [OrmConfigService, Files, FileUploadService, Response],
+  exports: [OrmConfigService, Files, FileUploadService, Response],
 })
 export class CommonModule {}
