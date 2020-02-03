@@ -25,9 +25,7 @@ import { Author } from './../../entities/author.entity';
       useFactory: async file => file.configMulter(),
       inject: ['FileUploadService'],
     }),
-    JwtModule.register({
-      secret: '',
-    }),
+    
   ],
   controllers: [BookController],
   providers: [BookService],
@@ -43,8 +41,7 @@ export class BookModule implements NestModule {
         { path: 'book/findbyauthor/:name', method: RequestMethod.GET },
         { path: 'book/findbycategory/:name', method: RequestMethod.GET },
         { path: 'book/findbyeditorial/:name', method: RequestMethod.GET },
-        { path: 'book/findbyisbn', method: RequestMethod.GET },
-        { path: 'book/create', method: RequestMethod.POST },
+        { path: 'book/findbyisbn', method: RequestMethod.GET }
       )
       .forRoutes(BookController);
   }

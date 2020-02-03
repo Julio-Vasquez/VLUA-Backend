@@ -13,6 +13,7 @@ import { OrmConfigService } from './common/provider/ormconfig.service';
 
 @Module({
   imports: [
+    
     CommonModule,
     TypeOrmModule.forRootAsync({
       imports : [ConfigModule],

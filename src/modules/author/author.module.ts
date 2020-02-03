@@ -5,9 +5,6 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigService } from '@nestjs/config';
-
-import { JwtModule } from '@nestjs/jwt';
 
 import { AuthMiddleware } from './../common/middleware/auth.middleware';
 
@@ -18,9 +15,6 @@ import { AuthorService } from './author.service';
 
 @Module({
   imports: [
-    JwtModule.register({
-      secret: '',
-    }),
     TypeOrmModule.forFeature([Author]),
   ],
   controllers: [AuthorController],

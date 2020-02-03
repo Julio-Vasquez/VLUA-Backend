@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MulterModule } from '@nestjs/platform-express';
 import { PassportModule } from '@nestjs/passport';
@@ -11,16 +10,11 @@ import { AuthService } from './auth.service';
 import { UserService } from './../user/user.service';
 import { LocalStrategy } from './../common/strategy/local.strategy';
 import { JwtStrategy } from './../common/strategy/jwt.strategy';
-import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     PassportModule,
-    JwtModule.register({
-      secret: '',
-      signOptions: { expiresIn: 21600 },
-    }),
     MulterModule.registerAsync({
       useFactory: async file => file.configMulter(),
       inject: ['FileUploadService'],

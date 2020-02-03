@@ -1,4 +1,4 @@
-import { Injectable, NestMiddleware, HttpStatus, Req  } from '@nestjs/common';
+import { Injectable, NestMiddleware, HttpStatus, Req } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from './../response/response';
 
@@ -10,7 +10,8 @@ export class AuthMiddleware implements NestMiddleware {
   ){}
 
    use(@Req() req, next : Function) {
-    if (req.headers && req.headers.authorization.split(' ')[0] === 'Bearer') {
+     console.log(req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer'?'true':'false');
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
       const token = this.jwt.verify(req.headers.authorization.split(' ')[1]);
       if (token &&  token.end > Math.round(new Date().getTime() / 1000)) { 
         next();
@@ -21,11 +22,12 @@ export class AuthMiddleware implements NestMiddleware {
           .json({ data: 'invalid token' })
         ;
       }
+    } else{
+      return this.res
+        .status({ statusCode: HttpStatus.UNAUTHORIZED, state: 'UNAUTHORIZED'})
+        .message('token no suministrado')
+        .json({ data: [] })
+      ;
     }
-    return this.res
-      .status({ statusCode: HttpStatus.UNAUTHORIZED, state: 'UNAUTHORIZED'})
-      .message('token no suministrado')
-      .json({ data: [] })
-    ;
   }
 }

@@ -12,12 +12,10 @@ import { Category } from './../../entities/category.entity';
 
 import { CategoryController } from './category.controller';
 import { CategoryService } from './category.service';
-import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Category]),
-    JwtModule.register({ secret: '' }),
   ],
   controllers: [CategoryController],
   providers: [CategoryService],

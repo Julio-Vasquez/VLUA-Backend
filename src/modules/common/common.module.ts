@@ -1,5 +1,6 @@
 import { Module, Global } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
 import { FileUploadService } from './files/multer.service';
 import { Response } from './response/response';
@@ -16,9 +17,15 @@ import app from './environment/environment.config';
       envFilePath: process.cwd() + '/.env',
       isGlobal: true,
     }),
+    JwtModule.register({
+      secretOrPrivateKey: new ConfigService().get<string>('jwtKey'),
+      signOptions:{
+        expiresIn: 21600
+      }
+    }),
   ],
   controllers: [],
-  providers: [OrmConfigService, Files, FileUploadService, Response],
-  exports: [OrmConfigService, Files, FileUploadService, Response],
+  providers: [JwtModule, OrmConfigService, Files, FileUploadService, Response],
+  exports: [JwtModule, OrmConfigService, Files, FileUploadService, Response],
 })
 export class CommonModule {}
