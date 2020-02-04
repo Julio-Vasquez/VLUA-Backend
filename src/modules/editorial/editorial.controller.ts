@@ -1,4 +1,13 @@
-import { Controller, Get, Body, Param, Post, Put, Delete, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Body,
+  Param,
+  Post,
+  Put,
+  Delete,
+  HttpStatus,
+} from '@nestjs/common';
 
 import { Editorial } from './../../entities/editorial.entity';
 
@@ -7,98 +16,95 @@ import { EditorialService } from './editorial.service';
 import { Response } from './../common/response/response';
 
 import { EditorialDto } from './dto/editorial.dto';
-import { UUIDDto } from './../common/const/uuid.dto';
+import { UUIDDto } from './../common/dto/uuid.dto';
 
 @Controller('editorial')
 export class EditorialController {
-  
   constructor(
-    private readonly response : Response,
-    private readonly editorialService : EditorialService
-  ){}
+    private readonly response: Response,
+    private readonly editorialService: EditorialService,
+  ) {}
 
   @Post('/create')
-  public async createEditorial(@Body() editorial : EditorialDto) {
-    const res = await this.editorialService.createEditorial( editorial );
-    if( res ) {
+  public async createEditorial(@Body() editorial: EditorialDto) {
+    const res = await this.editorialService.createEditorial(editorial);
+    if (res) {
       return this.response
-        .status({ statusCode: HttpStatus.OK, state: 'OK'})
+        .status({ statusCode: HttpStatus.OK, state: 'OK' })
         .message('Editorial Registrada Correctamente!')
-        .json({ data: res })
-      ;
+        .json({ data: res });
     }
     return this.response
-      .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
+      .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT' })
       .message('Ya existe esa editorial, no se registro nada!')
-      .json({ data: [] })
-    ;
+      .json({ data: [] });
   }
 
   @Get('/findall')
   public async findAll() {
     const res: Editorial[] = await this.editorialService.findAll();
-    if( res.length > 0 ) {
+    if (res.length > 0) {
       return this.response
-        .status({ statusCode : HttpStatus.OK, state : 'OK'})
+        .status({ statusCode: HttpStatus.OK, state: 'OK' })
         .message('Carga Correctamente')
-        .json({ data : res })
-      ;
+        .json({ data: res });
     }
     return this.response
-      .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
+      .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT' })
       .message('No hay ningun registro de editorial.')
-      .json({ data: [] })
-    ;
+      .json({ data: [] });
   }
 
   @Get('/findbyname/:name')
   public async findByName(@Param('name') name: string) {
-    const res : Editorial[] = await this.editorialService.findByName( name );
-    if( res.length > 0 ){
+    const res: Editorial[] = await this.editorialService.findByName(name);
+    if (res.length > 0) {
       return this.response
-        .status({ statusCode : HttpStatus.OK, state : 'OK'})
+        .status({ statusCode: HttpStatus.OK, state: 'OK' })
         .message('Carga Correctamente')
-        .json({ data : res })
-      ;
+        .json({ data: res });
     }
     return this.response
-      .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
+      .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT' })
       .message(`NO existe ninguna editorial llamada : ${name}`)
-      .json({ data: [] })
-    ;
+      .json({ data: [] });
   }
 
   @Delete('/delete')
-  public async deleteEditorial(@Body() uuid : UUIDDto) {
-    const res = await this.editorialService.deleteEditorial( uuid.id );
-    if( res ) {
+  public async deleteEditorial(@Body() uuid: UUIDDto) {
+    const res = await this.editorialService.deleteEditorial(uuid.id);
+    if (res) {
       return this.response
-        .status({ statusCode : HttpStatus.OK, state : 'OK'})
+        .status({ statusCode: HttpStatus.OK, state: 'OK' })
         .message('Eliminacion Correctamente')
-        .json({ data : res })
-      ;
+        .json({ data: res });
     }
     return this.response
-      .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
-      .message('Ese ID no corresponde a ninguna editorial, no se pudo eliminar nada!')
-      .json({ data: [] })
-    ;
+      .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT' })
+      .message(
+        'Ese ID no corresponde a ninguna editorial, no se pudo eliminar nada!',
+      )
+      .json({ data: [] });
   }
 
   @Put('/update')
-  public async updateEditorial(@Body() newEditorial : EditorialDto, @Body() uuid : UUIDDto ) {
-    const res = await this.editorialService.updateEditorial( newEditorial, uuid.id );
-    if( res ){
+  public async updateEditorial(
+    @Body() newEditorial: EditorialDto,
+    @Body() uuid: UUIDDto,
+  ) {
+    const res = await this.editorialService.updateEditorial(
+      newEditorial,
+      uuid.id,
+    );
+    if (res) {
       return this.response
-        .status({ statusCode : HttpStatus.OK, state : 'OK'})
+        .status({ statusCode: HttpStatus.OK, state: 'OK' })
         .message('Actualización Correctamente')
-        .json({ data : res })
-      ;
+        .json({ data: res });
     }
     return this.response
-      .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT'})
+      .status({ statusCode: HttpStatus.NO_CONTENT, state: 'NO_CONTENT' })
       .message('No existe ninguna editorial con ese ID, no se actualizo nada!')
-      .json({ data: [] })
-    ;
+      .json({ data: [] });
   }
 }

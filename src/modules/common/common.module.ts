@@ -18,7 +18,7 @@ import app from './environment/environment.config';
       isGlobal: true,
     }),
     JwtModule.register({
-      secret: 'vlua4af612j9',
+      secret: process.env.JWT_KEY,
       signOptions: {
         expiresIn: 21600,
       },

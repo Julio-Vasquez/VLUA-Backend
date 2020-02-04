@@ -19,7 +19,7 @@ import { Book } from './../../entities/book.entity';
 
 import { BookDto } from './dto/book.dto';
 import { ISBNDto } from './dto/isbn.dto';
-import { UUIDDto } from '../common/const/uuid.dto';
+import { UUIDDto } from '../common/dto/uuid.dto';
 
 import { BookService } from './book.service';
 
@@ -32,12 +32,10 @@ export class BookController {
     private readonly files: Files,
     private readonly bookService: BookService,
     private readonly config: ConfigService,
-  ) {
-    
-  }
-  
+  ) {}
+
   /* Este controlador por el multer debe recibir 2 archivos,elprimero es el pdf del book, el segundo es el cover */
-  
+
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'urlBook', maxCount: 1 },

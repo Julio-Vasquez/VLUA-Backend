@@ -8,7 +8,7 @@ import { BookModule } from './book/book.module';
 import { EditorialModule } from './editorial/editorial.module';
 import { AuthorModule } from './author/author.module';
 import { CategoryModule } from './category/category.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { OrmConfigService } from './common/provider/ormconfig.service';
 
 @Module({
