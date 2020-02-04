@@ -1,5 +1,5 @@
 import { Module, Global } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 
 import { FileUploadService } from './files/multer.service';
@@ -18,10 +18,10 @@ import app from './environment/environment.config';
       isGlobal: true,
     }),
     JwtModule.register({
-      secretOrPrivateKey: new ConfigService().get<string>('jwtKey'),
-      signOptions:{
-        expiresIn: 21600
-      }
+      secret: 'vlua4af612j9',
+      signOptions: {
+        expiresIn: 21600,
+      },
     }),
   ],
   controllers: [],

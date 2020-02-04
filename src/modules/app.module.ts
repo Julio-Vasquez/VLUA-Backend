@@ -13,11 +13,10 @@ import { OrmConfigService } from './common/provider/ormconfig.service';
 
 @Module({
   imports: [
-    
     CommonModule,
     TypeOrmModule.forRootAsync({
-      imports : [ConfigModule],
-      useExisting: OrmConfigService
+      imports: [ConfigModule],
+      useExisting: OrmConfigService,
     }),
     BookModule,
     AuthModule,

@@ -7,11 +7,10 @@ import { User } from './../../entities/user.entity';
 
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
+import { CommonModule } from '../common/common.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([User]),
-  ],
+  imports: [TypeOrmModule.forFeature([User])],
   controllers: [UserController],
   providers: [UserService],
   exports: [],

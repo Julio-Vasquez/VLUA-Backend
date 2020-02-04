@@ -1,67 +1,96 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany, ManyToOne, Index, BeforeInsert } from "typeorm";
-import { hash, compare } from 'bcrypt';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  JoinColumn,
+  OneToMany,
+  ManyToOne,
+  Index,
+  BeforeInsert,
+} from 'typeorm';
+import { hash, compareSync } from 'bcrypt';
 
-import { State } from "./enums/state.enum";
-import { People } from "./people.entity";
-import { Role } from "./role.entity";
-import { Phone } from "./phone.entity";
-import { EMail } from "./email.entity";
+import { State } from './enums/state.enum';
+import { People } from './people.entity';
+import { Role } from './role.entity';
+import { Phone } from './phone.entity';
+import { EMail } from './email.entity';
 import { History } from './history.entity';
 
 @Entity('User')
-@Index( ["userName"], { unique: true } )
-export class User
-{
-  @PrimaryGeneratedColumn("uuid")
-  id : string;
+@Index(['userName'], { unique: true })
+export class User {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({
     nullable: false,
-    type: "varchar",
-    name: "userName",
-    length: 45
+    type: 'varchar',
+    name: 'userName',
+    length: 45,
   })
-  userName : string;
+  userName: string;
 
   @Column({
     nullable: false,
-    type: "varchar",
-    name: "password",
-    length: 60
+    type: 'varchar',
+    name: 'password',
+    length: 60,
   })
-  password : string;
+  password: string;
 
   @Column({
     nullable: false,
-    type: "enum",
+    type: 'enum',
     enum: State,
-    name: "state"
+    name: 'state',
   })
-  state : State;
+  state: State;
 
-  @OneToOne(type => People, people => people.user, { nullable : false })
+  @OneToOne(
+    type => People,
+    people => people.user,
+    { nullable: false },
+  )
   @JoinColumn()
-  people : People;
+  people: People;
 
-  @ManyToOne(type => Role, role => role.user, { nullable : false })
+  @ManyToOne(
+    type => Role,
+    role => role.user,
+    { nullable: false },
+  )
   @JoinColumn()
-  role : Role;
+  role: Role;
 
-  @OneToMany(type => Phone, phone => phone.user, { nullable : false } )
-  phone : Phone[];
+  @OneToMany(
+    type => Phone,
+    phone => phone.user,
+    { nullable: false },
+  )
+  phone: Phone[];
 
-  @OneToMany(type => EMail, eMail => eMail.user, { nullable : false })
-  eMail : EMail[];
+  @OneToMany(
+    type => EMail,
+    eMail => eMail.user,
+    { nullable: false },
+  )
+  eMail: EMail[];
 
-  @OneToMany(type => History, history => history.user, { nullable : false })
-  history : History[];
+  @OneToMany(
+    type => History,
+    history => history.user,
+    { nullable: false },
+  )
+  history: History[];
 
   @BeforeInsert()
   public async hashPassword() {
     this.password = await hash(this.password, 10);
   }
 
-  public async comparePassword(attempt: string) : Promise<boolean>{
-    return await compare(attempt, this.password);
+  public async comparePassword(attempt: string): Promise<boolean> {
+    return await compareSync(attempt, this.password);
   }
 }

@@ -141,4 +141,4 @@ INSERT INTO
 	`roleId`
 )
 VALUES
-	( '8958a8f6-0107-4d32-bf4b-2a31ba093be6', 'DarKPhuRioN', '$2y$10$xmM/ZlT8n62z5d42puIy9uJHvbuAJw7hthrjiY5wosGds1wxcSwJK', 'Activo', '49172f13-2558-4852-9d4e-6e08f6299850', '24fc8de3-17cf-4976-ae07-689ca0b31dfa');
+	( '8958a8f6-0107-4d32-bf4b-2a31ba093be6', 'DarKPhuRioN', '$2b$10$g4kmXDs9vRQ8.T4QmYu9M.jO7icqMtDcIgpQUqH0jqxQKLv22nweG', 'Activo', '49172f13-2558-4852-9d4e-6e08f6299850', '24fc8de3-17cf-4976-ae07-689ca0b31dfa');
