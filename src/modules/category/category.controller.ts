@@ -6,7 +6,9 @@ import {
   Body,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 import { CategoryService } from './category.service';
 
@@ -24,6 +26,7 @@ export class CategoryController {
     private readonly categoryService: CategoryService,
   ) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('/create')
   public async createCategory(@Body() category: CategoryDto) {
     const res: boolean = await this.categoryService.createCategory(category);

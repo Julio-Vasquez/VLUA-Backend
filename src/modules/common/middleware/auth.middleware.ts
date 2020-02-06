@@ -6,20 +6,19 @@ import {
   Response,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   constructor(private readonly jwt: JwtService) {}
 
   use(@Request() req, @Response() res, next: Function) {
-    console.log(process.env.JWT_KEY);
+    console.log(req.headers.authorization.split(' ')[1]);
     if (
       req.headers.authorization &&
       req.headers.authorization.split(' ')[0] === 'Bearer'
     ) {
       const token = this.jwt.verify(req.headers.authorization.split(' ')[1]);
-      if (token && token.end > Math.round(new Date().getTime() / 1000)) {
+      if (token && token.exp > Math.round(new Date().getTime() / 1000)) {
         next();
       } else {
         return res

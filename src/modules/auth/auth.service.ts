@@ -39,8 +39,6 @@ export class AuthService {
         userName: res.userName,
         role: res.rol,
         state: res.state,
-        start: new Date().getTime() / 1000,
-        end: Math.round(new Date().getTime() / 1000) + 21600,
       };
     }
     return false;
@@ -53,6 +51,6 @@ export class AuthService {
   public async validUserToken(token) {
     const payload: any = this.jwtService.decode(token);
     if (!payload) return false;
-    return await await this.userService.validateUserToken(payload.userName);
+    return await this.userService.validateUserToken(payload.userName);
   }
 }

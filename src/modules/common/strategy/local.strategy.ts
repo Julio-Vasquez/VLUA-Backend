@@ -16,7 +16,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   private readonly logger = new Logger(AuthService.name);
 
   public async validate(username: string, password: string) {
-    console.log('entro');
     console.log(`Username ${username}`);
     const user = await this.authService.validUser(username, password);
     this.logger.log(user);
