@@ -7,7 +7,9 @@ import {
   Put,
   Delete,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 import { Editorial } from './../../entities/editorial.entity';
 
@@ -25,6 +27,7 @@ export class EditorialController {
     private readonly editorialService: EditorialService,
   ) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('/create')
   public async createEditorial(@Body() editorial: EditorialDto) {
     const res = await this.editorialService.createEditorial(editorial);
@@ -70,6 +73,7 @@ export class EditorialController {
       .json({ data: [] });
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/delete')
   public async deleteEditorial(@Body() uuid: UUIDDto) {
     const res = await this.editorialService.deleteEditorial(uuid.id);
@@ -87,6 +91,7 @@ export class EditorialController {
       .json({ data: [] });
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Put('/update')
   public async updateEditorial(
     @Body() newEditorial: EditorialDto,

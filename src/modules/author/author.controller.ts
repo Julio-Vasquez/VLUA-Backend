@@ -7,7 +7,9 @@ import {
   Param,
   Delete,
   Put,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 import { Author } from './../../entities/author.entity';
 
@@ -25,6 +27,7 @@ export class AuthorController {
     private readonly serviceAuthor: AuthorService,
   ) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('/create')
   public async createAuthor(@Body() author: AuthorDto) {
     const res = await this.serviceAuthor.createAuthor(author);
@@ -70,6 +73,7 @@ export class AuthorController {
       .json({ data: [] });
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/delete')
   public async deleteAuthor(@Body() uuid: UUIDDto) {
     const res = await this.serviceAuthor.deleteAuthor(uuid.id);
@@ -87,6 +91,7 @@ export class AuthorController {
       .json({ data: [] });
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Put('/update')
   public async updateAuthor(
     @Body() newAuthor: AuthorDto,

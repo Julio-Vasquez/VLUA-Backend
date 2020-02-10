@@ -9,8 +9,10 @@ import {
   HttpStatus,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { AuthGuard } from '@nestjs/passport';
 
 import { Files } from './../common/files/files';
 import { Response } from './../common/response/response';
@@ -36,6 +38,7 @@ export class BookController {
 
   /* Este controlador por el multer debe recibir 2 archivos,elprimero es el pdf del book, el segundo es el cover */
 
+  @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'urlBook', maxCount: 1 },
@@ -168,6 +171,7 @@ export class BookController {
       .json({ data: [] });
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'urlBook', maxCount: 1 },
@@ -212,6 +216,7 @@ export class BookController {
       .json({ data: [] });
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Put('/updateisbn')
   public async updateIsbn(@Body() newIsbn: ISBNDto, @Body() uuid: UUIDDto) {
     const res = await this.bookService.updateISBN(uuid.id, newIsbn);
@@ -227,6 +232,7 @@ export class BookController {
       .json({ data: [] });
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/delete')
   public async deleteBook(@Body() isbn: ISBNDto) {
     const res = await this.bookService.deleteBook(isbn);

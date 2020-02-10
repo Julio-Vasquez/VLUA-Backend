@@ -57,6 +57,7 @@ export class CategoryController {
       .json({ data: [] });
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Put('/update')
   public async updateCategory(
     @Body() category: CategoryDto,
@@ -75,6 +76,7 @@ export class CategoryController {
       .json({ data: [] });
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/delete')
   public async deleteCategory(@Body() uuid: UUIDDto) {
     const res = await this.categoryService.deleteCategory(uuid.id);

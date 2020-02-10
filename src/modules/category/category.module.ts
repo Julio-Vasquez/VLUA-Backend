@@ -12,11 +12,10 @@ import { Category } from './../../entities/category.entity';
 
 import { CategoryController } from './category.controller';
 import { CategoryService } from './category.service';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Category]),
-  ],
+  imports: [TypeOrmModule.forFeature([Category])],
   controllers: [CategoryController],
   providers: [CategoryService],
   exports: [],
