@@ -19,6 +19,8 @@ import { AuthorService } from './author.service';
 
 import { AuthorDto } from './dto/author.dto';
 import { UUIDDto } from './../common/dto/uuid.dto';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { Roles } from '../common/decorator/roles.decorator';
 
 @Controller('author')
 export class AuthorController {
@@ -27,8 +29,9 @@ export class AuthorController {
     private readonly serviceAuthor: AuthorService,
   ) {}
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('/create')
+  @Roles('Administrativo', 'Bibliotecario')
   public async createAuthor(@Body() author: AuthorDto) {
     const res = await this.serviceAuthor.createAuthor(author);
     if (res) {
@@ -73,8 +76,9 @@ export class AuthorController {
       .json({ data: [] });
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete('/delete')
+  @Roles('Administrativo', 'Bibliotecario')
   public async deleteAuthor(@Body() uuid: UUIDDto) {
     const res = await this.serviceAuthor.deleteAuthor(uuid.id);
     if (res) {
@@ -91,8 +95,9 @@ export class AuthorController {
       .json({ data: [] });
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Put('/update')
+  @Roles('Administrativo', 'Bibliotecario')
   public async updateAuthor(
     @Body() newAuthor: AuthorDto,
     @Body() uuid: UUIDDto,

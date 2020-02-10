@@ -19,6 +19,8 @@ import { Response } from './../common/response/response';
 
 import { EditorialDto } from './dto/editorial.dto';
 import { UUIDDto } from './../common/dto/uuid.dto';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { Roles } from '../common/decorator/roles.decorator';
 
 @Controller('editorial')
 export class EditorialController {
@@ -27,8 +29,9 @@ export class EditorialController {
     private readonly editorialService: EditorialService,
   ) {}
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('/create')
+  @Roles('Administrativo', 'Bibliotecario')
   public async createEditorial(@Body() editorial: EditorialDto) {
     const res = await this.editorialService.createEditorial(editorial);
     if (res) {
@@ -73,8 +76,9 @@ export class EditorialController {
       .json({ data: [] });
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete('/delete')
+  @Roles('Administrativo', 'Bibliotecario')
   public async deleteEditorial(@Body() uuid: UUIDDto) {
     const res = await this.editorialService.deleteEditorial(uuid.id);
     if (res) {
@@ -91,8 +95,9 @@ export class EditorialController {
       .json({ data: [] });
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Put('/update')
+  @Roles('Administrativo', 'Bibliotecario')
   public async updateEditorial(
     @Body() newEditorial: EditorialDto,
     @Body() uuid: UUIDDto,

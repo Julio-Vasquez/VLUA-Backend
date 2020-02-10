@@ -13,9 +13,7 @@ import {
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
-
-import { Files } from './../common/files/files';
-import { Response } from './../common/response/response';
+import { ConfigService } from '@nestjs/config';
 
 import { Book } from './../../entities/book.entity';
 
@@ -23,9 +21,12 @@ import { BookDto } from './dto/book.dto';
 import { ISBNDto } from './dto/isbn.dto';
 import { UUIDDto } from '../common/dto/uuid.dto';
 
-import { BookService } from './book.service';
+import { Roles } from '../common/decorator/roles.decorator';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { Files } from './../common/files/files';
+import { Response } from './../common/response/response';
 
-import { ConfigService } from '@nestjs/config';
+import { BookService } from './book.service';
 
 @Controller('book')
 export class BookController {
@@ -38,7 +39,7 @@ export class BookController {
 
   /* Este controlador por el multer debe recibir 2 archivos,elprimero es el pdf del book, el segundo es el cover */
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'urlBook', maxCount: 1 },
@@ -46,6 +47,7 @@ export class BookController {
     ]),
   )
   @Post('/create')
+  @Roles('Administrativo', 'Bibliotecario')
   public async createBook(@Body() book: BookDto, @UploadedFiles() file) {
     const AppHost = this.config.get<string>('app.host');
     if (file.urlBook !== undefined && file.urlCover !== undefined) {
@@ -171,7 +173,7 @@ export class BookController {
       .json({ data: [] });
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'urlBook', maxCount: 1 },
@@ -179,6 +181,7 @@ export class BookController {
     ]),
   )
   @Put('/update')
+  @Roles('Administrativo', 'Bibliotecario')
   public async updateBook(
     @Body() book: BookDto,
     @UploadedFiles() file,
@@ -216,8 +219,9 @@ export class BookController {
       .json({ data: [] });
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Put('/updateisbn')
+  @Roles('Administrativo', 'Bibliotecario')
   public async updateIsbn(@Body() newIsbn: ISBNDto, @Body() uuid: UUIDDto) {
     const res = await this.bookService.updateISBN(uuid.id, newIsbn);
     if (res) {
@@ -232,8 +236,9 @@ export class BookController {
       .json({ data: [] });
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete('/delete')
+  @Roles('Administrativo', 'Bibliotecario')
   public async deleteBook(@Body() isbn: ISBNDto) {
     const res = await this.bookService.deleteBook(isbn);
     if (res) {

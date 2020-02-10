@@ -18,6 +18,8 @@ import { CategoryDto } from './dto/category.dto';
 import { UUIDDto } from './../common/dto/uuid.dto';
 
 import { Response } from './../common/response/response';
+import { Roles } from './../common/decorator/roles.decorator';
+import { RolesGuard } from './../common/guards/roles.guard';
 
 @Controller('category')
 export class CategoryController {
@@ -26,8 +28,9 @@ export class CategoryController {
     private readonly categoryService: CategoryService,
   ) {}
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('/create')
+  @Roles('Administrativo', 'Bibliotecario')
   public async createCategory(@Body() category: CategoryDto) {
     const res: boolean = await this.categoryService.createCategory(category);
     if (res) {
@@ -57,8 +60,9 @@ export class CategoryController {
       .json({ data: [] });
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Put('/update')
+  @Roles('Administrativo', 'Bibliotecario')
   public async updateCategory(
     @Body() category: CategoryDto,
     @Body() uuid: UUIDDto,
@@ -76,8 +80,9 @@ export class CategoryController {
       .json({ data: [] });
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete('/delete')
+  @Roles('Administrativo', 'Bibliotecario')
   public async deleteCategory(@Body() uuid: UUIDDto) {
     const res = await this.categoryService.deleteCategory(uuid.id);
     if (res) {
