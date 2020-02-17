@@ -13,7 +13,6 @@ export class RolesGuard implements CanActivate {
     const rols = this.reflector.get<string[]>('rols', context.getHandler());
     if (!rols) return true;
     const request = context.switchToHttp().getRequest();
-    const user = request.user;
     const rol: any = this.jwt.decode(
       request.headers.authorization.split(' ')[1],
     );
@@ -21,6 +20,6 @@ export class RolesGuard implements CanActivate {
     for (let item in rols) {
       result += item === rol.role ? 1 : 0;
     }
-    return user && result === 1;
+    return request.user && result === 1;
   }
 }
