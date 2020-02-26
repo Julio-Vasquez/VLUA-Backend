@@ -35,6 +35,13 @@ export class BookDto {
   })
   public readonly name: string;
 
+  @IsString({ message: IsStr })
+  @IsNotEmpty({ message: IsNE })
+  @MinLength(10, {
+    message: `La descripción del libro  ${MinL(2)}`,
+  })
+  public readonly description: string;
+
   @IsISO8601({ message: IsDt })
   @IsNotEmpty({ message: IsNE })
   public readonly publication: string;
