@@ -45,6 +45,6 @@ export class UserService {
     const user = await this.repository.findOne({
       where: { userName: username },
     });
-    return user ? true : false;
+    return user && (await user.comparePassword(password)) ? true : false;
   }
 }
