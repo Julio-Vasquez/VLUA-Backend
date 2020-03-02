@@ -63,10 +63,8 @@ export class BookController {
           .message('Registro exitoso')
           .json({ data: [] });
       }
-      this.files.deleteFile([
-        AppHost + '/' + file.urlBook[0].path,
-        AppHost + '/' + file.urlCover[0].path,
-      ]);
+      this.files.deleteFile([file.urlBook[0].path, file.urlCover[0].path]);
+
       return this.response
         .status({ statusCode: HttpStatus.CONFLICT, state: 'CONFLICT' })
         .message('Ya existe el registro')
@@ -201,15 +199,13 @@ export class BookController {
           .message('Actualizacion exitosa')
           .json({ data: [] });
       }
-      this.files.deleteFile([
-        AppHost + '/' + file.urlBook[0].path,
-        AppHost + '/' + file.urlCover[0].path,
-      ]);
+      this.files.deleteFile([file.urlBook[0].path, file.urlCover[0].path]);
       return this.response
         .status({ statusCode: HttpStatus.CONFLICT, state: 'CONFLICT' })
         .message('No existe el registro')
         .json({ data: [] });
     }
+    this.files.deleteFile([file.urlBook[0].path, file.urlCover[0].path]);
     return this.response
       .status({
         statusCode: HttpStatus.BAD_REQUEST,

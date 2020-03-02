@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
-
+import * as bodyParser from 'body-parser';
 import { AppModule } from './modules/app.module';
 import { ConfigService } from '@nestjs/config';
 
@@ -15,6 +15,8 @@ async function bootstrap() {
   });
   const config = app.get(ConfigService);
 
+  app.use(bodyParser.json({ limit: '50mb' }));
+  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
   //logger : console. logger : logger
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
@@ -22,8 +24,18 @@ async function bootstrap() {
   await app.listen(config.get<number>('app.port'), () => {
     logger.log(
       config.get<boolean>('mode')
-        ? `${config.get<string>('app.name')} => Server running on ${config.get<string>('app.host')}:${config.get<string>('app.port')}/${config.get<string>('app.prefix')}/`
-        : `${config.get<string>('app.name')} => Modo Development => ${config.get<string>('app.host')}:${config.get<string>('app.port')}/${config.get<string>('app.prefix')}/`,
+        ? `${config.get<string>('app.name')} => Server running on ${config.get<
+            string
+          >('app.host')}:${config.get<string>('app.port')}/${config.get<string>(
+            'app.prefix',
+          )}/`
+        : `${config.get<string>(
+            'app.name',
+          )} => Modo Development => ${config.get<string>(
+            'app.host',
+          )}:${config.get<string>('app.port')}/${config.get<string>(
+            'app.prefix',
+          )}/`,
     );
   });
 }

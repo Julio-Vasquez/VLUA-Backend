@@ -16,12 +16,12 @@ export class RolesGuard implements CanActivate {
     const rol: any = this.jwt.decode(
       request.headers.authorization.split(' ')[1],
     );
-    console.log(rols);
     let result = 0;
 
     for (let i = 0; i < rols.length; i++) {
       result += rols[i] === rol.role ? 1 : 0;
     }
+    console.log(request.user && result === 1);
     return request.user && result === 1;
   }
 }
