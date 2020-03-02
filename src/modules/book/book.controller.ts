@@ -63,8 +63,6 @@ export class BookController {
           .message('Registro exitoso')
           .json({ data: [] });
       }
-      this.files.deleteFile([file.urlBook[0].path, file.urlCover[0].path]);
-
       return this.response
         .status({ statusCode: HttpStatus.CONFLICT, state: 'CONFLICT' })
         .message('Ya existe el registro')
@@ -199,7 +197,6 @@ export class BookController {
           .message('Actualizacion exitosa')
           .json({ data: [] });
       }
-      this.files.deleteFile([file.urlBook[0].path, file.urlCover[0].path]);
       return this.response
         .status({ statusCode: HttpStatus.CONFLICT, state: 'CONFLICT' })
         .message('No existe el registro')
