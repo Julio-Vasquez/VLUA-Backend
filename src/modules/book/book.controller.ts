@@ -49,12 +49,14 @@ export class BookController {
   @Post('/create')
   @Roles('Administrativo', 'Bibliotecario')
   public async createBook(@Body() book: BookDto, @UploadedFiles() file) {
-    const AppHost = this.config.get<string>('app.host');
+    const AppHost = this.config.get<string>('app.host'),
+      AppPrefix = this.config.get<string>('app.prefix'),
+      AppPort = this.config.get<string>('app.port');
     if (file.urlBook !== undefined && file.urlCover !== undefined) {
       //Check if the files arrived.
       const res: boolean = await this.bookService.createBook(book, [
-        AppHost + '/' + file.urlBook[0].path,
-        AppHost + '/' + file.urlCover[0].path,
+        `${AppHost}:${AppPort}/${AppPrefix}/${file.urlBook[0].path}`,
+        `${AppHost}:${AppPort}/${AppPrefix}/${file.urlCover[0].path}`,
       ]);
       if (res) {
         //Check if the record could be created.
@@ -183,12 +185,14 @@ export class BookController {
     @UploadedFiles() file,
     @Body() uuid: UUIDDto,
   ) {
-    const AppHost = this.config.get<string>('appHost');
     if (file.urlBook !== undefined && file.urlCover !== undefined) {
+      const AppHost = this.config.get<string>('appHost'),
+        AppPrefix = this.config.get<string>('app.prefix'),
+        AppPort = this.config.get<string>('app.port');
       //Check if the files arrived.
       const res: boolean = await this.bookService.updateBook(uuid.id, book, [
-        AppHost + '/' + file.urlBook[0].path,
-        AppHost + '/' + file.urlCover[0].path,
+        `${AppHost}:${AppPort}/${AppPrefix}/${file.urlBook[0].path}`,
+        `${AppHost}:${AppPort}/${AppPrefix}/${file.urlCover[0].path}`,
       ]);
       if (res) {
         //Check if the record could be created.

@@ -10,6 +10,7 @@ import { AuthorModule } from './author/author.module';
 import { CategoryModule } from './category/category.module';
 import { ConfigModule } from '@nestjs/config';
 import { OrmConfigService } from './common/provider/ormconfig.service';
+import { UploadsModule } from './uploads/uploads.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { OrmConfigService } from './common/provider/ormconfig.service';
     EditorialModule,
     AuthorModule,
     CategoryModule,
+    UploadsModule,
   ],
   controllers: [],
   providers: [],

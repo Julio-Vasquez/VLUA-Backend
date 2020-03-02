@@ -11,7 +11,6 @@ export class FileUploadService {
     //limits en byts (1kb = 1000)
     return {
       fileFilter: (req, file, cb) => {
-        console.log(req);
         if (file.mimetype.match(/\/(jpg|jpeg|png|bmp|tif|svg)$/)) {
           folderName = 'cover';
           cb(null, true);
