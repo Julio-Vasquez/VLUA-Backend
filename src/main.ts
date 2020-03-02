@@ -15,8 +15,8 @@ async function bootstrap() {
   });
   const config = app.get(ConfigService);
 
-  app.use(bodyParser.json({ limit: '50mb' }));
-  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+  app.use(bodyParser.json({ limit: '100mb' }));
+  app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
   //logger : console. logger : logger
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe());

@@ -4,9 +4,6 @@ CREATE DATABASE vluaDB;
 
 USE vluaDB;
 
-
-
-
 INSERT INTO 
 	`Gender`
 (
@@ -31,8 +28,8 @@ INSERT INTO
 	`genderId`
 )
 VALUES
-( '11bf01f8-79dd-4e60-b91d-1557ab026ef6', 'Julio', 'Verne', '1998-09-30', 'Activo', 'd8503e02-eca0-4b3a-ad93-b6795974b362'),
-( '0c62b4ab-17ba-4e8e-a9f5-e2aebd638298', 'Gabriel', 'Garcia', '1927-04-17', 'Activo', 'd8503e02-eca0-4b3a-ad93-b6795974b362');
+( '11bf01f8-79dd-4e60-b91d-1557ab026ef6', 'Dante', 'Alighieri', '1265-05-29', 'Activo', 'd8503e02-eca0-4b3a-ad93-b6795974b362'),
+()
 
 INSERT INTO 
 	`Editorial`
@@ -43,8 +40,7 @@ INSERT INTO
 	`state`
 )
 VALUES
-( 'c81e1a90-5090-4ec1-82d6-1b6dfbbed3e1', 'Libro Plus', 'Carrera 5 # 23-18', 'Activo'),
-( 'e471bfc8-de7e-49f9-96a2-e110b1816dbe', 'Mundo Letras', 'Calle 9 # 63-18', 'Activo');
+( 'c81e1a90-5090-4ec1-82d6-1b6dfbbed3e1', 'Océano Exprés', 'Carrera 45 Autonorte #108A-50', 'Activo');
 	
 INSERT INTO 
 	`TypeDoc`
@@ -142,3 +138,38 @@ INSERT INTO
 )
 VALUES
 	( '8958a8f6-0107-4d32-bf4b-2a31ba093be6', 'DarKPhuRioN', '$2b$10$g4kmXDs9vRQ8.T4QmYu9M.jO7icqMtDcIgpQUqH0jqxQKLv22nweG', 'Activo', '49172f13-2558-4852-9d4e-6e08f6299850', '24fc8de3-17cf-4976-ae07-689ca0b31dfa');
+
+
+INSERT INTO
+	`Book`
+(
+	`id`,
+	`isbn`,
+	`name`,
+	`description`,
+	`publication`,
+	`edition`,
+	`tomo`,
+	`urlBook`,
+	`urlCover`
+	`state`,
+	`editorial`,
+	`author`,
+	`category`
+)
+VALUES
+(
+	'92b5decf-f159-448e-a5a1-42fc4a7770bc', 
+	'9789588464497',
+	'La Divina Comedia',
+	'Obra maestra de la literatura italiana y cumbre de las letras universales. Escrita durante la primera mitad del siglo XIV, esta obra puede leerse en su sentido literal, como el viaje que realiza el propio autor por el Infierno, el Purgatorio y el Paraíso, guiado primero por el poeta romano Virgilio y después por Beatriz, la amada que Dante idealizó. Sin embargo, la obra está llena de símbolos, alegorías y un profundo sentido moral y filosófico que la vuelven inagotable y le han permitido trascender al tiempo. El iluminador prólogo de Jorge Luis Borges permite una comprensión más honda del libro.',
+	'1472-01-01',
+	1,
+	1,
+	'localhost:8550/vl/uploads/book/book-dt-2020March02-tm-12-06-51-PM.pdf',
+	'localhost:8550/vl/uploads/cover/cover-dt-2020March02-tm-12-06-51-PM.jpeg',
+	'Activo',
+	'c81e1a90-5090-4ec1-82d6-1b6dfbbed3e1',
+	'11bf01f8-79dd-4e60-b91d-1557ab026ef6',
+	'94bb1f81-086f-4290-875b-624947b4e66d'
+);

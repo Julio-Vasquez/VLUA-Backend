@@ -1,22 +1,19 @@
-import { Controller, Get, Param, Res } from '@nestjs/common';
+import { Controller, Get, Param, Res, HttpStatus } from '@nestjs/common';
+import { UploadsService } from './uploads.service';
 import { Response } from 'express';
-import { ConfigService } from '@nestjs/config';
-import { existsSync } from 'fs';
 
 @Controller('uploads')
 export class UploadsController {
-  constructor(private readonly config: ConfigService) {}
+  constructor(private readonly service: UploadsService) {}
 
-  @Get('/:folder/:name')
+  @Get('/:folder/:file')
   public async getData(
     @Param('folder') folder: string,
-    @Param('name') name: string,
+    @Param('file') file: string,
     @Res() res: Response,
   ) {
-    const url = __dirname;
-    const newurl = url.replace('dist/modules/', '');
-    return existsSync(`${newurl}/${folder}/${name}`)
-      ? res.sendFile(`${newurl}/${folder}/${name}`)
-      : res.sendFile(`${newurl}/f.jpg`);
+    const result: string = this.service.FileExists(folder, file);
+    return res.sendFile(result);
+    return res.status(HttpStatus.OK).json({ data: result });
   }
 }
