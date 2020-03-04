@@ -112,7 +112,7 @@ export class BookService {
       .leftJoin('book.category', 'category')
       .leftJoin('book.author', 'author')
       .where("book.state = 'Activo'")
-      .andWhere('author.name LIKE :authorName', {
+      .andWhere(`CONCAT(author.name,' ', author.lastname) LIKE :authorName`, {
         authorName: '%' + authorName + '%',
       })
       .execute();
@@ -174,7 +174,7 @@ export class BookService {
       .execute();
   }
 
-  public async findByISBN(ISBN: ISBNDto): Promise<Book[]> {
+  public async findByISBN(ISBN: string): Promise<Book[]> {
     return await this.repository
       .createQueryBuilder('book')
       .select('book.isbn', 'ISBN')
@@ -196,7 +196,7 @@ export class BookService {
       .leftJoin('book.category', 'category')
       .leftJoin('book.author', 'author')
       .where("book.state = 'Activo'")
-      .andWhere('book.isbn = :isbn', { isbn: ISBN.isbn })
+      .andWhere('book.isbn = :isbn', { isbn: ISBN })
       .execute();
   }
 

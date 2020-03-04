@@ -17,7 +17,6 @@ import { Book } from './../../entities/book.entity';
 import { Editorial } from './../../entities/editorial.entity';
 import { Author } from './../../entities/author.entity';
 
-
 @Module({
   imports: [
     TypeOrmModule.forFeature([Book, Editorial, Author]),
@@ -25,7 +24,6 @@ import { Author } from './../../entities/author.entity';
       useFactory: async file => file.configMulter(),
       inject: ['FileUploadService'],
     }),
-    
   ],
   controllers: [BookController],
   providers: [BookService],
@@ -41,7 +39,7 @@ export class BookModule implements NestModule {
         { path: 'book/findbyauthor/:name', method: RequestMethod.GET },
         { path: 'book/findbycategory/:name', method: RequestMethod.GET },
         { path: 'book/findbyeditorial/:name', method: RequestMethod.GET },
-        { path: 'book/findbyisbn', method: RequestMethod.GET }
+        { path: 'book/findbyisbn/:isbn', method: RequestMethod.GET },
       )
       .forRoutes(BookController);
   }

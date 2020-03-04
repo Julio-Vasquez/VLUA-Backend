@@ -55,8 +55,8 @@ export class BookController {
     if (file.urlBook !== undefined && file.urlCover !== undefined) {
       //Check if the files arrived.
       const res: boolean = await this.bookService.createBook(book, [
-        `${AppHost}:${AppPort}/${AppPrefix}/${file.urlBook[0].path}`,
-        `${AppHost}:${AppPort}/${AppPrefix}/${file.urlCover[0].path}`,
+        `https://d2c5d2fa.ngrok.io/${AppPrefix}/${file.urlBook[0].path}`,
+        `https://d2c5d2fa.ngrok.io/${AppPrefix}/${file.urlCover[0].path}`,
       ]);
       if (res) {
         //Check if the record could be created.
@@ -156,8 +156,9 @@ export class BookController {
       .json({ data: [] });
   }
 
-  @Get('/findbyisbn')
-  public async findByISBN(@Body() isbn: ISBNDto) {
+  @Get('/findbyisbn/:isbn')
+  public async findByISBN(@Param('isbn') isbn: string) {
+    console.log('entro la peticion');
     const res: Book[] = await this.bookService.findByISBN(isbn);
     if (res.length > 0) {
       return this.response
@@ -191,8 +192,8 @@ export class BookController {
         AppPort = this.config.get<string>('app.port');
       //Check if the files arrived.
       const res: boolean = await this.bookService.updateBook(uuid.id, book, [
-        `${AppHost}:${AppPort}/${AppPrefix}/${file.urlBook[0].path}`,
-        `${AppHost}:${AppPort}/${AppPrefix}/${file.urlCover[0].path}`,
+        `https://d2c5d2fa.ngrok.io/${AppPrefix}/${file.urlBook[0].path}`,
+        `https://d2c5d2fa.ngrok.io/${AppPrefix}/${file.urlCover[0].path}`,
       ]);
       if (res) {
         //Check if the record could be created.
