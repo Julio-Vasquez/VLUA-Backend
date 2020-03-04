@@ -55,8 +55,8 @@ export class BookController {
     if (file.urlBook !== undefined && file.urlCover !== undefined) {
       //Check if the files arrived.
       const res: boolean = await this.bookService.createBook(book, [
-        `https://d2c5d2fa.ngrok.io/${AppPrefix}/${file.urlBook[0].path}`,
-        `https://d2c5d2fa.ngrok.io/${AppPrefix}/${file.urlCover[0].path}`,
+        `${AppHost}:${AppPort}/${AppPrefix}/${file.urlBook[0].path}`,
+        `${AppHost}:${AppPort}/${AppPrefix}/${file.urlCover[0].path}`,
       ]);
       if (res) {
         //Check if the record could be created.
@@ -192,8 +192,8 @@ export class BookController {
         AppPort = this.config.get<string>('app.port');
       //Check if the files arrived.
       const res: boolean = await this.bookService.updateBook(uuid.id, book, [
-        `https://d2c5d2fa.ngrok.io/${AppPrefix}/${file.urlBook[0].path}`,
-        `https://d2c5d2fa.ngrok.io/${AppPrefix}/${file.urlCover[0].path}`,
+        `${AppHost}:${AppPort}/${AppPrefix}/${file.urlBook[0].path}`,
+        `${AppHost}:${AppPort}/${AppPrefix}/${file.urlCover[0].path}`,
       ]);
       if (res) {
         //Check if the record could be created.
